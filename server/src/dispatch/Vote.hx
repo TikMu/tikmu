@@ -23,6 +23,8 @@ class Vote
 			rate.delete();
 		} else {
 			trace('here2');
+			rate.value = value;
+			rate.update();
 			if (value < 0) value--;
 			else value++;
 		}
