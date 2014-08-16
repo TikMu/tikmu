@@ -11,6 +11,18 @@ class User extends Object
 	public var avatarAddress:Null<SString<255>>;
 	public var rate:SInt;
 
+	public function setPass(pass:String)
+	{
+		var salt = Std.random(0x7FFFFFF);
+		this.hashpass = salt + ":" + haxe.crypto.Sha256.encode(salt + pass + "ESSE É UM SALT DIFICIL PRO JONAS");
+	}
+
+	public function checkPass(pass:String):Bool
+	{
+		var split = this.hashpass.split(':');
+		return split[1] == haxe.crypto.Sha256.encode(split[0] + pass + "ESSE É UM SALT DIFICIL PRO JONAS");
+	}
+
 	public function getAvatar()
 	{
 		return avatarAddress;

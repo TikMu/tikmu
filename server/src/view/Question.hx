@@ -1,7 +1,7 @@
 package view;
 
 @:includeTemplate('question.html')
-class Question extends erazor.macro.SimpleTemplate<{ question:db.Question }>
+class Question extends erazor.macro.SimpleTemplate<{ question:db.Question, answers:Array<AnswerData> }>
 {
 }
 

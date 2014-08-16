@@ -1,5 +1,7 @@
+import db.*;
 import view.*;
 import croxit.*;
+import haxe.web.*;
 
 class Main
 {
@@ -12,11 +14,42 @@ class Main
 
 	public static function run()
 	{
-		haxe.web.Dispatch.run(Web.getURI(), Web.getParams(), {
-			doDefault: dispatch.QuestionList.run,
-			doLogin: dispatch.Login.run,
-			doQuestion: dispatch.Question.run,
-			doAsk:dispatch.Ask.run
-		});
+		var d = new Dispatch(Web.getURI(),Web.getParams());
+		d.onMeta = function(m,value) {
+			switch (m)
+			{
+				case 'logged':
+					var sess = Session.get();
+					if (sess == null)
+						throw NotLogged;
+			}
+		}
+
+		try
+		{
+			d.dispatch(new Main());
+		}
+		catch(e:Error)
+		{
+			switch(e)
+			{
+				case NotLogged:
+					Web.redirect('/login?msg=voce precisa estar logado');
+			}
+		}
 	}
+
+	var doDefault = dispatch.QuestionList.run;
+	var doLogin = dispatch.Login.run;
+	var doQuestion = dispatch.Question.run;
+	@logged var doAsk = dispatch.Ask.run;
+	var doCreate = dispatch.CreateUser.run;
+
+	private function new()
+	{
+	}
+}
+
+enum Error {
+	NotLogged;
 }

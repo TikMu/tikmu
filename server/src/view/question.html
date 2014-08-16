@@ -4,6 +4,6 @@
 <title>@(question.getTitle())</title>
 </head>
 <body>
-	@(new QuestionCard().setData({ question:question }).execute())
+	@(new QuestionCard().setData({ question:question, answers:answers }).execute())
 </body>
 </html>

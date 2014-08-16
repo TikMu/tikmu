@@ -7,11 +7,14 @@
 <div class="question" id="quest@(question.id)">
 
 	<div class="uquestion">
-	<a href="/user/$(question.user.id)">
+	<a href="/user/@(question.user.id)">
 		<img src="@(question.user.getAvatar())" />
 		<h4>@(question.user.name)</h4>
-		<div class="uquestion_rate">@(question.user.rate)</div>
+	</a>
+	<div class="uquestion_rate">@(question.user.rate)</div>
 	</div>
+	<a href="/question/@(question.id)">
 	<h1>@question.getTitle()</h1>
+	</a>
 }
 </div>

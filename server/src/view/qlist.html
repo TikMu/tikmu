@@ -4,6 +4,7 @@
 <title>Frass</title>
 </head>
 <body>
-	@(new QuestionCard().setData({ question:question }).execute())
+	<a href="/ask">Create question</a>
+	@(new QuestionCard().setData({ question:question, answers:null }).execute())
 </body>
 </html>

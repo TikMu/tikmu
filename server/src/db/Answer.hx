@@ -9,6 +9,7 @@ class Answer extends Object
 	public var rate:SInt;
 	public var date:SDate;
 	@:relation(user_id) public var user:User;
+	@:relation(question_id) public var question:Question;
 }
 
 

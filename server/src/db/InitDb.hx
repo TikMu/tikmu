@@ -10,9 +10,11 @@ class InitDb
 	{
 		var file = Web.getCwd() + '/../.private/db.db';
 		sys.db.Manager.initialize();
+		var ex = exists(file);
 		sys.db.Manager.cnx = Sqlite.open(file);
-		if (!exists(file))
+		if (!ex)
 		{
+			TableCreate.create(Session.manager);
 			TableCreate.create(Answer.manager);
 			TableCreate.create(Comment.manager);
 			TableCreate.create(Location.manager);
