@@ -1,0 +1,17 @@
+<div class="question" id="quest0">
+@if( question == null ) {
+	<h1>Parabéns! Você chegou ao final da internet!<h1>
+} else if ( !question.canSee() ) {
+	<h1>NSFW</h1>
+} else {
+<div class="question" id="quest@(question.id)">
+
+	<div class="uquestion">
+	<a href="/user/$(question.user.id)">
+		<img src="@(question.user.getAvatar())" />
+		<h4>@(question.user.name)</h4>
+		<div class="uquestion_rate">@(question.user.rate)</div>
+	</div>
+	<h1>@question.getTitle()</h1>
+}
+</div>

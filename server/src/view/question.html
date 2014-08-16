@@ -1,0 +1,9 @@
+<html>
+<meta charset="UTF-8" />
+<head>
+<title>@(question.getTitle())</title>
+</head>
+<body>
+	@(new QuestionCard().setData({ question:question }).execute())
+</body>
+</html>
