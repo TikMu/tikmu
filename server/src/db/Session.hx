@@ -18,6 +18,12 @@ class Session extends Object
 		Web.setCookie("NSESS", this.id);
 	}
 
+	public static function currentUser():User
+	{
+		var ret = get();
+		return ret == null ? null : ret.user;
+	}
+
 	public static function get():Session
 	{
 		var s = Web.getCookies().get("NSESS");

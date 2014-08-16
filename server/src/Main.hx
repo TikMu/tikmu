@@ -7,6 +7,10 @@ class Main
 {
 	public static function main()
 	{
+		haxe.Log.trace = function(msg:Dynamic, ?pos:haxe.PosInfos) {
+			msg = pos.customParams == null ? msg : msg + "," + pos.customParams.join(',');
+			Web.logMessage('${pos.fileName}:${pos.lineNumber} $msg');
+		};
 		db.InitDb.init();
 		run();
 		sys.db.Manager.cnx.close();
@@ -45,6 +49,7 @@ class Main
 	@logged var doAsk = dispatch.Ask.run;
 	var doCreate = dispatch.CreateUser.run;
 	@logged var doAnswer = dispatch.Answer.run;
+	@logged var doVote = dispatch.Vote.run;
 
 	private function new()
 	{
