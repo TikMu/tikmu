@@ -4,7 +4,6 @@ class Vote
 {
 	public static function run(answer:db.Answer, value:Int)
 	{
-		trace(answer,value);
 		if (value == 0) return;
 		value = value < 0 ? -1 : 1;
 		var user = db.Session.currentUser();
@@ -17,12 +16,10 @@ class Vote
 			rate.value = value;
 			rate.insert();
 		} else if (rate.value == value) {
-			trace('here1');
 			// deletar o que existe ja
 			value = -value;
 			rate.delete();
 		} else {
-			trace('here2');
 			rate.value = value;
 			rate.update();
 			if (value < 0) value--;
