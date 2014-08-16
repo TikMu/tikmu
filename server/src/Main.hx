@@ -50,6 +50,7 @@ class Main
 	var doCreate = dispatch.CreateUser.run;
 	@logged var doAnswer = dispatch.Answer.run;
 	@logged var doVote = dispatch.Vote.run;
+	@logged var doComment = dispatch.Comment.run;
 
 	private function new()
 	{

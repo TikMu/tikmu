@@ -34,6 +34,10 @@
 						}
 					</div>
 				</div>
+				<form action="/comment/@(ans.id)" method="POST">
+				<textarea name="text" placeholder="comentar"></textarea>
+				<input type="submit" value=">" />
+				</form>
 			</div>
 		}
 		<form action="/answer" method="POST">
