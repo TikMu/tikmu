@@ -1,6 +1,6 @@
 package view;
 
-@:includeTemplate('qlist.html')
+@:includeTemplate('questionlist.html')
 class QuestionList extends erazor.macro.SimpleTemplate<{ question:db.Question }>
 {
 }

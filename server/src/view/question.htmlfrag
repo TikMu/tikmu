@@ -1,20 +1,50 @@
-<div class="question" id="quest0">
+<div class="question" id="quest_null">
 @if( question == null ) {
 	<h1>Parabéns! Você chegou ao final da internet!<h1>
 } else if ( !question.canSee() ) {
 	<h1>NSFW</h1>
 } else {
-<div class="question" id="quest@(question.id)">
-
-	<div class="uquestion">
+<div class="question" id="quest_@(question.id)">
+	<div class="user_question">
 	<a href="/user/@(question.user.id)">
 		<img src="@(question.user.getAvatar())" />
-		<h4>@(question.user.name)</h4>
+		<span class="author">@(question.user.name)</span>
 	</a>
 	<div class="uquestion_rate">@(question.user.rate)</div>
 	</div>
-	<a href="/question/@(question.id)">
 	<h1>@question.getTitle()</h1>
+	<a href="/question/@(question.id)">
+	Respostas
 	</a>
+	@if(answers != null) {
+		<div class="answers">
+		@for (ans in answers)
+		{
+			<div class="answer" id="answer_@(ans.id)">
+				<div class="vote">
+				<a class="vote-up-@( (ans.rateValue > 0) ? "on" : "off" )" href="/vote/@(ans.id)/1" >up vote</a>
+				<div class="answer-rate">@(ans.rate)</div>
+				<a class="vote-down-@( (ans.rateValue < 0) ? "on" : "off")" href="/vote/@(ans.id)/-1" >down vote</a>
+				</div>
+				<div class="answer_data">
+					@(ans.text)
+					<div class="comments">
+						@for (comment in ans.comments) 
+						{
+							<div class="comment" id="comment_@(comment.id)">
+								<div class="comment_data">@(comment.text)</div>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+		}
+		<form action="/answer" method="POST">
+			<input type="hidden" name="question" value="@(question.id)" />
+			<textarea name="response" placeholder="resposta"></textarea>
+			<input type="submit" value=">" />
+		</form>
+		</div>
+		}
 }
 </div>
