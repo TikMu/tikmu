@@ -1,9 +1,12 @@
-<div class="question" id="quest_null">
 @if( question == null ) {
+<div class="question" id="quest_null">
 	<h1>Parabéns! Você chegou ao final da internet!<h1>
+</div>
 } else if ( !question.canSee() ) {
+<div class="question" id="quest_null">
 	<h1>NSFW</h1>
 	Click <a href="/login?redir=@(croxit.Web.getURI())">here</a> to login and see the post
+</div>
 } else {
 <div class="question" id="quest_@(question.id)">
 	<div class="user_question">
@@ -56,4 +59,3 @@
 			</a>
 		}
 }
-</div>

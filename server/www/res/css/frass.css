@@ -1,0 +1,124 @@
+/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+/*  Main CSS */
+
+body {
+	background: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	font-size: 18px;
+	font-weight: 300;
+	color: #fff;
+}
+
+h4 {
+	font-size: 14px;
+	color: #fff;
+}
+
+input {
+	border: 1px solid #ddd;
+	font-size: 14px;
+	font-weight: 300;
+	color: #ccc;
+	border-radius: 4px;
+	width: 100%;
+	max-width: 260px;
+	padding: 12px 6px;
+	margin: 0 30px 10px 30px;
+}
+
+.header {
+	background: #333;
+	height:50px;
+}
+
+.header .ask {	
+	float: right;
+	background: url(../img/create-question.png);
+	margin: 10px 20px 0 0; 
+	width: 24px;
+	height: 24px;
+}
+
+.header .logo {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	font-weight: 400;
+	margin: 0 auto;
+	line-height: 1.5;
+	color: #FFF;
+	display:inline-block;
+	margin: 10px 20px 0px 0px;
+}
+
+.question {
+	background: #b4cc16;
+	color: #fff;
+	min-height:330px;
+	margin: 10px 20px 0 0;
+	border-radius: 10px;
+	padding: 20px;
+}
+
+.question h1 {
+	text-align: center;
+	color: #FFF;
+	font-family: 'Roboto', sans-serif;
+	font-size: 18px;
+	line-height: 1.5;
+	font-weight: 400;
+}
+
+.question a {
+	color: #fff;
+	text-decoration: none;
+}
+
+.author {
+	font-size: 14px;
+
+}
+
+.info {
+	font-size: 14px;
+}
+
+.submit {
+	background: #b4cc16;
+	color: #fff;
+	border: 0px;
+	border-radius: 0;
+	width: 100%;
+	max-width: 320px;
+	padding: 18px 6px;
+	margin: 10px 0 0 0;
+}
+
+
+.vote-up-on {
+	background: url(../img/vote-up.png);
+}
+
+.vote-up-off {
+	background: url(../img/vote-up.png);
+	opacity: 0.5;
+}
+
+.vote-down-on {
+	background: url(../img/vote-down.png);
+}
+
+.vote-down-off {
+	background: url(../img/vote-down.png);
+	opacity: 0.5;
+}
+

@@ -1,0 +1,94 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="UTF-8">
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+<link href='css/main.css' rel='stylesheet' type='text/css'>
+<title>Esse programa é demais?</title>
+</head>
+<body>
+	<div class="question" id="quest_null">
+
+<div class="question" id="quest_1">
+	<div class="user_question">
+	<a href="http://localhost:2000/user/1">
+		<img src="03-pergunta-com-respostas_files/null.html">
+		<span class="author">Cauê Waneck</span>
+	</a>
+	<div class="uquestion_rate">12</div>
+	</div>
+	<h1>Esse programa é demais?</h1>
+	<div class="info">
+	47 minutos atrás em São Paulo - Augusta Street
+	</div>
+	
+		<div class="answers">
+		
+			<div class="answer" id="answer_1">
+				<div class="vote">
+				<a class="vote-up-on" href="http://localhost:2000/vote/1/1">up vote</a>
+				<div class="answer-rate">2</div>
+				<a class="vote-down-off" href="http://localhost:2000/vote/1/-1">down vote</a>
+				</div>
+				<div class="answer_data">
+					SIM!
+					<div class="comments">
+						
+							<div class="comment" id="comment_1">
+								<div class="comment_data">Muito demais</div>
+							</div>
+						
+							<div class="comment" id="comment_2">
+								<div class="comment_data">Bem loco</div>
+							</div>
+						
+							<div class="comment" id="comment_3">
+								<div class="comment_data">Empolgante</div>
+							</div>
+						
+							<div class="comment" id="comment_4">
+								<div class="comment_data">Mais loco que o choque da uva
+</div>
+							</div>
+						
+							<div class="comment" id="comment_5">
+								<div class="comment_data">mas o q</div>
+							</div>
+						
+					</div>
+				</div>
+				<form action="/comment/1" method="POST">
+				<textarea name="text" placeholder="comentar"></textarea>
+				<input value="&gt;" type="submit">
+				</form>
+			</div>
+		
+			<div class="answer" id="answer_2">
+				<div class="vote">
+				<a class="vote-up-on" href="http://localhost:2000/vote/2/1">up vote</a>
+				<div class="answer-rate">0</div>
+				<a class="vote-down-off" href="http://localhost:2000/vote/2/-1">down vote</a>
+				</div>
+				<div class="answer_data">
+					resposta
+					<div class="comments">
+						
+					</div>
+				</div>
+				<form action="/comment/2" method="POST">
+				<textarea name="text" placeholder="comentar"></textarea>
+				<input value="&gt;" type="submit">
+				</form>
+			</div>
+		
+		<form action="/answer" method="POST">
+			<input name="question" value="1" type="hidden">
+			<textarea name="response" placeholder="resposta"></textarea>
+			<input value="&gt;" type="submit">
+		</form>
+		</div>
+		
+
+</div>
+
+
+
+</div></body></html>

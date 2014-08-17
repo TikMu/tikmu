@@ -1,10 +1,24 @@
 <html>
-<meta charset="UTF-8" />
 <head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="UTF-8" />
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+<link href='res/css/frass.css' rel='stylesheet' type='text/css'>
+<link href='res/css/amazium.css' rel='stylesheet' type='text/css'>
+<link href='res/css/amazium-percent.css' rel='stylesheet' type='text/css'>
+<!-- <link href='res/css/base.css' rel='stylesheet' type='text/css'> -->
+
 <title>Frass</title>
 </head>
 <body>
-	<a href="/ask">Create question</a>
+	<div class="header">
+		<div class="row">
+			<span class="logo">FRĀSS</span>
+			<a class="ask" href="/ask"></a>
+		</div>
+	</div>
+	<div class="row">
 	@(new QuestionCard().setData({ question:question, answers:null }).execute())
+	</div>
 </body>
 </html>
