@@ -18,7 +18,9 @@
 		</div>
 	</div>
 	<div class="row">
-	@(new QuestionCard().setData({ question:question, answers:null }).execute())
+		<div class="grid_6 offset_3">
+		@(new QuestionCard().setData({ question:question, answers:null }).execute())
+		</div>
 	</div>
 </body>
 </html>

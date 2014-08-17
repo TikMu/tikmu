@@ -13,10 +13,10 @@ class Naming
 			'alguns instantes atrás';
 		} else if (delta < 60 * 60 * 1000) {
 			var min = Std.int(delta / (60 * 1000));
-			min + ' minutos atrás';
+			min + 'm atrás';
 		} else if (delta < 24 * 60 * 60 * 1000) {
 			var hours = Std.int(delta / (60 * 60 * 1000));
-			hours + ' horas atrás';
+			hours + 'h atrás';
 		} else if (delta < 30 * 24 * 60 * 60 * 1000) {
 			var days = Std.int(delta / (24 * 60 * 60 * 1000));
 			days + ' dias atrás';
