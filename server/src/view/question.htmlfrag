@@ -3,6 +3,7 @@
 	<h1>Parabéns! Você chegou ao final da internet!<h1>
 } else if ( !question.canSee() ) {
 	<h1>NSFW</h1>
+	Click <a href="/login?redir=@(croxit.Web.getURI())">here</a> to login and see the post
 } else {
 <div class="question" id="quest_@(question.id)">
 	<div class="user_question">
@@ -13,6 +14,9 @@
 	<div class="uquestion_rate">@(question.user.rate)</div>
 	</div>
 	<h1>@question.getTitle()</h1>
+	<div class="info">
+	@(tools.Naming.formatDate(question.date)) em @(question.location.toString())
+	</div>
 	@if(answers != null) {
 		<div class="answers">
 		@for (ans in answers)

@@ -25,6 +25,8 @@ class Vote
 			if (value < 0) value--;
 			else value++;
 		}
+
+		sys.db.Manager.cnx.request('UPDATE User SET rate = rate ' + (value > 0 ? ' +' + value * 10 : ""+ value * 10) + ' WHERE id = ' + answer.user.id);
 		sys.db.Manager.cnx.request('UPDATE Answer SET rate = rate ' + (value > 0 ? ' +' + value : ""+ value) + ' WHERE id = ' + answer.id);
 		croxit.Web.redirect('/question/' + answer.question.id);
 	}

@@ -18,7 +18,12 @@ class Question extends Object
 
 	public function canSee():Bool
 	{
-		return !isNsfw;
+		if (!isNsfw)
+			return true;
+		var user = Session.currentUser();
+		if (user != null)
+			return true;
+		return false;
 	}
 }
 
