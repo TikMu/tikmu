@@ -50,9 +50,11 @@
 		</form>
 		</div>
 		} else {
+		<div class="qanswers">
 			<a href="/question/@(question.id)">
 			Respostas
 			</a>
+		</div>
 		}
 }
 </div>
