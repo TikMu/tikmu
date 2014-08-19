@@ -1,9 +1,81 @@
 <html>
 <meta charset="UTF-8" />
 <head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta charset="UTF-8" />
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+<link href='/res/css/frass.css' rel='stylesheet' type='text/css'>
+<!-- <link href='res/css/amazium.css' rel='stylesheet' type='text/css'> -->
+<!-- <link href='res/css/amazium&#45;percent.css' rel='stylesheet' type='text/css'> -->
+<!-- <link href='res/css/base.css' rel='stylesheet' type='text/css'> -->
+
 <title>@(question.getTitle())</title>
 </head>
 <body>
-	@(new QuestionCard().setData({ question:question, answers:answers }).execute())
+	<div class="header">
+		<div class="row">
+			<span class="logo">FRĀSS</span>
+			<a class="ask" href="/ask"></a>
+		</div>
+	</div>
+	<div class="row">
+<div class="question single" id="quest_@(question == null ? "null" : "" + question.id)">
+	<div class="user_question">
+	<a href="/user/@(question.user.id)">
+		<img src="@(question.user.getAvatar())" />
+		<span class="author">@(question.user.name)</span>
+	</a>
+	<div class="uquestion_rate">@(question.user.rate)</div>
+	</div>
+	<h1>@question.getTitle()</h1>
+	<div class="tools">
+	<a href="/question/@(question.user.id)" class="icon-reply"><span>Responder</span></a>
+	<a href="#" class="icon-fav"><span>Favorite</span></a>
+	</div>
+	<div class="info">
+	@(question.location.toString()), @(tools.Naming.formatDate(question.date)) 
+	</div>
+	@if(answers != null) {
+		<div class="answers">
+		@for (ans in answers)
+		{
+			<div class="answer" id="answer_@(ans.id)">
+				<div class="vote">
+					<a class="vote-up-@( (ans.rateValue > 0) ? "on" : "off" )" href="/vote/@(ans.id)/1" ><span>up vote</span></a>
+				<div class="answer-rate">@(ans.rate)</div>
+				<a class="vote-down-@( (ans.rateValue < 0) ? "on" : "off")" href="/vote/@(ans.id)/-1" ><span>down vote</span></a>
+				</div>
+				<div class="answer_data">
+					@(ans.text)
+					<div class="comments">
+						@for (comment in ans.comments) 
+						{
+							<div class="comment" id="comment_@(comment.id)">
+								<div class="comment_data">@(comment.text)</div>
+							</div>
+						}
+					</div>
+				</div>
+				<form action="/comment/@(ans.id)" method="POST">
+				<textarea name="text" placeholder="comentar"></textarea>
+				<input type="submit" value=">" />
+				</form>
+			</div>
+		}
+		<form action="/answer" method="POST">
+			<input type="hidden" name="question" value="@(question.id)" />
+			<textarea name="response" placeholder="resposta"></textarea>
+			<input type="submit" value=">" />
+		</form>
+		</div>
+		} else {
+		<a href="/question/@(question.id)">
+			<div class="qanswers">
+				Respostas
+			</div>
+		</a>
+		}
+</div>
+</div>
 </body>
 </html>

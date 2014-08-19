@@ -3,9 +3,9 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta charset="UTF-8" />
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
-<link href='res/css/frass.css' rel='stylesheet' type='text/css'>
-<link href='res/css/amazium.css' rel='stylesheet' type='text/css'>
-<link href='res/css/amazium-percent.css' rel='stylesheet' type='text/css'>
+<link href='/res/css/frass.css' rel='stylesheet' type='text/css'>
+<!-- <link href='res/css/amazium.css' rel='stylesheet' type='text/css'> -->
+<!-- <link href='res/css/amazium&#45;percent.css' rel='stylesheet' type='text/css'> -->
 <!-- <link href='res/css/base.css' rel='stylesheet' type='text/css'> -->
 
 <title>Frass</title>
@@ -18,8 +18,37 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="grid_6 offset_3">
-		@(new QuestionCard().setData({ question:question, answers:null }).execute())
+		<div>
+
+<div class="question multi" id="quest_@(question == null ? "null" : "" + question.id)">
+@if( question == null ) {
+	<h1>Parabéns! Você chegou ao final da internet!<h1>
+} else if ( !question.canSee() ) {
+	<h1>NSFW</h1>
+	Click <a href="/login?redir=@(croxit.Web.getURI())">here</a> to login and see the post
+} else {
+	<div class="user_question">
+	<a href="/user/@(question.user.id)">
+		<img src="@(question.user.getAvatar())" />
+		<span class="author">@(question.user.name)</span>
+	</a>
+	<div class="uquestion_rate">@(question.user.rate)</div>
+	</div>
+	<h1>@question.getTitle()</h1>
+	<div class="tools">
+	<a href="/question/@(question.user.id)" class="icon-reply"><span>Responder</span></a>
+	<a href="#" class="icon-fav"><span>Favorite</span></a>
+	</div>
+	<div class="info">
+	@(question.location.toString()), @(tools.Naming.formatDate(question.date)) 
+	</div>
+		<a href="/question/@(question.id)">
+			<div class="qanswers">
+				Respostas
+			</div>
+		</a>
+}
+</div>
 		</div>
 	</div>
 </body>

@@ -63,13 +63,30 @@ input {
 .question {
 	background: #b4cc16;
 	color: #fff;
-	margin: 10px 20px 0 0;
+	padding: 14px 14px 0 14px;
+}
+
+.question.multi {
+	margin: 20px 20px 0 0;
 	border-radius: 7.5px;
-	padding: 12px;
 	-webkit-box-shadow: 0px 0px 6px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    0px 0px 6px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         0px 0px 6px 0px rgba(50, 50, 50, 0.75);
 	overflow: hidden;
+	/* margin-top:20px; */
+}
+
+@media (max-height: 480px) {
+	.question h1 {
+		max-height: 220px;
+	}
+}
+
+@media (min-width: 480px) {
+	.row {
+		width: 450px;
+		margin: 0 auto;
+	}
 }
 
 .question .user_question img {
@@ -101,7 +118,12 @@ input {
 	line-height: 1.5;
 	font-weight: 400;
 	/* width: 300px; */
-	min-height: 250px;
+	min-height: 230px;
+	overflow-y: auto;
+}
+
+.row { 
+	padding-left: 12px;
 }
 
 .question .qanswers {
@@ -111,7 +133,7 @@ input {
 	margin-bottom: -25px;
 	height: 60px;
 	text-align: center;
-	padding-top: 12px;
+	padding-top: 19px;
 	font-size: 16px;
 	font-weight: 400;
 	-webkit-box-shadow: 0px 0px 6px 0px rgba(50, 50, 50, 0.5);
@@ -119,12 +141,41 @@ input {
 	box-shadow:         0px 0px 6px 0px rgba(50, 50, 50, 0.5);
 }
 
-.question .info {
-	border-top: 0.5px solid #FFF;
+.question .tools {
+	/* border-top: 0.5px solid #FFF; */
+	text-align: right;
 	margin: 10px;
 	padding-top: 15px;
 	font-weight: 400;
+}
+
+.tools .icon-reply {
+	width: 20px;
+	height: 20px;
+	background: url("../img/share.png") top right;
+	display:inline-block;
+	margin-left: 4px;
+}
+
+.tools span {
+	display:none;
+}
+
+.tools .icon-fav { 
+	width: 20px;
+	height: 20px;
+	background: url("../img/fav.png") top right;
+	display:inline-block;
+	margin-left: 4px;
+}
+
+.question .info {
 	font-size: 12px;
+	margin-bottom: 12px;
+	background: url("../img/location.png") top left no-repeat;
+	padding-left: 20px;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
 }
 
 .question a {
@@ -134,7 +185,6 @@ input {
 
 .author {
 	font-size: 14px;
-
 }
 
 .info {
@@ -154,20 +204,40 @@ input {
 
 
 .vote-up-on {
-	background: url(../img/vote-up.png);
+	background: url(../img/arrow-up-white.png);
+	width: 32px; height:20px;
+	display:block;
 }
 
 .vote-up-off {
-	background: url(../img/vote-up.png);
-	opacity: 0.5;
+	background: url(../img/arrow-up-gray.png);
+	width: 32px; height:20px;
+	display:block;
 }
 
 .vote-down-on {
-	background: url(../img/vote-down.png);
+	background: url(../img/arrow-down-white.png);
+	width: 32px; height:20px;
+	display:block;
 }
 
 .vote-down-off {
-	background: url(../img/vote-down.png);
-	opacity: 0.5;
+	background: url(../img/arrow-down-gray.png);
+	width: 32px; height:20px;
+	display:block;
 }
 
+.answer-rate {
+	text-align: center;
+}
+
+.answer .vote span { 
+	display: none;
+}
+
+.answer .vote {
+	display:inline-block;
+	width: 32px;
+	height: 32px;
+	float:left;
+}
