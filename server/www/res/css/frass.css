@@ -232,12 +232,20 @@ input {
 
 .button-min {
 	width: 4%;
-	height: 100px;
-	margin-top: -50px;
+	height:50px;
+	float:right;
 }
 
 textarea {
 	width: 95%;
+	height:50px;
+}
+
+.resposta textarea {
+	height: 100px;
+}
+
+.resposta .button-min {
 	height: 100px;
 }
 
@@ -246,6 +254,10 @@ textarea {
 	padding-top: 5px;
 	padding-bottom: 5px;
 	padding-left: 25px;
+}
+
+.comentar {
+	display: none;
 }
 
 .question a {

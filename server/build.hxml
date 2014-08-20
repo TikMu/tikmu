@@ -3,3 +3,10 @@
 -neko www/index.n
 -lib erazor
 -lib croxit-1
+
+--next
+-cp src
+-main JsMain
+-js www/js/fraas.js
+-lib croxit-1
+-D embed_js

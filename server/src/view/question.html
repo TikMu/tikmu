@@ -5,6 +5,7 @@
 <meta charset="UTF-8" />
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
 <link href='/res/css/frass.css' rel='stylesheet' type='text/css'>
+<script src="/js/fraas.js"></script>
 <!-- <link href='res/css/amazium.css' rel='stylesheet' type='text/css'> -->
 <!-- <link href='res/css/amazium&#45;percent.css' rel='stylesheet' type='text/css'> -->
 <!-- <link href='res/css/base.css' rel='stylesheet' type='text/css'> -->
@@ -80,11 +81,13 @@
 
 			</div>
 		}
-		<form action="/answer" method="POST">
-			<input type="hidden" name="question" value="@(question.id)" />
-			<textarea name="response" placeholder="resposta"></textarea>
-			<input type="submit" value=">" class="button-min" />
-		</form>
+		<div class="resposta">
+			<form action="/answer" method="POST">
+				<input type="hidden" name="question" value="@(question.id)" />
+				<textarea name="response" placeholder="resposta"></textarea>
+				<input type="submit" value=">" class="button-min" />
+			</form>
+		</div>
 		</div>
 		} else {
 		<a href="/question/@(question.id)">
