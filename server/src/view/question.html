@@ -67,10 +67,15 @@
 						</div>
 					}
 
-					<form action="/comment/@(ans.id)" method="POST">
-					<textarea name="text" placeholder="comentar"></textarea>
-					<input type="submit" value=">" />
-					</form>
+					<div class="comment add-comment">
+						<a href="#">adicionar comentário</a>
+						<div class="comentar">
+							<form action="/comment/@(ans.id)" method="POST">
+							<textarea name="text" placeholder="comentar"></textarea>
+							<input type="submit" value=">" class="button-min" />
+							</form>
+						</div>
+					</div>
 				</div>
 
 			</div>
@@ -78,7 +83,7 @@
 		<form action="/answer" method="POST">
 			<input type="hidden" name="question" value="@(question.id)" />
 			<textarea name="response" placeholder="resposta"></textarea>
-			<input type="submit" value=">" />
+			<input type="submit" value=">" class="button-min" />
 		</form>
 		</div>
 		} else {

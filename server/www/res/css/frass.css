@@ -13,6 +13,12 @@ body {
 	padding: 0;
 }
 
+div.row {
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+}
+
 h1 {
 	font-size: 18px;
 	font-weight: 300;
@@ -29,11 +35,6 @@ input {
 	font-size: 14px;
 	font-weight: 300;
 	color: #ccc;
-	border-radius: 4px;
-	width: 100%;
-	max-width: 260px;
-	padding: 12px 6px;
-	margin: 0 30px 10px 30px;
 }
 
 .header {
@@ -209,7 +210,7 @@ input {
 	font-weight: 400;
 	min-height: 70px;
 	min-width: 60%;
-	padding: 12px;
+	padding-left: 12px;
 	display:inline-block;
 	/* width: 100%; */
 }
@@ -223,12 +224,28 @@ input {
 }
 
 .answers .comments {
-	clear:both;
-	margin-left: 60px;
+	clear: both;
+	/* margin-left: 60px; */
+	padding-top: 15px;
+	font-size: 12px;
+}
+
+.button-min {
+	width: 4%;
+	height: 100px;
+	margin-top: -50px;
+}
+
+textarea {
+	width: 95%;
+	height: 100px;
 }
 
 .answers .comments .comment {
 	border-top: 1px dotted #DDD;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 25px;
 }
 
 .question a {
@@ -288,7 +305,8 @@ input {
 }
 
 .answer .vote {
-	display:inline-block;
+	/* display:inline-block; */
 	width: 32px;
 	height: 32px;
+	float:left;
 }
