@@ -322,3 +322,30 @@ textarea {
 	height: 32px;
 	float:left;
 }
+
+.last-url span {
+	display:none;
+}
+
+.last-url {
+	background: url(../img/last.png);
+	width: 32px; height:32px;
+	display:block;
+	position:absolute;
+	margin: auto 0;
+	left:0; top:0; bottom:0;
+}
+
+
+.next-url span {
+	display:none;
+}
+
+.next-url {
+	background: url(../img/next.png);
+	width: 32px; height:32px;
+	display:block;
+	position:absolute;
+	margin: auto 100%;
+	left:-32px; top:0; bottom:0;
+}

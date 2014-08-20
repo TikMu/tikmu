@@ -18,8 +18,8 @@
 		</div>
 	</div>
 	<div class="row multi">
-		<div>
 
+	<a href="@lastUrl" class="last-url"><span>last url</span></a>
 <div class="question" id="quest_@(question == null ? "null" : "" + question.id)">
 @if( question == null ) {
 	<h1>Parabéns! Você chegou ao final da internet!<h1>
@@ -49,7 +49,7 @@
 		</a>
 }
 </div>
-		</div>
+	<a href="@nextUrl" class="next-url"><span>next url</span></a>
 	</div>
 </body>
 </html>
