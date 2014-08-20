@@ -17,31 +17,31 @@
 			<a class="ask" href="/ask"></a>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row multi">
 		<div>
 
-<div class="question multi" id="quest_@(question == null ? "null" : "" + question.id)">
+<div class="question" id="quest_@(question == null ? "null" : "" + question.id)">
 @if( question == null ) {
 	<h1>Parabéns! Você chegou ao final da internet!<h1>
 } else if ( !question.canSee() ) {
 	<h1>NSFW</h1>
 	Click <a href="/login?redir=@(croxit.Web.getURI())">here</a> to login and see the post
 } else {
-	<div class="user_question">
+	<div class="user">
 	<a href="/user/@(question.user.id)">
 		<img src="@(question.user.getAvatar())" />
 		<span class="author">@(question.user.name)</span>
 	</a>
-	<div class="uquestion_rate">@(question.user.rate)</div>
+	<div class="user_rate">@(question.user.rate)</div>
 	</div>
 	<h1>@question.getTitle()</h1>
 	<div class="tools">
-	<a href="/question/@(question.user.id)" class="icon-reply"><span>Responder</span></a>
-	<a href="#" class="icon-fav"><span>Favorite</span></a>
+	<a href="/question/@(question.id)" class="icon-reply"><span>Responder</span></a><span class="icon-data">10</span>
+	<a href="#" class="icon-fav"><span>Favorite</span></a><span class="icon-data">5</span>
 	</div>
-	<div class="info">
-	@(question.location.toString()), @(tools.Naming.formatDate(question.date)) 
-	</div>
+	<!-- <div class="info"> -->
+	<!-- @(question.location.toString()), @(tools.Naming.formatDate(question.date))  -->
+	<!-- </div> -->
 		<a href="/question/@(question.id)">
 			<div class="qanswers">
 				Respostas

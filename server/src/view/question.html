@@ -18,23 +18,24 @@
 			<a class="ask" href="/ask"></a>
 		</div>
 	</div>
-	<div class="row">
-<div class="question single" id="quest_@(question == null ? "null" : "" + question.id)">
-	<div class="user_question">
+	<div class="row single">
+<div class="question" id="quest_@(question == null ? "null" : "" + question.id)">
+	<div class="user">
 	<a href="/user/@(question.user.id)">
 		<img src="@(question.user.getAvatar())" />
 		<span class="author">@(question.user.name)</span>
 	</a>
-	<div class="uquestion_rate">@(question.user.rate)</div>
+	<div class="user_rate">@(question.user.rate)</div>
 	</div>
 	<h1>@question.getTitle()</h1>
+	<!-- <div class="info"> -->
+	<!-- @(question.location.toString()), @(tools.Naming.formatDate(question.date))  -->
+	<!-- </div> -->
 	<div class="tools">
-	<a href="/question/@(question.user.id)" class="icon-reply"><span>Responder</span></a>
-	<a href="#" class="icon-fav"><span>Favorite</span></a>
+	<a href="/question/@(question.id)" class="icon-reply"><span>Responder</span></a><span class="icon-data">10</span>
+	<a href="#" class="icon-fav"><span>Favorite</span></a><span class="icon-data">5</span>
 	</div>
-	<div class="info">
-	@(question.location.toString()), @(tools.Naming.formatDate(question.date)) 
-	</div>
+</div>
 	@if(answers != null) {
 		<div class="answers">
 		@for (ans in answers)
@@ -45,21 +46,33 @@
 				<div class="answer-rate">@(ans.rate)</div>
 				<a class="vote-down-@( (ans.rateValue < 0) ? "on" : "off")" href="/vote/@(ans.id)/-1" ><span>down vote</span></a>
 				</div>
+
 				<div class="answer_data">
 					@(ans.text)
-					<div class="comments">
-						@for (comment in ans.comments) 
-						{
-							<div class="comment" id="comment_@(comment.id)">
-								<div class="comment_data">@(comment.text)</div>
-							</div>
-						}
-					</div>
 				</div>
-				<form action="/comment/@(ans.id)" method="POST">
-				<textarea name="text" placeholder="comentar"></textarea>
-				<input type="submit" value=">" />
-				</form>
+
+				<div class="user">
+				<a href="/user/@(ans.user.id)">
+					<img src="@(ans.user.getAvatar())" />
+					<span class="author">@(ans.user.name)</span>
+				</a>
+				<div class="user_rate">@(ans.user.rate)</div>
+				</div>
+
+				<div class="comments">
+					@for (comment in ans.comments) 
+					{
+						<div class="comment" id="comment_@(comment.id)">
+							<div class="comment_data">@(comment.text)</div>
+						</div>
+					}
+
+					<form action="/comment/@(ans.id)" method="POST">
+					<textarea name="text" placeholder="comentar"></textarea>
+					<input type="submit" value=">" />
+					</form>
+				</div>
+
 			</div>
 		}
 		<form action="/answer" method="POST">
@@ -75,7 +88,6 @@
 			</div>
 		</a>
 		}
-</div>
 </div>
 </body>
 </html>
