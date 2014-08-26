@@ -1,13 +1,25 @@
 <html>
-<meta charset="UTF-8" />
-<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="UTF-8">
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+<link href='/res/css/frass.css' rel='stylesheet' type='text/css'><head>
 <title>Ask</title>
+
 </head>
 <body>
-	<form action="/ask" method="POST">
-		<textarea name="askdata"></textarea>
-		<input type="checkbox" name="nsfw" />nsfw
-		<input type="submit" value="enviar" />
-	</form>
+	<div class="header">
+		<div class="row">
+			<a class="back" href="#"></a>
+			<span class="logo">FRĀSS</span>
+			<a class="ask" href="/ask"></a>
+		</div>
+	</div>
+	<div class="row">
+		<p>Qual a sua dúvida?</p>
+		<form action="/ask" method="POST">			
+			<textarea name="askdata"></textarea>
+			<input type="checkbox" name="nsfw" class="checkbox" /><span>nsfw</span>
+			<input type="submit" value="enviar" class="submit" />
+		</form>
+	</div>
 </body>
 </html>
