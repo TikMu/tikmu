@@ -8,7 +8,7 @@ class InitDb
 {
 	public static function init()
 	{
-		var file = Web.getCwd() + '/../.private/db.db';
+		var file = #if cpp croxit.system.Info.getWritablePath(AppData) + "/db.db" #else Web.getCwd() + '/../.private/db.db' #end;
 		sys.db.Manager.initialize();
 		var ex = exists(file);
 		var cnx = sys.db.Manager.cnx = Sqlite.open(file);

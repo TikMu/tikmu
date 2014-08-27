@@ -1,13 +1,13 @@
 class ApplicationMain
 {
-	
+
 	public static function main()
 	{
 		//nme.Lib.setPackage("::APP_COMPANY::", "::APP_FILE::", "::APP_PACKAGE::", "::APP_VERSION::");
 		/*::if (sslCaCert != "")::
 			nme.net.URLLoader.initialize(nme.installer.Assets.getResourceName("::sslCaCert::"));
 		::end::*/
-		
+
 		croxit.Croxit.shouldRotateInterface = function(orientation:Int):Bool
 		{
 			::if (WIN_ORIENTATION == "portrait")::
@@ -26,7 +26,7 @@ class ApplicationMain
 			return true;
 			::end::
 		}
-		
+
 		croxit.Croxit.initAndStart(null, function()
 			{
 				::APP_MAIN::.main();
@@ -40,10 +40,11 @@ class ApplicationMain
 			(::WIN_ANTIALIASING:: == 2 ? nme.Lib.HW_AA : 0),
 			"::APP_TITLE::"*/
 		);
-		
+
 	}
-	
-	
+
+
+#if nme
 	public static function getAsset(inName:String):Dynamic
 	{
 		::foreach assets::
@@ -64,5 +65,6 @@ class ApplicationMain
 		::end::
 		return null;
 	}
-	
+#end
+
 }

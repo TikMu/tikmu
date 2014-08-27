@@ -11,6 +11,10 @@ class Main
 			msg = pos.customParams == null ? msg : msg + "," + pos.customParams.join(',');
 			Web.logMessage('${pos.fileName}:${pos.lineNumber} $msg');
 		};
+#if cpp
+		croxit.Croxit.setBounces(false);
+#end
+		sys.db.Manager.initialize();
 		db.InitDb.init();
 		run();
 		sys.db.Manager.cnx.close();
@@ -38,7 +42,7 @@ class Main
 			switch(e)
 			{
 				case NotLogged:
-					Web.redirect('/login?msg=voce precisa estar logado');
+					Web.redirect('/login?msg=logged');
 			}
 		}
 	}
@@ -54,6 +58,7 @@ class Main
 
 	private function new()
 	{
+		trace(Date.now().toString());
 	}
 }
 

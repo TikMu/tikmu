@@ -10,6 +10,6 @@ class Comment
 		comment.text = args.text;
 		comment.date = Date.now();
 		comment.insert();
-		Web.redirect('/question/${answer.question.id}');
+		Web.redirect('/question?q=${answer.question.id}');
 	}
 }

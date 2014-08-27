@@ -12,6 +12,6 @@ class Answer
 		newans.user = db.Session.get().user;
 		newans.question = args.question;
 		newans.insert();
-		Web.redirect('/question/${args.question.id}');
+		Web.redirect('/question?q=${args.question.id}');
 	}
 }
