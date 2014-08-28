@@ -17,7 +17,7 @@ div.row {
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	font-weight: 300;
-	width: 320px;
+	width: 300px;
 }
 
 div.row p {
@@ -59,14 +59,15 @@ textarea {
 	font-size: 14px;
 	font-weight: 300;
 	margin: 10px 0 0 10px;
-	color: #aaa;
 	border-radius: 4px;
-	resize: none;	
+	resize: none;
+	color: #333;
+	padding: 5px;	
 }
 
 @media (max-height: 480px) {
 	.question h1 {
-		max-height: 220px;
+		max-height: 480px;
 	}
 }
 
@@ -86,7 +87,7 @@ textarea {
 .header .ask {	
 	float: right;
 	background: url(../img/create-question.png);
-	margin: 10px 20px 0 0; 
+	margin: 10px 0 0 0; 
 	width: 24px;
 	height: 24px;
 }
@@ -99,7 +100,7 @@ textarea {
 	line-height: 1.5;
 	color: #FFF;
 	display:inline-block;
-	margin: 13px 0 0 0;
+	margin: 13px 0 0 35px;
 }
 
 .header .back {	
@@ -113,11 +114,11 @@ textarea {
 .question {
 	background: #b4cc16;
 	color: #fff;
-	padding: 14px 14px 0 14px;
+	padding: 14px 20px 0 20px;
 }
 
 .multi .question {
-	margin: 20px 20px 0 20px;
+	margin: 20px 20px 0 15px;
 	border-radius: 7.5px;
 	-webkit-box-shadow: 0px 0px 6px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    0px 0px 6px 0px rgba(50, 50, 50, 0.75);
@@ -170,7 +171,7 @@ textarea {
 }
 
 .row.multi { 
-	padding-left: 12px;
+	padding-left: 0;
 }
 
 .question .qanswers {
@@ -193,7 +194,6 @@ textarea {
 	margin-left: 10px;
 	font-weight: 400;
 	display: inline-block;
-	float: right;
 }
 
 .tools .icon-reply {
@@ -222,11 +222,13 @@ textarea {
 
 .question .info {
 	font-size: 14px;
+	line-height: 1.4;
 	margin-top: 5px;
 	font-family: 'Roboto', sans-serif;
-	font-weight: 300;
+	font-weight: 400;
 	display: inline-block;
 	text-align: left;
+	width: 200px;
 }
 
 .single .question {
@@ -234,12 +236,18 @@ textarea {
 }
 
 .answers {
-	margin-top: 26px;
+	margin:10px;
+	padding:0;
 }
 
 .answers a {
 	color: #755AD6;
 	text-decoration: none;
+}
+
+.answer {
+	padding:0 20px;
+	border-bottom: 1px solid #ddd;
 }
 
 .answers .answer_data {
@@ -263,36 +271,66 @@ textarea {
 }
 
 .answers .comments {
-	clear: both;
-	/* margin-left: 60px; */
-	padding-top: 15px;
-	font-size: 12px;
+	margin: 50px 0 0 45px;
+	font-size: 14px;
+	line-height: 1.4;
 }
 
 .button-min {
-	width: 4%;
-	height:50px;
+	height:80px;
 	float:right;
 }
 
+.resposta {
+	background: #eee;
+	padding: 20px 0;
+	margin: 0;
+}
 
 .resposta textarea {
-	height: 100px;
+	height: 50px;
+	width: 260px;
+	margin: 0 0 0 10px;
+	color: #333;
+	padding: 5px;
 }
 
 .resposta .button-min {
-	height: 100px;
+	background: #b4cc16;
+	color: #fff;
+	border: 0px;
+	border-radius: 0px;
+	padding: 0;
+	width:40px;
+	margin: 0 10px 20px 0;
 }
 
 .answers .comments .comment {
-	border-top: 1px dotted #DDD;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 25px;
+	border-top: 1px solid #DDD;
+	padding-top: 5px 0;
 }
 
 .comentar {
 	display: none;
+}
+
+.comentar .button-min {
+	background: #b4cc16;
+	color: #fff;
+	border: 0px;
+	border-radius: 0px;
+	padding: 0;
+	width:40px;
+	margin: 0;
+}
+
+
+.comentar textarea {
+	width: 195px;
+	padding: 5px;
+	margin: 0;
+	padding: 0;
+	color: #333;
 }
 
 .question a {
@@ -333,6 +371,7 @@ textarea {
 	background: url(../img/vote-up-off.png);
 	width: 30px; height:15px;
 	display:block;
+	margin-top: 4px;
 }
 
 .vote-down-on {
@@ -349,6 +388,7 @@ textarea {
 
 .answer-rate {
 	text-align: center;
+	padding: 6px 0;
 }
 
 .answer .vote span { 
@@ -367,12 +407,14 @@ textarea {
 }
 
 .last-url {
-	background: url(../img/last.png);
+	background: url(../img/last.png) no-repeat 14px #f6f6f6;
 	width: 32px; height:32px;
 	display:block;
 	position:absolute;
-	margin: auto 0;
+	margin: auto -16px;
 	left:0; top:0; bottom:0;
+	padding: 10px;
+	border-radius: 30px;
 }
 
 
@@ -381,12 +423,14 @@ textarea {
 }
 
 .next-url {
-	background: url(../img/next.png);
+	background: url(../img/next.png) no-repeat 6px #f6f6f6;
 	width: 32px; height:32px;
 	display:block;
 	position:absolute;
-	margin: auto 100%;
-	left:-32px; top:0; bottom:0;
+	margin: auto 320px;
+	left: -35px; top:0; bottom:0;
+	padding: 10px;
+	border-radius: 30px;	
 }
 
 .create-user {
