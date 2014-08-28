@@ -36,13 +36,13 @@
 	<div class="user_rate">@(question.user.rate)</div>
 	</div>
 	<h1>@question.getTitle()</h1>
+	<div class="info">
+	@(question.location.toString()), @(tools.Naming.formatDate(question.date))
+	</div>
 	<div class="tools">
 	<a href="question?q=@(question.id)" class="icon-reply"><span>Responder</span></a><span class="icon-data">10</span>
 	<a href="#" class="icon-fav"><span>Favorite</span></a><span class="icon-data">5</span>
 	</div>
-	<!-- <div class="info"> -->
-	<!-- @(question.location.toString()), @(tools.Naming.formatDate(question.date))  -->
-	<!-- </div> -->
 		<a href="question?q=@(question.id)">
 			<div class="qanswers">
 				Respostas
