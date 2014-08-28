@@ -281,7 +281,7 @@ textarea {
 }
 
 .button-min {
-	height:80px;
+	height:50px;
 	float:right;
 }
 
@@ -293,7 +293,7 @@ textarea {
 
 .resposta textarea {
 	height: 50px;
-	width: 260px;
+	width: 210px;
 	margin: 0 0 0 10px;
 	color: #333;
 	padding: 5px;
@@ -325,12 +325,13 @@ textarea {
 	border-radius: 0px;
 	padding: 0;
 	width:40px;
+	height: 100px;
 	margin: 0;
 }
 
 
 .comentar textarea {
-	width: 195px;
+	width: 145px;
 	padding: 5px;
 	margin: 0;
 	padding: 0;

@@ -25,6 +25,6 @@ class User extends Object
 
 	public function getAvatar()
 	{
-		return avatarAddress != null ? avatarAddress : '/res/img/user.png';
+		return avatarAddress != null ? avatarAddress : 'res/img/user.png';
 	}
 }

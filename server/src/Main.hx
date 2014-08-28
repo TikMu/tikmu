@@ -42,7 +42,7 @@ class Main
 			switch(e)
 			{
 				case NotLogged:
-					Web.redirect('/login?msg=logged');
+					Web.redirect('/login?msg=' + StringTools.urlEncode("Você precisa estar logado"));
 			}
 		}
 		tools.History.request();
