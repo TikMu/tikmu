@@ -59,7 +59,6 @@ class Main
 
 	private function new()
 	{
-		trace(Date.now().toString());
 	}
 }
 

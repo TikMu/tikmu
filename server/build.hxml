@@ -3,6 +3,7 @@
 -neko www/index.n
 -lib erazor
 -lib croxit-1
+-lib croxit-geo-1
 
 --next
 -cp src
