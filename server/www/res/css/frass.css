@@ -3,10 +3,6 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /*  Main CSS */
 
-input,button {
-	-webkit-appearance: none;
-}
-
 body {
 	background: #f6f6f6;
 	font-family: 'Roboto', sans-serif;
@@ -21,7 +17,7 @@ div.row {
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	font-weight: 300;
-	width: 300px;
+	width: 320px;
 }
 
 div.row p {
@@ -45,7 +41,7 @@ h4 {
 	color: #fff;
 }
 
-input,button {
+input {
 	border: 1px solid #ddd;
 	font-size: 14px;
 	font-weight: 300;
@@ -71,7 +67,7 @@ textarea {
 
 @media (max-height: 480px) {
 	.question h1 {
-		max-height: 220px;
+		max-height: 150px;
 	}
 }
 
@@ -91,7 +87,7 @@ textarea {
 .header .ask {	
 	float: right;
 	background: url(../img/create-question.png);
-	margin: 10px 0 0 0; 
+	margin: 10px 10px 0 0; 
 	width: 24px;
 	height: 24px;
 }
@@ -104,13 +100,13 @@ textarea {
 	line-height: 1.5;
 	color: #FFF;
 	display:inline-block;
-	margin: 13px 0 0 35px;
+	margin: 13px 0 0 0;
 }
 
 .header .back {	
 	float: left;
 	background: url(../img/arrow-left-white.png);
-	margin: 15px 0 0 20px; 
+	margin: 15px 0 0 10px; 
 	width: 20px;
 	height: 20px;
 }
@@ -169,8 +165,7 @@ textarea {
 	font-size: 18px;
 	line-height: 1.5;
 	font-weight: 400;
-	/* width: 300px; */
-	min-height: 230px;
+	min-height: 160px;
 	overflow-y: auto;
 }
 
@@ -195,7 +190,6 @@ textarea {
 
 .question .tools {
 	/* border-top: 0.5px solid #FFF; */
-	margin-left: 10px;
 	font-weight: 400;
 	display: inline-block;
 }
@@ -232,7 +226,8 @@ textarea {
 	font-weight: 400;
 	display: inline-block;
 	text-align: left;
-	width: 200px;
+	width: 150px;
+	margin: 15px 0;
 }
 
 .single .question {
@@ -240,7 +235,7 @@ textarea {
 }
 
 .answers {
-	margin:10px;
+	margin:0;
 	padding:0;
 }
 
@@ -250,7 +245,7 @@ textarea {
 }
 
 .answer {
-	padding:0 20px;
+	padding:15px 20px;
 	border-bottom: 1px solid #ddd;
 }
 
@@ -281,7 +276,7 @@ textarea {
 }
 
 .button-min {
-	height:50px;
+	height:80px;
 	float:right;
 }
 
@@ -293,8 +288,9 @@ textarea {
 
 .resposta textarea {
 	height: 50px;
-	width: 210px;
+	width: 260px;
 	margin: 0 0 0 10px;
+	border-radius: 4px 0 0 4px;
 	color: #333;
 	padding: 5px;
 }
@@ -303,7 +299,7 @@ textarea {
 	background: #b4cc16;
 	color: #fff;
 	border: 0px;
-	border-radius: 0px;
+	border-radius: 0 4px 4px 0;
 	padding: 0;
 	width:40px;
 	margin: 0 10px 20px 0;
@@ -311,7 +307,7 @@ textarea {
 
 .answers .comments .comment {
 	border-top: 1px solid #DDD;
-	padding-top: 5px 0;
+	padding: 10px 0;
 }
 
 .comentar {
@@ -322,19 +318,20 @@ textarea {
 	background: #b4cc16;
 	color: #fff;
 	border: 0px;
-	border-radius: 0px;
+	border-radius: 0 4px 4px 0;
 	padding: 0;
 	width:40px;
-	height: 100px;
+	height: 50px;
 	margin: 0;
 }
 
 
 .comentar textarea {
-	width: 145px;
-	padding: 5px;
+	width: 195px;
+	height: 50px;
 	margin: 0;
 	padding: 0;
+	border-radius: 4px 0 0 4px;
 	color: #333;
 }
 
