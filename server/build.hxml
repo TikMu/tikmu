@@ -1,6 +1,8 @@
 -cp src
 -main Main
 -neko www/index.n
+#-cpp tmp
+-D iphone
 -lib erazor
 -lib croxit-1
 -lib croxit-geo-1

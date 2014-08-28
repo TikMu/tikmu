@@ -25,6 +25,7 @@
   <dependency name="CoreLocation.framework" if="ios" />
   
   <haxelib name="croxit-1" />
+  <haxelib name="croxit-geo-1" />
   <haxelib name="openfl" />
   <haxelib name="erazor" />
   <haxelib name="sqlite" />
@@ -36,5 +37,6 @@
   <!-- <ndll name="sqlite" />   -->
   <ndll name="sqlite" haxelib="sqlite" />
   <ndll name="croxit" haxelib="croxit-1" />
+  <ndll name="croxit_geo" haxelib="croxit-geo-1" />
   <!-- <ndll name="croxit_geo" haxelib="croxit&#45;geo&#45;1" /> -->
 </project>

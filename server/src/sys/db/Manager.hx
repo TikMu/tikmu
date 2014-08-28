@@ -174,12 +174,10 @@ class Manager<T : Object> {
 				first = false;
 			else
 				s.add(", ");
-			trace('adding value',v);
 			if (Std.is(v, Int))
 				s.add(v);
 			else
 				s.add(getCnx().quote(v));
-			trace('added value');
 		}
 		s.add(")");
 		unsafeExecute(s.toString());

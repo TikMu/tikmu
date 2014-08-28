@@ -5,23 +5,30 @@ import haxe.web.*;
 
 class Main
 {
+	static var init = false;
 	public static function main()
 	{
-		haxe.Log.trace = function(msg:Dynamic, ?pos:haxe.PosInfos) {
-			msg = pos.customParams == null ? msg : msg + "," + pos.customParams.join(',');
-			Web.logMessage('${pos.fileName}:${pos.lineNumber} $msg');
-		};
+		if (!init)
+		{
+			init = true;
+			haxe.Log.trace = function(msg:Dynamic, ?pos:haxe.PosInfos) {
+				msg = pos.customParams == null ? msg : msg + "," + pos.customParams.join(',');
+				Web.logMessage('${pos.fileName}:${pos.lineNumber} $msg');
+			};
 #if cpp
-		croxit.Croxit.setBounces(false);
+			croxit.Croxit.setBounces(false);
+			trace('aqui');
+			Geo.init(2);
 #end
+		}
 		sys.db.Manager.initialize();
-		db.InitDb.init();
 		run();
-		sys.db.Manager.cnx.close();
 	}
 
 	public static function run()
 	{
+		db.InitDb.init();
+		sys.db.Manager.cleanup();
 		var d = new Dispatch(Web.getURI(),Web.getParams());
 		d.onMeta = function(m,value) {
 			switch (m)
@@ -46,6 +53,7 @@ class Main
 			}
 		}
 		tools.History.request();
+		sys.db.Manager.cnx.close();
 	}
 
 	var doDefault = dispatch.QuestionList.run;

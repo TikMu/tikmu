@@ -15,9 +15,21 @@ class Ask
 			quest.date = Date.now();
 			quest.user = db.Session.get().user;
 			var loc = new db.Location();
+#if cpp
+			var latest = croxit.geo.Location.getLatest();
+			if (latest != null)
+			{
+				loc.lat = latest.latitude;
+				loc.lon = latest.longitude;
+			} else {
+				loc.lat = -23.666;
+				loc.lon = -48.666;
+			}
+#else
 			loc.lat = -23;
 			loc.lon = -48;
-			loc.prettyName = "São Paulo - Augusta Street";
+#end
+			loc.prettyName = "São Paulo (" + loc.lat + "," + loc.lon + ")";
 			loc.insert();
 			quest.location = loc;
 			quest.insert();
