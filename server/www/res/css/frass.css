@@ -3,6 +3,11 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /*  Main CSS */
 
+input,button {
+	-webkit-appearance: none;
+}
+
+
 body {
 	background: #f6f6f6;
 	font-family: 'Roboto', sans-serif;
