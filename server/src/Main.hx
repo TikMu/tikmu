@@ -45,6 +45,7 @@ class Main
 					Web.redirect('/login?msg=logged');
 			}
 		}
+		tools.History.request();
 	}
 
 	var doDefault = dispatch.QuestionList.run;
