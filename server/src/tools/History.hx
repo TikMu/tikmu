@@ -5,10 +5,11 @@ class History
 	public static function back()
 	{
 #if cpp
-		if (last == null)
-			return "#";
-		else
-			return last.substr(1);
+		return "";
+		// if (last == null)
+		// 	return "#";
+		// else
+		// 	return last.substr(1);
 #else
 		return "javascript: window.history.back(-1);";
 #end
