@@ -1,0 +1,6 @@
+-cp src
+-neko www/index.n
+-main Main
+-lib croxit-1
+-lib mongodb
+-lib mongodb-managers
