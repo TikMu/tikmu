@@ -4,3 +4,4 @@
 -lib croxit-1
 -lib mongodb
 -lib mongodb-managers
+-lib geotools
