@@ -1,4 +1,4 @@
-package db;
+package db.helper;
 
 typedef Location = {
 	lat : Float,

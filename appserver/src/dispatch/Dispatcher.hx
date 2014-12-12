@@ -1,5 +1,6 @@
 package dispatch;
 import croxit.Web;
+import db.*;
 
 class Dispatcher
 {
@@ -7,13 +8,17 @@ class Dispatcher
 	public static function dispatch()
 	{
 		var d = new haxe.web.Dispatch(Web.getURI(), Web.getParams());
-		var x = 10, y = 20;
-		if (x == 10) {
-			var tmp = x;
-			x = y;
-			y = tmp;
-		}
-		// d.dispatch(
+		d.dispatch(new Dispatcher(Context.current));
 	}
 
+	public var ctx(default,null):Context;
+	public function new(ctx:Context)
+	{
+		this.ctx = ctx;
+	}
+
+	@logged public function doDefault()
+	{
+		new Login(ctx).run();
+	}
 }

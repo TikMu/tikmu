@@ -1,4 +1,5 @@
 package db;
+import db.helper.*;
 
 /**
 	indexes: (user, question) e (user, pendingNotifications.length)
