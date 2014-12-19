@@ -3,6 +3,7 @@ import db.helper.*;
 import geo.*;
 import geo.units.*;
 
+@:forward
 abstract Session(SessionData)
 {
 	inline public function new(loc,user,span,device)
@@ -19,6 +20,12 @@ abstract Session(SessionData)
 			deviceType : device,
 			ip : Tools.getIp()
 		};
+	}
+
+	inline public function isValid():Bool
+	{
+		// FIXME: not implemented
+		return true;
 	}
 
 	private static function generateCsrf()
@@ -41,7 +48,7 @@ typedef SessionData = {
 	user : Null<Ref<User>>, // readonly
 	creation : Date,
 	expires : Date, // nullable: tokens que nao expiram
-	closedAt : Null<Ref<Date>>,
+	closedAt : Null<Date>,
 
 	deviceType : DeviceType,
 	ip : String,
