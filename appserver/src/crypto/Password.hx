@@ -19,9 +19,9 @@ abstract Password(String) {
         }
     }
 
-    function new(x)
+    function new()
     {
-        this = x;
+        this = "$";
     }
 
     function get_security()
@@ -64,14 +64,14 @@ abstract Password(String) {
     public function matches(plain:String)
     {
         var h = makeHash(security, plain);
-        return h == hash;
+        return h == hash;  // FIXME constant time comparison
     }
 
     public static function make(plain:String, ?security:PasswordSecurity):Password
     {
         if (security == null)
             security = SSha256("FIXME some random salt", 42);
-        var a = new Password("$");
+        var a = new Password();
         a.security = security;
         a.hash = plain;
         return a;
