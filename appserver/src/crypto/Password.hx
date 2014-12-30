@@ -49,9 +49,18 @@ abstract Password(String) {
 
     public function new(plain:String, ?security:PasswordSecurity)
     {
-        // current minimum accepted security
+        // current minimum accepted security: Sha256 + iterations + salt
+        // WARNING: this doesn't protect weak passwords at all!!
+        // iterations: FIXME (verify and improve this analysis!!)
+        //  - bitcoin: 58+ bits/s (estimate for jan/2015)
+        //  - hypothesis: attacker has at most 1M times the bitcoin network => 78 bits
+        //  - hypothesis: attacker has 1 year to spend (or more computing power): add 25 bits => 103 bits
+        //  - NIST guidelines reduce the security of hashes by half
+        //  - so a single sha256 hash has still 25 bits of security in this attack model
+        //  - therefore, the iteration count is not important... lets keep 42 for now
+        // salt: 2**40 (~1T) variations for each password
         if (security == null)
-            security = SSha256(42, Random.salt(3));
+            security = SSha256(42, Random.salt(5));
 
         this = makePreffix(security) + makeHash(plain, security);
     }
