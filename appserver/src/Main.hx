@@ -15,19 +15,19 @@ class Main
 		// scratch
 
                 // password
-                trace(Password.make("hello!!!", SPlain));
-                trace(Password.make("hello!!!", SPlain).matches("hello!!!"));
-                trace(Password.make("hello!!!", SPlain).matches("hello!!"));
-                trace(Password.make("hello!!!"));
-                trace(Password.make("hello!!!").matches("hello!!!"));
-                trace(Password.make("hello!!!").matches("hello!!"));
+                trace(new Password("hello!!!", SPlain));
+                trace(new Password("hello!!!", SPlain).matches("hello!!!"));
+                trace(new Password("hello!!!", SPlain).matches("hello!!"));
+                trace(new Password("hello!!!"));
+                trace(new Password("hello!!!").matches("hello!!!"));
+                trace(new Password("hello!!!").matches("hello!!"));
 
                 // user & session
 		var u = {
 			_id : new org.bsonspec.ObjectID(),
 			name : "John",
 			email : "john@bot.com",
-			password : Password.make("42"),
+			password : new Password("42"),
 			avatar : ""
 		};
 		ctx.users.insert(u);

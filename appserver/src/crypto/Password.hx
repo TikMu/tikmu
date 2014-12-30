@@ -2,48 +2,44 @@ package crypto;
 
 enum PasswordSecurity {
     SPlain;
-    SSha256(salt:String, it:Int);
+    SSha256(it:Int, salt:String);
 }
 
 abstract Password(String) {
-    static function makeHash(security, plain)
+
+    public var security(get, never):PasswordSecurity;
+    public var hash(get, never):String;
+
+    static function makePreffix(security)
+    {
+        return switch (security) {
+        case SPlain:
+            "plain$";
+        case SSha256(it, salt):
+            "sha256$" + it + "$" + salt + "$";
+        }
+    }
+
+    static function makeHash(plain, security)
     {
         return switch (security) {
         case SPlain:
             plain;
-        case SSha256(salt, it):
-            var ans = plain;
+        case SSha256(it, salt):
+            var h = plain;
             for (i in 0...it)
-                ans = haxe.crypto.Sha256.encode(ans);
-            ans;
+                h = haxe.crypto.Sha256.encode(h);
+            h;
         }
-    }
-
-    function new()
-    {
-        this = "$";
     }
 
     function get_security()
     {
         return switch (this.split("$")) {
         case ["plain", _]: SPlain;
-        case ["sha256", salt, it, _]: SSha256(salt, Std.parseInt(it));
+        case ["sha256", it, salt, _]: SSha256(Std.parseInt(it), salt);
         case all: throw 'Assert: $all';
         }
-    }
-
-    inline function set_security(security)
-    {
-        var h = hash;
-        var preffix = switch (security) {
-        case SPlain:
-            "plain$";
-        case SSha256(salt, it):
-            'sha256$$$salt$$$it$$';
-        }
-        this = preffix + h;
-        return security;
     }
 
     function get_hash()
@@ -51,30 +47,19 @@ abstract Password(String) {
         return this.substr(this.lastIndexOf("$") + 1);
     }
 
-    inline function set_hash(plain):String
+    public function new(plain:String, ?security:PasswordSecurity)
     {
-        var h = makeHash(security, plain);
-        this = this.substr(0, this.lastIndexOf("$") + 1) + h;
-        return h;
-    }
-
-    public var security(get, set):PasswordSecurity;
-    public var hash(get, set):String;
-
-    public function matches(plain:String)
-    {
-        var h = makeHash(security, plain);
-        return h == hash;  // FIXME constant time comparison
-    }
-
-    public static function make(plain:String, ?security:PasswordSecurity):Password
-    {
+        // current minimum accepted security
         if (security == null)
-            security = SSha256("FIXME some random salt", 42);
-        var a = new Password();
-        a.security = security;
-        a.hash = plain;
-        return a;
+            security = SSha256(42, Random.salt(3));
+
+        this = makePreffix(security) + makeHash(plain, security);
+    }
+
+    public function matches(plain:String):Bool
+    {
+        var h = makeHash(plain, security);
+        return h == hash;  // FIXME constant time comparison
     }
 
 }
