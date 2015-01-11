@@ -7,5 +7,10 @@ class Random {
     {
         return LinuxRandom.urandom().read(bytes).toHex();
     }
+
+    public static function sid(bytes:Int):String
+    {
+        return LinuxRandom.urandom().read(bytes).toHex();
+    }
 }
 

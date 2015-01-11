@@ -1,4 +1,6 @@
 package db;
+
+import crypto.Random;
 import db.helper.*;
 import geo.*;
 import geo.units.*;
@@ -24,8 +26,12 @@ abstract Session(SessionData)
 
 	inline public function isValid():Bool
 	{
-		// FIXME: not implemented
-		return true;
+		return this.closedAt == null && this.expires.getTime() > Date.now().getTime();
+	}
+
+	inline public function close()
+	{
+		this.closedAt = Date.now();
 	}
 
 	private static function generateCsrf()
@@ -36,8 +42,36 @@ abstract Session(SessionData)
 
 	private static function generateId()
 	{
-		//FIXME: NOT IMPLEMENTED
-		return "??";
+		// first...
+		//  - m                                    space
+		//  - n                                    number of random strings tested
+		//  - p(n)                                 probability of at least one colision in n
+		//  - m = n*n*p(n)/2                       birthday attack approximation
+		//  - log(m) = 1 + 2*log(n) + log(p(n))    in log base 2, or "bits" (log(p) => negative)
+		//  - p(n) ~ 0.5  =>  log(m) ~ 2*log(n)    or m ~ n*n
+		// now...
+		//  - we want the attacker to need to compute an infeasible number of hashes
+		//  - we want p(n) < 0.5 for n = our active strings + attacker's test strings 
+		// so, assuming
+		//  - u users
+		//  - f valid sessions per user
+		//  - c server available capacity (to the attacker/everything else failed scenario) per second
+		//  - t time to live per session in seconds
+		// we can say
+		//  - n = u*f + c*t
+		//  - n <= 2*max(u*f, c*t)
+		//  - log(n) ~ 1 + max(log(u*f), log(c*t))
+		// currently: all values are log(_)
+		// TODO move to separate autoconfig class
+		var u = 10;
+		var f = 10;
+		var c = u + 10;  // u*1000
+		var t = Math.ceil(Math.log(3600*24));
+		var n = 1 + Math.max(u + f, c + t);
+		var m = n*2;
+		var M = Math.ceil(m/8);
+		// trace('u=2**$u,f=2**$f,c=2**$c,t=2**$t,n=2**$n,m=2**$m,bytes=$M');
+		return Random.sid(M);
 	}
 }
 
