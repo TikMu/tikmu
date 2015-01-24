@@ -1,33 +1,77 @@
 package db;
 
+import haxe.ds.Vector;
 import org.mongodb.*;
 
 class SessionCache {
 
-    public var limit : Int;  // TODO not enforced yet
-    public var size = 0;
+    public var size (default,null) : Int;
+    public var used = 0;
 
-    var manager:Manager<Session>;
-    var cache = new Map<String, Session>();
+    var manager : Manager<Session>;
+    var items : Vector<Session>;
 
-    // TODO queue of sessions to be removed from the cache
+    // CACHE INTERNAL IMPLEMENTATION
 
-    function keep(s:Session)
+    // Fowler–Noll–Vo alternate function (FNV-1a/32bits)
+    // http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-1a
+    // http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed/145633#145633
+    static inline var FNV_OFFSET_BASIS = 0x811C9DC5;
+    static inline var FNV_PRIME = 16777619;
+    function cache_sessionHash(id)
     {
-        if (!cache.exists(s._id)) {
-            cache.set(s._id, s);
-            size++;
-        }
+        var h = FNV_OFFSET_BASIS;
+        for (i in 0...id.length)
+            h = (h ^ id.charCodeAt(i))*FNV_PRIME;
+        return h;
     }
 
-    function discard(id)
+    function cache_equalSessions(id1, id2) {
+        return id1 == id2;
+    }
+
+    function cache_has(id)
     {
-        if (cache.remove(id)) {
-            // TODO also remove from the queue
-            size--;
-            return true;
-        }
-        return false;
+        return cache_get(id) != null;
+    }
+
+    function cache_get(id)
+    {
+        var pos = cache_sessionHash(id);
+        var s = items.get(pos);
+        return (s != null && cache_equalSessions(id, s._id)) ? s : null;
+    }
+
+    function cache_set(id, s)
+    {
+        var pos = cache_sessionHash(id);
+        var add = items.get(pos) == null;
+        items.set(pos, s);
+        if (add)
+            used++;
+        return s;
+    }
+
+    function cache_remove(id)
+    {
+        var pos = cache_sessionHash(id);
+        var rem = items.get(pos) != null;
+        items.set(pos, null);
+        if (rem)
+            used--;
+        return rem;
+    }
+
+    // PRIVATE API
+
+    inline function keep(s:Session)
+    {
+        cache_set(s._id, s);
+    }
+
+    inline function discard(id)
+    {
+        return cache_remove(id);
     }
 
     function fetch(id):Null<Session>
@@ -38,17 +82,18 @@ class SessionCache {
         return s;
     }
 
-    public function new(manager, ?limit=0)
+    public function new(manager, ?size=1000)
     {
-        this.limit = limit;
         this.manager = manager;
+        this.size = size;
+        items = new Vector(size);
     }
 
     // Return if the session `id` exists,
     // but don't attempt to verify that it is valid
     public function exists(id:String):Bool
     {
-        if (cache.exists(id))
+        if (cache_has(id))
             return true;
         return fetch(id) != null;
     }
@@ -56,7 +101,7 @@ class SessionCache {
     // Return null or the session `id`
     public function get(id:String):Null<Session>
     {
-        var s = cache.get(id);
+        var s = cache_get(id);
         if (s == null)
             s = fetch(id);
         return s;
