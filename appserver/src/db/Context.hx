@@ -3,8 +3,6 @@ import org.mongodb.*;
 
 class Context
 {
-	public static var current:Context;
-
 	public var users(default,null):Manager<User>;
 	public var sessions(default,null):SessionCache;
 

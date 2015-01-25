@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<title>TikMu login</title>
+	</head>
+	<body>
+		@if (msg != null)
+		{
+			<p>@msg</p>
+		}
+		<form method="POST" action="/login"><input type="text" name="user" /><br/><input type="password" name="pass" /><input type="submit" /></form>
+		<a href="/register">Register here</a>
+	</body>
+</html>

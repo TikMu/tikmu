@@ -5,3 +5,5 @@
 -lib mongodb
 -lib mongodb-managers
 -lib geotools
+-lib mweb
+-lib erazor
