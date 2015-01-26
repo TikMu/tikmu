@@ -13,6 +13,7 @@ class TestPassword
 	public function testBasic()
 	{
 		// the default level of security
+		// FIXME check salt size and number of iterations
 		Assert.match(~/^sha256/, Password.create("hello!!!"));
 
 		// plain
@@ -22,11 +23,13 @@ class TestPassword
 		Assert.isTrue(( "plain$hello!!!":Password ).matches("hello!!!"));
 
 		// sha256
-		// FIXME check salt size and other info
-		// ideally, check againt other impl or manual checking
 		Assert.match(~/^sha256\$\d+\$[a-z0-9]+\$[a-z0-9]+$/, Password.create("hello!!!"));
 		Assert.isTrue(Password.create("hello!!!").matches("hello!!!"));
 		Assert.isFalse(Password.create("hello!!!").matches("hello!!"));
+		Assert.isTrue(Password.fromString("sha256$2$6a6f66$a92e6695aff51167d8148a73d2ba0c8875fb582a13db27bc5059404708de9e62").matches("hello!!!"));
+		var p1 = Password.create("hello!!!");
+		var p2 = Password.create("hello!!!");
+		Assert.notEquals(p1.hash, p2.hash);
 	}
 }
 
