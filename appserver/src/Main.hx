@@ -1,9 +1,7 @@
+import croxit.Web;
 import mweb.Dispatcher;
 import mweb.tools.*;
 import org.mongodb.Mongo;
-import croxit.Web;
-
-import crypto.Password;
 
 class Main
 {
@@ -11,26 +9,6 @@ class Main
 	{
 		var mongo = new Mongo();
 		var ctx = new db.Context(mongo.tikmu);
-
-		// scratch
-
-
-                // user & session
-		// var u = {
-		// 	_id : new org.bsonspec.ObjectID(),
-		// 	name : "John",
-		// 	email : "john@bot.com",
-		// 	password : new Password("42"),
-		// 	avatar : ""
-		// };
-		// ctx.users.insert(u);
-		// trace(u);
-		// var s = new db.Session(null, u._id, 1000, db.Session.DeviceType.Desktop);
-		// trace(ctx.sessions.exists(s._id));
-		// ctx.sessions.save(s);
-		// trace(ctx.sessions.exists(s._id));
-		// ctx.sessions.terminate(s);
-		// trace(ctx.sessions.get(s._id));
 
 		var cookies = Web.getCookies();
 		if (cookies.exists('TIKMU_SESSID'))

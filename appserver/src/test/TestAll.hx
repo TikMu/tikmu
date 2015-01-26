@@ -9,7 +9,7 @@ class TestAll {
 		var r = new Runner();
 		
 		r.addCase(new TestPassword());
-		// r.addCase(new TestSessionCache());
+		r.addCase(new TestSessionCache());
 
 		Report.create(r);
 		// TODO result handler
