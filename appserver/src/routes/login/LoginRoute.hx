@@ -1,4 +1,4 @@
-package dispatch;
+package routes.login;
 import mweb.tools.*;
 
 class LoginRoute extends mweb.Route<HttpResponse<Dynamic>>
@@ -21,7 +21,7 @@ class LoginRoute extends mweb.Route<HttpResponse<Dynamic>>
 	}
 }
 
-@:includeTemplate("../views/login.html")
+@:includeTemplate("login.html")
 class LoginView extends erazor.macro.SimpleTemplate<{ msg:String }>
 {
 }

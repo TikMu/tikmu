@@ -1,4 +1,4 @@
-package dispatch;
+package routes.register;
 import mweb.tools.*;
 
 class RegisterRoute extends mweb.Route<HttpResponse<Dynamic>>

@@ -1,6 +1,5 @@
 import mweb.Dispatcher;
 import mweb.tools.*;
-import dispatch.*;
 import org.mongodb.Mongo;
 import croxit.Web;
 
@@ -52,8 +51,8 @@ class Main
 		});
 
 		var route = mweb.Route.anon({
-			login: new LoginRoute(ctx),
-			register: new RegisterRoute(ctx),
+			login: new routes.login.LoginRoute(ctx),
+			register: new routes.register.RegisterRoute(ctx),
 		});
 		var ret = d.dispatch(route);
 
