@@ -10,6 +10,11 @@ abstract Password(String) {
     public var security(get, never):PasswordSecurity;
     public var hash(get, never):String;
 
+    inline function new(pwd)
+    {
+        this = pwd;
+    }
+
     static function makePreffix(security)
     {
         return switch (security) {
@@ -47,7 +52,13 @@ abstract Password(String) {
         return this.substr(this.lastIndexOf("$") + 1);
     }
 
-    public function new(plain:String, ?security:PasswordSecurity)
+    public function matches(plain:String):Bool
+    {
+        var h = makeHash(plain, security);
+        return h == hash;  // FIXME constant time comparison
+    }
+
+    public static function create(plain:String, ?security:PasswordSecurity)
     {
         // current minimum accepted security: Sha256 + iterations + salt
         // WARNING: this doesn't protect weak passwords at all!!
@@ -62,13 +73,13 @@ abstract Password(String) {
         if (security == null)
             security = SSha256(42, Random.salt(5));
 
-        this = makePreffix(security) + makeHash(plain, security);
+        var pwd = makePreffix(security) + makeHash(plain, security);
+        return new Password(pwd);
     }
 
-    public function matches(plain:String):Bool
+    @:from public static function fromString(pwd:String)
     {
-        var h = makeHash(plain, security);
-        return h == hash;  // FIXME constant time comparison
+        return new Password(pwd);
     }
 
 }
