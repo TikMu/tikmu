@@ -1,15 +1,8 @@
 package routes.login;
 import mweb.tools.*;
 
-class LoginRoute extends mweb.Route<HttpResponse<Dynamic>>
+class LoginRoute extends BaseRoute
 {
-	var ctx:db.Context;
-	public function new(ctx:db.Context)
-	{
-		super();
-		this.ctx = ctx;
-	}
-
 	public function getDefault(?args:{ msg: String }):HttpResponse<{ msg:String }>
 	{
 		return HttpResponse.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView()));

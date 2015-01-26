@@ -53,6 +53,9 @@ class Main
 		var route = mweb.Route.anon({
 			login: new routes.login.LoginRoute(ctx),
 			register: new routes.register.RegisterRoute(ctx),
+			list: new routes.list.ListRoute(ctx),
+			ask: new routes.ask.AskRoute(ctx),
+			anyDefault: function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault()
 		});
 		var ret = d.dispatch(route);
 

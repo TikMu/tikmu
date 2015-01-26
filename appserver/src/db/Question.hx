@@ -13,8 +13,8 @@ typedef Question = {
 	favorites : Int,
 	watchers : Int,
 
-	created : MongoDate,
-	modified : MongoDate,
+	created : Date,
+	modified : Date,
 
 	comments : Array<Comment>,
 	answers : Array<Answer>,
@@ -23,7 +23,7 @@ typedef Question = {
 typedef Comment = {
 	user : Ref<User>,
 	contents : String,
-	created : MongoDate
+	created : Date
 }
 
 typedef Answer = {
@@ -33,8 +33,8 @@ typedef Answer = {
 	loc : Location,
 	voteSum : Int,
 
-	created : MongoDate,
-	modified : MongoDate,
+	created : Date,
+	modified : Date,
 
 	comments : Array<Comment>
 }

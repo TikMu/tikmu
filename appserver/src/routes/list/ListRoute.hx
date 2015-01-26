@@ -1,12 +1,16 @@
 package routes.list;
 import mweb.tools.*;
 
-class ListRoute extends mweb.Route<HttpResponse<Dynamic>>
+class ListRoute extends BaseRoute
 {
-	var ctx:db.Context;
-	public function new(ctx:db.Context)
+	public function anyDefault():HttpResponse<{ qs:Array<db.Question> }>
 	{
-		super();
-		this.ctx = ctx;
+		// this is where the magic will happen
+		return HttpResponse.fromContent(new TemplateLink({ qs:ctx.questions.find({}).toArray() }, new ListView()));
 	}
+}
+
+@:includeTemplate("list.html")
+class ListView extends erazor.macro.SimpleTemplate<{ qs:Array<db.Question> }>
+{
 }
