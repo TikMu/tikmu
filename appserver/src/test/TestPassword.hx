@@ -3,8 +3,7 @@ package test;
 import utest.Assert;
 import crypto.Password;
 
-class TestPassword
-{
+class TestPassword {
 	public function new()
 	{
 		// NOOP

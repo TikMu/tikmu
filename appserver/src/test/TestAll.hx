@@ -3,9 +3,7 @@ package test;
 import utest.Runner;
 import utest.ui.Report;
 
-class TestAll
-{
-
+class TestAll {
 	public static function main()
 	{
 		var r = new Runner();
@@ -19,5 +17,4 @@ class TestAll
 		r.run();
 		// TODO exit code
 	}
-
 }
