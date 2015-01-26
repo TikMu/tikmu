@@ -1,4 +1,16 @@
+--interp
+-main test.TestAll
+-lib croxit-1
+-lib mongodb
+-lib mongodb-managers
+-lib geotools
+-lib mweb
+-lib erazor
+-lib utest
 -cp src
+
+--next
+
 -neko www/index.n
 -main Main
 -lib croxit-1
@@ -7,3 +19,5 @@
 -lib geotools
 -lib mweb
 -lib erazor
+-cp src
+

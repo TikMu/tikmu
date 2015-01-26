@@ -14,13 +14,6 @@ class Main
 
 		// scratch
 
-		// // password
-		// trace(new Password("hello!!!", SPlain));
-		// trace(new Password("hello!!!", SPlain).matches("hello!!!"));
-		// trace(new Password("hello!!!", SPlain).matches("hello!!"));
-		// trace(new Password("hello!!!"));
-		// trace(new Password("hello!!!").matches("hello!!!"));
-		// trace(new Password("hello!!!").matches("hello!!"));
 
                 // user & session
 		// var u = {
