@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title>TikMu @q.contents.substr(0,25)</title>
+	</head>
+	<body>
+		<article class="question">
+			<h1>
+			@q.contents
+			</h1>
+			@for (ans in q.answers)
+			{
+				@if (!ans.deleted)
+				{
+					<div class="answer">
+						@ans.contents
+
+						@for (c in ans.comments)
+						{
+							<div class="comment">
+								@c.contents
+							</div>
+						}
+						<div class="post comment">
+						</div>
+					</div>
+				}
+			}
+			<form method="POST" action="/question/answer/@q._id">
+				<textarea name="answer"></textarea>
+				<input type="submit" />
+			</form>
+		</article>
+		<a href="/register">Register here</a>
+	</body>
+</html>
+

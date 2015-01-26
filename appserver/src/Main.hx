@@ -26,6 +26,8 @@ class Main
 			register: new routes.register.RegisterRoute(ctx),
 			list: new routes.list.ListRoute(ctx),
 			ask: new routes.ask.AskRoute(ctx),
+			question: new routes.question.QuestionRoute(ctx),
+
 			anyDefault: function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault()
 		});
 		var ret = d.dispatch(route);

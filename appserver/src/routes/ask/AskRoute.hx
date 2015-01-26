@@ -12,7 +12,7 @@ class AskRoute extends BaseRoute
 	public function postDefault(args:{ data:String }):HttpResponse<Dynamic>
 	{
 		var q:db.Question = {
-			_id : new ObjectID(),
+			_id : new ObjectID().bytes.toHex(),
 
 			user : null,
 			contents : args.data,

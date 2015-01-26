@@ -3,7 +3,7 @@ import db.helper.*;
 import org.bsonspec.*;
 
 typedef Question = {
-	_id : ObjectID,
+	_id : String,
 
 	user : Ref<User>,
 	contents : String,
