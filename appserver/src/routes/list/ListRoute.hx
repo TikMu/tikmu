@@ -3,6 +3,7 @@ import mweb.tools.*;
 
 class ListRoute extends BaseRoute
 {
+	@openRoute
 	public function anyDefault():HttpResponse<{ qs:Array<db.Question> }>
 	{
 		// this is where the magic will happen

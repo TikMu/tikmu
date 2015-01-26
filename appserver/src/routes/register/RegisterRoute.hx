@@ -10,12 +10,14 @@ class RegisterRoute extends mweb.Route<HttpResponse<Dynamic>>
 		this.ctx = ctx;
 	}
 
+	@openRoute
 	public function getDefault(?args:{ msg: String }):HttpResponse<{ message:String }>
 	{
 		trace('//TODO');
 		return null;
 	}
 
+	@openRoute
 	public function postDefault(args:{ user:String, pass:String }):HttpResponse<Dynamic>
 	{
 		trace('//TODO');

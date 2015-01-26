@@ -4,6 +4,7 @@ import mweb.tools.*;
 
 class QuestionRoute extends BaseRoute
 {
+	@openRoute
 	public function getDefault(id:String):HttpResponse<{ q:db.Question }>
 	{
 		var q = this.ctx.questions.findOne({ _id : id });
