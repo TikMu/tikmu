@@ -10,7 +10,7 @@ class LoginRoute extends BaseRoute
 	}
 
 	@openRoute
-	public function postDefault(args:{ user:String, pass:String }):HttpResponse<Dynamic>
+	public function postDefault(args:{ email:String, pass:String }):HttpResponse<Dynamic>
 	{
 		return HttpResponse.empty().redirect('/');
 	}

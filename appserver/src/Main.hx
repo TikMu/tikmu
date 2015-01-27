@@ -54,7 +54,7 @@ class Main
 			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault()
 		});
 
-		var ret:mweb.tools.HttpResponse<Dynamic>;
+		var ret:HttpResponse<Dynamic>;
 		try {
 			ret = d.dispatch(route);
 		} catch (e:AuthorizationError) {

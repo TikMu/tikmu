@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<title>TikMu new user</title>
+	</head>
+	<body>
+		@if (msg != null)
+		{
+			<p>@msg</p>
+		}
+		<form method="POST" action="/register"><input type="text" name="email" @if (email != null) { value="@email" } /><br/><input type="password" name="pass" /><input type="submit" /></form>
+		<a href="/login">Or simply login here</a>
+	</body>
+</html>
+
