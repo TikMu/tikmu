@@ -50,7 +50,6 @@ class Main
 			list: new routes.list.ListRoute(ctx),
 			ask: new routes.ask.AskRoute(ctx),
 			question: new routes.question.QuestionRoute(ctx),
-
 			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault()
 		});
 
