@@ -18,8 +18,8 @@ class RegisterRoute extends BaseRoute {
 	@openRoute
 	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
 	{
-		// validate args.user
-		if (args.email.length < 1 || args.email.length > 64 || !~/.+@.+/.match(args.email))
+		// validate args.email
+		if (!Tools.validEmail(args.email))
 			return get({ email : null, msg : "Invalid email" });
 
 		// validate args.pass
@@ -40,7 +40,7 @@ class RegisterRoute extends BaseRoute {
 		};
 		ctx.users.insert(u);  // FIXME handle possible errors
 
-		// TODO auto login
+		// TODO auto login for now
 
 		return HttpResponse.empty().redirect("/");
 	}
