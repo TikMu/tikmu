@@ -9,6 +9,7 @@ class Context
 	public var users(default,null):Manager<User>;
 
 	@:allow(Main)
+	@:allow(routes.login.LoginRoute)
 	public var session(default, null):Null<Session>;
 
 	public function new(db:Database)

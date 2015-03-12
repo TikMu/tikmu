@@ -1,4 +1,6 @@
 package routes.login;
+
+import db.*;
 import mweb.tools.*;
 
 class LoginRoute extends BaseRoute
@@ -12,10 +14,10 @@ class LoginRoute extends BaseRoute
 	@openRoute
 	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
 	{
-		if (!Tools.validEmail(args.email))
-			return get({ email : null, msg : "Invalid email" });
-
-		return HttpResponse.empty().redirect('/');
+		// FIXME
+		var s = new Session(null, null, 1e9, null);
+		ctx.sessions.save(s);
+		return HttpResponse.empty().setCookie("_session", s._id).redirect("/");
 	}
 }
 
