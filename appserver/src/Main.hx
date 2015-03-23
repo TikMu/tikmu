@@ -5,7 +5,6 @@ import mweb.Dispatcher;
 import mweb.tools.*;
 import org.mongodb.Mongo;
 import routes.nonroute.*;
-import routes.search.SearchRoute;
 using Lambda;
 
 class Main
@@ -47,21 +46,24 @@ class Main
 		d.addMetaHandler(handleLoggedMeta.bind(ctx));
 
 		var route = mweb.Route.anon({
-			login: new routes.login.LoginRoute(ctx),
-			register: new routes.register.RegisterRoute(ctx),
+			// keep sorted
+			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault(),
+			ask: new routes.ask.AskRoute(ctx),
 			list: new routes.list.ListRoute(ctx),
 			listfavorites: new routes.list.ListFavoritesRoute(ctx),
-			ask: new routes.ask.AskRoute(ctx),
+			login: new routes.login.LoginRoute(ctx),
+			logout: new routes.login.LogOutRoute(ctx),
 			question: new routes.question.QuestionRoute(ctx),
+			register: new routes.register.RegisterRoute(ctx),
 			search: new routes.search.SearchRoute(ctx),
-			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault(),
-			//These will be changed to remoting functions:
-			deletequestion : new routes.nonroute.NonRouteFunctions.DeleteQuestion(ctx),
-			editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(ctx),
+
+			// These will be changed to remoting functions (keep sorted too)
 			deleteanswer : new routes.nonroute.NonRouteFunctions.DeleteAnswer(ctx),
-			editanswer : new routes.nonroute.NonRouteFunctions.EditAnswer(ctx),
 			deletecomment : new routes.nonroute.NonRouteFunctions.DeleteComment(ctx),
+			deletequestion : new routes.nonroute.NonRouteFunctions.DeleteQuestion(ctx),
+			editanswer : new routes.nonroute.NonRouteFunctions.EditAnswer(ctx),
 			editcomment : new routes.nonroute.NonRouteFunctions.EditComment(ctx),
+			editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(ctx),
 			markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(ctx),
 			togglefavorite : new routes.nonroute.NonRouteFunctions.ToggleFavorite(ctx),
 			togglefollow : new routes.nonroute.NonRouteFunctions.ToggleFollow(ctx)
