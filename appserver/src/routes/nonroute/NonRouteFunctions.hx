@@ -30,6 +30,7 @@ class EditQuestion extends BaseRoute
 {
 	public function any(id : String)
 	{
+		//TODO:
 		return HttpResponse.empty().redirect('/');	
 	}
 }
@@ -66,6 +67,7 @@ class EditAnswer extends BaseRoute
 {
 	public function any(questionId : String, index : Int)
 	{
+		//TODO:
 		return HttpResponse.empty().redirect('/');
 	}
 }
@@ -112,6 +114,7 @@ class EditComment extends BaseRoute
 {
 	public function any(questionId : String, answerIndex : Int, commentIndex : Int)
 	{
+		//TODO:
 		return HttpResponse.empty().redirect('/');
 	}
 }
@@ -138,6 +141,7 @@ class ToggleFavorite extends BaseRoute
 {
 	public function any(questionId : String)
 	{
+		//TODO:
 		return HttpResponse.empty().redirect('/');
 	}
 }
@@ -146,6 +150,7 @@ class ToggleFollow extends BaseRoute
 {
 	public function any(questionId : String)
 	{
+		//TODO:
 		return HttpResponse.empty().redirect('/');
 	}
 }
