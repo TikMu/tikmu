@@ -1,8 +1,12 @@
 package routes.login;
 
 import db.*;
-import db.helper.Ref.Ref;
 import mweb.tools.*;
+
+@:includeTemplate("login.html")
+class LoginView extends erazor.macro.SimpleTemplate<{ msg:String }>
+{
+}
 
 class LoginRoute extends BaseRoute
 {
@@ -14,20 +18,24 @@ class LoginRoute extends BaseRoute
 
 	@openRoute
 	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
-	{		
-		var user : User = this.ctx.users.findOne( { email : args.email } );	
-		var refUser = (user != null && user.password.matches(args.pass)) ? new Ref<User>(user._id) : null;
-				
-		trace(refUser);
-		
-		// FIXME	
-		var s = new Session(null, refUser, 1e9, null);
+	{
+		// pre-validate args.email
+		if (!Tools.validEmail(args.email))
+			return get({ email : null, msg : "Invalid email" });
+
+		// don't check for too long passwords
+		if (args.pass.length > 256)  // FIXME no magic numbers
+			return get({ email : args.email, msg : "Invalid password" });
+
+		// authenticate
+		var user = ctx.users.findOne({ email : args.email });
+		if (user == null || !user.password.matches(args.pass))
+			return get({ email : args.email, msg : "Wrong email address or password" });
+
+		// set a session
+		var s = new Session(null, user._id, 1e9, null);  // FIXME loc, device and real span
 		ctx.sessions.save(s);
 		return HttpResponse.empty().setCookie("_session", s._id).redirect("/");
 	}
 }
 
-@:includeTemplate("login.html")
-class LoginView extends erazor.macro.SimpleTemplate<{ msg:String }>
-{
-}

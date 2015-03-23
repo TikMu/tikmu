@@ -40,9 +40,7 @@ class RegisterRoute extends BaseRoute {
 		};
 		ctx.users.insert(u);  // FIXME handle possible errors
 
-		// TODO auto login for now
-
-		return HttpResponse.empty().redirect("/");
+                return new routes.login.LoginRoute(ctx).post(args);
 	}
 }
 
