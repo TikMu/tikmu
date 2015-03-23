@@ -9,4 +9,8 @@ typedef User = {
 	email : String,
 	password : Password,
 	avatar : String,
+	//LinkParaContaSocial
+	//Linguagem de Preferência
+	//Formas de Notificação
+	//Área de Notificação
 }

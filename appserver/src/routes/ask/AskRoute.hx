@@ -21,11 +21,13 @@ class AskRoute extends BaseRoute
 			voteSum : 0,
 			favorites : 0,
 			watchers : 0,
+			solved : false,
+			deleted : false,
 
 			created : Date.now(),
 			modified : Date.now(),
 
-			comments : [],
+			//comments : [],
 			answers : [],
 		};
 

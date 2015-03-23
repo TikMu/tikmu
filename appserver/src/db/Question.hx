@@ -13,17 +13,21 @@ typedef Question = {
 	favorites : Int,
 	watchers : Int,
 
+	deleted : Bool,
 	created : Date,
 	modified : Date,
+	solved : Bool,
 
-	comments : Array<Comment>,
+	//comments : Array<Comment>,
 	answers : Array<Answer>,
 }
 
 typedef Comment = {
-	user : Ref<User>,
+	user : Ref<User>,   
 	contents : String,
-	created : Date
+	created : Date,
+	modified : Date,
+	deleted : Bool
 }
 
 typedef Answer = {

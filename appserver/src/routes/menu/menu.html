@@ -1,0 +1,14 @@
+<nav class="nav">
+		<ul>
+			<li><a href=@if(!authenticated){"/login"}else{""} onclick="alert('TODO');">@if(!authenticated){Login (public)}else{Logout (private)}</a></li>			
+			<li><a href="/register">Registrar</a></li>			
+			<li><a href="/ask">Perguntar</a></li>
+			<li><span class="tags"></span><input type="text" id="searchString" name="searchString" placeholder="Busca" /><input type="checkbox" id="istag" name="istag"/>Tag Search<input type="button" name="submitsearch" id="submitsearch" value="Buscar"/> </li>
+			@if(authenticated)
+			{
+			<li><a href="/listfavorites">Listar Favoritos (private)</a></li>			
+			<li><a href="" onclick="alert('TODO');">Preferências (private)</a></li>
+			}
+			<li><a href="" onclick="alert('TODO');">Especificar Localização</a></li>
+		</ul>
+</nav>

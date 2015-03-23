@@ -4,6 +4,8 @@ import db.Context;
 import mweb.Dispatcher;
 import mweb.tools.*;
 import org.mongodb.Mongo;
+import routes.nonroute.*;
+import routes.search.SearchRoute;
 using Lambda;
 
 class Main
@@ -48,9 +50,21 @@ class Main
 			login: new routes.login.LoginRoute(ctx),
 			register: new routes.register.RegisterRoute(ctx),
 			list: new routes.list.ListRoute(ctx),
+			listfavorites: new routes.list.ListFavoritesRoute(ctx),
 			ask: new routes.ask.AskRoute(ctx),
 			question: new routes.question.QuestionRoute(ctx),
-			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault()
+			search: new routes.search.SearchRoute(ctx),
+			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault(),
+			//These will be changed to remoting functions:
+			deletequestion : new routes.nonroute.NonRouteFunctions.DeleteQuestion(ctx),
+			editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(ctx),
+			deleteanswer : new routes.nonroute.NonRouteFunctions.DeleteAnswer(ctx),
+			editanswer : new routes.nonroute.NonRouteFunctions.EditAnswer(ctx),
+			deletecomment : new routes.nonroute.NonRouteFunctions.DeleteComment(ctx),
+			editcomment : new routes.nonroute.NonRouteFunctions.EditComment(ctx),
+			markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(ctx),
+			togglefavorite : new routes.nonroute.NonRouteFunctions.ToggleFavorite(ctx),
+			togglefollow : new routes.nonroute.NonRouteFunctions.ToggleFollow(ctx)
 		});
 
 		var ret:HttpResponse<Dynamic>;

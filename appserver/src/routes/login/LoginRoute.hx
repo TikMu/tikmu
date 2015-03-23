@@ -1,6 +1,7 @@
 package routes.login;
 
 import db.*;
+import db.helper.Ref.Ref;
 import mweb.tools.*;
 
 class LoginRoute extends BaseRoute
@@ -13,9 +14,14 @@ class LoginRoute extends BaseRoute
 
 	@openRoute
 	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
-	{
-		// FIXME
-		var s = new Session(null, null, 1e9, null);
+	{		
+		var user : User = this.ctx.users.findOne( { email : args.email } );	
+		var refUser = (user != null && user.password.matches(args.pass)) ? new Ref<User>(user._id) : null;
+				
+		trace(refUser);
+		
+		// FIXME	
+		var s = new Session(null, refUser, 1e9, null);
 		ctx.sessions.save(s);
 		return HttpResponse.empty().setCookie("_session", s._id).redirect("/");
 	}

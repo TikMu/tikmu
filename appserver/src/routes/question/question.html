@@ -1,31 +1,79 @@
 <html>
 	<head>
-		<title>TikMu @q.contents.substr(0,25)</title>
+		<meta charset="UTF-8">
+		<title>TikMu @data.contents.substr(0,25)</title>
 	</head>
 	<body>
+		<nav class="nav">
+			<ul>
+				<li><a href="/">Voltar</a></li>				
+			</ul>
+		</nav>
 		<article class="question">
 			<h1>
-			@q.contents
+				--USERNAME--				
 			</h1>
-			@for (ans in q.answers)
+			<br/>
+			<h2>
+				--USERPOINTS--				
+			</h2>
+			<br/>
+			@if(myUser != null && myUser == data.userID)
 			{
+				<a onclick="alert('TODO');">Delete</a>
+				<a onclick="alert('TODO');">Edit</a>
+				<a onclick="alert('TODO');">Mark as Solved</a>
+			}
+			<h1>
+			@data.contents
+			</h1>
+			<br/>
+			@for(tag in data.tags)
+			{
+				<a onclick="alert('TODO');">@tag</a>
+			}
+			<br/>
+			<br/>
+			@for (ans in data.answers)
+			{			
 				@if (!ans.deleted)
 				{
+					@if(myUser != null && myUser == ans.userID)
+					{
+						<a onclick="alert('TODO');">Delete</a>
+						<a onclick="alert('TODO');">Edit</a>						
+					}
 					<div class="answer">
-						@ans.contents
-
+						
 						@for (c in ans.comments)
 						{
-							<div class="comment">
-								@c.contents
-							</div>
+							@if(!c.deleted)
+							{
+								@if(myUser != null && myUser == c.userID)
+								{
+									<a onclick="alert('TODO');">Delete</a>
+									<a onclick="alert('TODO');">Edit</a>
+								}
+								<div class="comment">
+									@c.contents
+								</div>
+							}
 						}
+						
+						<br/>
+						<a onclick="alert('TODO');">UP</a>
+						<h2>--VOTES--</h2>votes
+						<a onclick="alert('TODO');">DOWN</a>
+						<br/>
+						
+						@ans.contents
+						
 						<div class="post comment">
 						</div>
 					</div>
 				}
 			}
-			<form method="POST" action="/question/answer/@q._id">
+			<form method="POST" action="/question/answer/@data.id">
 				<textarea name="answer"></textarea>
 				<input type="submit" />
 			</form>
