@@ -75,6 +75,7 @@ class Main
 			ret = HttpResponse.empty().redirect('/login');
 		}
 
-		new HttpWriter(new NekoWebWriter()).writeResponse(ret);
+		HttpWriter.fromWeb(Web).writeResponse(ret);
+		// new HttpWriter(new NekoWebWriter()).writeResponse(ret);
 	}
 }
