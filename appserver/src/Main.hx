@@ -11,6 +11,8 @@ class Main
 {
 	static function handleLoggedMeta(ctx:Context, metas:Array<String>)
 	{
+		// TODO: Change this test to handle sessions with no users 
+		// (for now, sessions are being created on logging in, so no sessions without users)
 		if (!metas.has("openRoute"))
 		{
 			var s = ctx.session;
@@ -66,7 +68,9 @@ class Main
 			editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(ctx),
 			markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(ctx),
 			togglefavorite : new routes.nonroute.NonRouteFunctions.ToggleFavorite(ctx),
-			togglefollow : new routes.nonroute.NonRouteFunctions.ToggleFollow(ctx)
+			togglefollow : new routes.nonroute.NonRouteFunctions.ToggleFollow(ctx),
+			voteup : new routes.nonroute.NonRouteFunctions.VoteUp(ctx),
+			votedown : new routes.nonroute.NonRouteFunctions.VoteDown(ctx),
 		});
 
 		var ret:HttpResponse<Dynamic>;

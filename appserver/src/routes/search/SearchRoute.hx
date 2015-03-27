@@ -6,10 +6,6 @@ import mweb.tools.TemplateLink;
 import org.bsonspec.ObjectID;
 import routes.BaseRoute;
 
-/**
- * ...
- * @author andy
- */
 using Lambda;
  
 class SearchRoute extends BaseRoute
@@ -17,7 +13,7 @@ class SearchRoute extends BaseRoute
 	@openRoute
 	public function anyDefault(?args:{searchString : Array<String>, ?tagSearch : Bool}) : HttpResponse<{ qs:Array<{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectID> }>
 	{
-		var myUser : Null<ObjectID> = (ctx.session == null) ? null : ctx.session.user.get(ctx.users.col)._id;
+		var myUser : Null<ObjectID> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
 		
 		var q : Array<Question> = [];
 		if (args.tagSearch)

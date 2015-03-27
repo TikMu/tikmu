@@ -18,7 +18,7 @@ typedef Question = {
 	modified : Date,
 	solved : Bool,
 
-	//comments : Array<Comment>,
+	comments : Array<Comment>,
 	answers : Array<Answer>,
 }
 

@@ -26,7 +26,7 @@ class Random {
 		#else
 		var b = Bytes.alloc(bytes);
 		for (i in 0...bytes)
-			b.set(i, Std.random(255));
+			b.set(i, Std.random(256));
 		return b.toHex();
 		#end
     }

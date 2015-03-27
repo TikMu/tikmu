@@ -14,7 +14,7 @@ class AskRoute extends BaseRoute
 		var q:db.Question = {
 			_id : new ObjectID().bytes.toHex(),
 
-			user : null,
+			user : ctx.session.user,
 			contents : args.data,
 			tags : [],
 			loc : { lat:-23, lon:-43, },
@@ -27,7 +27,7 @@ class AskRoute extends BaseRoute
 			created : Date.now(),
 			modified : Date.now(),
 
-			//comments : [],
+			comments : [],
 			answers : [],
 		};
 

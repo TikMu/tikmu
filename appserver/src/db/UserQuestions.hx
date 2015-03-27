@@ -11,4 +11,5 @@ typedef QuestionData = {
 	question : Ref<Question>,
 	votes : Array<{ answer:Null<Int>, up:Bool }>,
 	favorite : Bool,
+	following : Bool,
 }

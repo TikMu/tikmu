@@ -36,7 +36,8 @@ class RegisterRoute extends BaseRoute {
 			name : 'User ${args.email}',
 			email : args.email,
 			password : p,
-			avatar : null
+			avatar : null,
+			points : 0,
 		};
 		ctx.users.insert(u);  // FIXME handle possible errors
 

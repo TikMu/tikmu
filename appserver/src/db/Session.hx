@@ -28,6 +28,13 @@ abstract Session(SessionData)
 	{
 		return this.closedAt == null && this.expires.getTime() > Date.now().getTime();
 	}
+	
+	//It needs a valid session to be authenticated anyway, 
+	//so calling isValid here to avoid direct calls.
+	inline public function isAuthenticated():Bool
+	{
+		return isValid() && this.user != null;
+	}
 
 	inline public function close()
 	{

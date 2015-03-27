@@ -3,10 +3,6 @@ import js.Lib;
 import js.Functions;
 import js.Menu;
 
-/**
- * ...
- * @author Andy
- */
 class MainJS
 {
 

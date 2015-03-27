@@ -8,7 +8,7 @@ class ListRoute extends BaseRoute
 	@openRoute
 	public function anyDefault():HttpResponse<{ qs:Array<{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectID> }>
 	{
-		var myUser : Null<ObjectID> = (ctx.session == null) ? null : ctx.session.user.get(ctx.users.col)._id;
+		var myUser : Null<ObjectID> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
 		// this is where the magic will happen
 		// qs: [ for (q in ctx.questions.find()) { user: q.user.get(ctx.db.user), contents:q.contents } ]
 		// qs: [ for (q in ctx.questions.find()) q.with({ user: q.user.get(ctx.db.user) });
