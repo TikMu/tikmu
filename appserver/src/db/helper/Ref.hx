@@ -2,15 +2,27 @@ package db.helper;
 import org.bsonspec.*;
 import org.mongodb.Collection;
 
-abstract Ref<T>(ObjectID) from ObjectID to ObjectID
+typedef K = ObjectID;
+
+typedef Object<K> = {
+	_id : K
+}
+
+abstract Ref<V:Object<K>>(K) from K to K
 {
 	inline public function new(id)
 	{
 		this = id;
 	}
 
-	public function get(c:Collection):T
+	public function get(c:Collection):V
 	{
 		return c.findOne({ '_id' : this });
 	}
+
+	@:from public static function fromObject<V:Object<K>>(o:V)
+	{
+		return new Ref(o._id);
+	}
 }
+
