@@ -1,3 +1,4 @@
+# app server
 -neko www/index.n
 -main Main
 -lib croxit-1
@@ -8,8 +9,18 @@
 -lib erazor
 -cp src
 
+--next 
+
+# client js
+-js www/js/tikmu.js
+-main MainJS
+-lib croxit-1
+-lib erazor
+-cp src
+
 --next
 
+# some unit tests
 --interp
 -main test.TestAll
 -lib croxit-1
