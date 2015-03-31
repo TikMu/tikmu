@@ -8,7 +8,7 @@ import org.bsonspec.ObjectID in ObjectIdImpl;
    The purpose of this wraper is to make it easier to write routes that deal
    with ObjectIds, like /questions/<id>.
 */
-abstract ObjectId(ObjectIdImpl) from ObjectIdImpl to ObjectIdImpl {
+@:forward abstract ObjectId(ObjectIdImpl) from ObjectIdImpl to ObjectIdImpl {
 	public inline function new(?id)
 	{
 		this = id != null ? id : new ObjectIdImpl();
