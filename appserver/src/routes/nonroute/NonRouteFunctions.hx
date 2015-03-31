@@ -165,7 +165,7 @@ class ToggleFavorite extends BaseRoute
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : new Array<{answer : Null<Int>, up : Bool}>(),
 						favorite : true,
 						following : false,
@@ -185,7 +185,7 @@ class ToggleFavorite extends BaseRoute
 						d.following = false;					
 					d.favorite = !d.favorite;
 					exists = true;
-					ctx.userQuestions.update(questionUser);
+					ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 					break;
 				}				
 			}
