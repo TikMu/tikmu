@@ -1,19 +1,20 @@
 package routes.search;
-import db.helper.Location;
+
 import db.Question;
+import db.helper.Location;
 import mweb.tools.HttpResponse;
 import mweb.tools.TemplateLink;
-import org.bsonspec.ObjectID;
 import routes.BaseRoute;
+import routes.ObjectId;
 
 using Lambda;
  
 class SearchRoute extends BaseRoute
 {
 	@openRoute
-	public function anyDefault(?args:{searchString : Array<String>, ?tagSearch : Bool}) : HttpResponse<{ qs:Array<{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectID> }>
+	public function anyDefault(?args:{searchString : Array<String>, ?tagSearch : Bool}) : HttpResponse<{ qs:Array<{id:ObjectId, userID : ObjectId, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectId> }>
 	{
-		var myUser : Null<ObjectID> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
+		var myUser : Null<ObjectId> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
 		
 		var q : Array<Question> = [];
 		if (args.tagSearch)
@@ -59,6 +60,6 @@ class SearchRoute extends BaseRoute
 }
 
 @:includeTemplate("../list/list.html")
-class SearchView extends erazor.macro.SimpleTemplate<{ qs:Array<{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectID> }>
+class SearchView extends erazor.macro.SimpleTemplate<{ qs:Array<{id:ObjectId, userID : ObjectId, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectId> }>
 {
 }

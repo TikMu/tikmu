@@ -69,7 +69,7 @@ class QuestionRoute extends BaseRoute
 		return HttpResponse.empty().redirect('/question/$id');
 	}
 	
-	public function postComment(id : String, ?answerIndex : Int, args : { comment : String } ) : HttpResponse<Dynamic>
+	public function postComment(id:ObjectId, ?answerIndex : Int, args : { comment : String } ) : HttpResponse<Dynamic>
 	{
 		var q = this.ctx.questions.findOne( { _id : id } );
 		if (q == null)
