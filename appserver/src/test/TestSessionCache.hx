@@ -22,7 +22,8 @@ class TestSessionCache {
 			name : "John",
 			email : "john@bot.com",
 			password : Password.create("42"),
-			avatar : ""
+			avatar : "",
+			points : 0
 		};
 		ctx.users.insert(u);
 
