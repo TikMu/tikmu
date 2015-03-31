@@ -3,11 +3,11 @@ import db.helper.Location;
 import db.Question;
 import mweb.tools.*;
 import mweb.tools.TemplateLink;
-import org.bsonspec.ObjectID;
+import routes.ObjectId;
 
 class ListFavoritesRoute extends BaseRoute
 {	
-	public function anyDefault():HttpResponse<{ qs:Array<{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectID> }>
+	public function anyDefault():HttpResponse<{ qs:Array<{id:ObjectId, userID : ObjectId, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectId> }>
 	{
 		//TODO:
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
@@ -34,6 +34,6 @@ class ListFavoritesRoute extends BaseRoute
 }
 
 @:includeTemplate("../list/list.html")
-class ListFavoritesView extends erazor.macro.SimpleTemplate<{ qs:Array<{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectID> }>
+class ListFavoritesView extends erazor.macro.SimpleTemplate<{ qs:Array<{id:ObjectId, userID : ObjectId, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int}>, authenticated : Bool, myUser : Null<ObjectId> }>
 {
 }
