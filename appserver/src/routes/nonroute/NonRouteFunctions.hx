@@ -196,7 +196,7 @@ class ToggleFavorite extends BaseRoute
 										favorite : true,
 										following : false,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 		}
 		
@@ -235,7 +235,7 @@ class ToggleFollow extends BaseRoute
 				{				
 					d.following = !d.following;
 					exists = true;
-					ctx.userQuestions.update(questionUser);
+					ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 					break;
 				}				
 			}
@@ -246,7 +246,7 @@ class ToggleFollow extends BaseRoute
 										favorite : true, //+follow implies  +fav
 										following : true,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 		}
 		
@@ -277,20 +277,20 @@ class VoteUp extends BaseRoute
 			if (answerIndex == null)
 			{
 				q.voteSum++;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.user.get(ctx.users.col);
 				user.points++;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 			else
 			{
 				q.answers[answerIndex].voteSum++;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.answers[answerIndex].user.get(ctx.users.col);
 				user.points++;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 		}
 		else
@@ -313,20 +313,20 @@ class VoteUp extends BaseRoute
 								if (answerIndex == null)
 								{
 									q.voteSum += 2; //Minus downvote and Plus upvote
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.user.get(ctx.users.col);
 									user.points+= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 								else
 								{
 									q.answers[answerIndex].voteSum += 2; //Same
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.answers[answerIndex].user.get(ctx.users.col);
 									user.points+= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 							}
 							break;
@@ -338,25 +338,25 @@ class VoteUp extends BaseRoute
 						if (answerIndex == null)
 						{
 							q.voteSum++;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.user.get(ctx.users.col);
 							user.points++;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 						else
 						{
 							q.answers[answerIndex].voteSum++;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.answers[answerIndex].user.get(ctx.users.col);
 							user.points++;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 					}
 					break;
 				}		
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 			if (!exists)
 			{
@@ -365,17 +365,17 @@ class VoteUp extends BaseRoute
 										favorite : false,
 										following : false,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 				
 				if (answerIndex == null)
 				{
 					q.voteSum++;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 				else
 				{
 					q.answers[answerIndex].voteSum++;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 			}
 		}
@@ -407,20 +407,20 @@ class VoteDown extends BaseRoute
 			if (answerIndex == null)
 			{
 				q.voteSum--;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.user.get(ctx.users.col);
 				user.points--;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 			else
 			{
 				q.answers[answerIndex].voteSum--;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.answers[answerIndex].user.get(ctx.users.col);
 				user.points--;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 		}
 		else
@@ -443,20 +443,20 @@ class VoteDown extends BaseRoute
 								if (answerIndex == null)
 								{
 									q.voteSum -= 2; //Minus upvote and Plus downvote
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.user.get(ctx.users.col);
 									user.points-= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 								else
 								{
 									q.answers[answerIndex].voteSum -= 2; //Same
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.user.get(ctx.users.col);
 									user.points-= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 							}
 							break;
@@ -468,25 +468,25 @@ class VoteDown extends BaseRoute
 						if (answerIndex == null)
 						{
 							q.voteSum--;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.user.get(ctx.users.col);
 							user.points--;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 						else
 						{
 							q.answers[answerIndex].voteSum--;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.user.get(ctx.users.col);
 							user.points-= 2;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 					}
 					break;
 				}		
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 			if (!exists)
 			{
@@ -495,17 +495,17 @@ class VoteDown extends BaseRoute
 										favorite : false,
 										following : false,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 				
 				if (answerIndex == null)
 				{
 					q.voteSum--;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 				else
 				{
 					q.answers[answerIndex].voteSum--;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 			}
 		}
