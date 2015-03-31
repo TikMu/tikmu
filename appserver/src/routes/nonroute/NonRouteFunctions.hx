@@ -218,7 +218,7 @@ class ToggleFollow extends BaseRoute
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : new Array<{answer : Null<Int>, up : Bool}>(),
 						favorite : true, //+follow implies +fav
 						following : true,
@@ -266,7 +266,7 @@ class VoteUp extends BaseRoute
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : [{answer : answerIndex, up : true}],
 						favorite : false,
 						following : false,
@@ -396,7 +396,7 @@ class VoteDown extends BaseRoute
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : [{answer : answerIndex, up : false}],
 						favorite : false,
 						following : false,
