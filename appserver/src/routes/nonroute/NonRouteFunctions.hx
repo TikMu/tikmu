@@ -1,15 +1,17 @@
 package routes.nonroute;
-import db.helper.Ref.Ref;
+
 import db.UserQuestions;
+import db.helper.Ref.Ref;
 import mweb.tools.HttpResponse;
 import mweb.tools.TemplateLink;
 import routes.BaseRoute;
+import routes.ObjectId;
 import routes.question.QuestionRoute.QuestionView;
 
 //MASS TODO: Handle In-place array updates
 class DeleteQuestion extends BaseRoute
 {
-	public function any(id : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
 		var q = ctx.questions.findOne( { _id : id } );
@@ -26,7 +28,7 @@ class DeleteQuestion extends BaseRoute
 	
 class EditQuestion extends BaseRoute
 {
-	public function any(id : String)
+	public function any(id:ObjectId)
 	{
 		//TODO:
 		return HttpResponse.empty().redirect('/');	
@@ -35,10 +37,10 @@ class EditQuestion extends BaseRoute
 
 class DeleteAnswer extends BaseRoute
 {
-	public function any(questionId : String, index : Int)
+	public function any(id:ObjectId, index : Int)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 		var errorCode = -1; //Question não encontrada
 		if (q != null || !(index > 0))
 		{
@@ -50,7 +52,7 @@ class DeleteAnswer extends BaseRoute
 				{
 					ans.deleted = true;
 					ans.modified = Date.now();
-					ctx.questions.update( { _id : questionId }, q);					
+					ctx.questions.update( { _id : id }, q);					
 				}
 				else errorCode = -3; //Answer não encontrada
 			}
@@ -62,7 +64,7 @@ class DeleteAnswer extends BaseRoute
 
 class EditAnswer extends BaseRoute
 {
-	public function any(questionId : String, index : Int)
+	public function any(id:ObjectId, index : Int)
 	{
 		//TODO:
 		return HttpResponse.empty().redirect('/');
@@ -71,10 +73,10 @@ class EditAnswer extends BaseRoute
 
 class DeleteComment extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int, commentIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int, commentIndex : Int)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 		var errorCode = -1; //Question não encontrada
 		if (q != null || !(commentIndex > 0))
 		{
@@ -86,7 +88,7 @@ class DeleteComment extends BaseRoute
 				{
 					comment.deleted = true;
 					comment.modified = Date.now();
-					ctx.questions.update( { _id : questionId }, q);
+					ctx.questions.update( { _id : id }, q);
 				}
 				else
 					errorCode = -6; //Comentário para Pergunta não encontrado
@@ -106,7 +108,7 @@ class DeleteComment extends BaseRoute
 							{
 								comment.deleted = true;
 								comment.modified = Date.now();
-								ctx.questions.update( { _id : questionId }, q);
+								ctx.questions.update( { _id : id }, q);
 							}
 							else 
 								errorCode = -5; //Comentário para resposta não encontrado
@@ -125,7 +127,7 @@ class DeleteComment extends BaseRoute
 
 class EditComment extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int, commentIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int, commentIndex : Int)
 	{
 		//TODO:
 		return HttpResponse.empty().redirect('/');
@@ -134,7 +136,7 @@ class EditComment extends BaseRoute
 
 class MarkQuestionAsSolved extends BaseRoute
 {	
-	public function any(id : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
 		var q = ctx.questions.findOne( { _id : id } );
@@ -151,10 +153,10 @@ class MarkQuestionAsSolved extends BaseRoute
 
 class ToggleFavorite extends BaseRoute
 {
-	public function any(questionId : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 				
 		var questionUser = ctx.userQuestions.findOne({ _id:myUser});
 		trace(questionUser);
@@ -163,7 +165,7 @@ class ToggleFavorite extends BaseRoute
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : new Array<{answer : Null<Int>, up : Bool}>(),
 						favorite : true,
 						following : false,
@@ -183,7 +185,7 @@ class ToggleFavorite extends BaseRoute
 						d.following = false;					
 					d.favorite = !d.favorite;
 					exists = true;
-					ctx.userQuestions.update(questionUser);
+					ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 					break;
 				}				
 			}
@@ -194,7 +196,7 @@ class ToggleFavorite extends BaseRoute
 										favorite : true,
 										following : false,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 		}
 		
@@ -204,10 +206,10 @@ class ToggleFavorite extends BaseRoute
 
 class ToggleFollow extends BaseRoute
 {
-	public function any(questionId : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 				
 		var questionUser = ctx.userQuestions.findOne({ _id:myUser});
 		trace(questionUser);
@@ -216,7 +218,7 @@ class ToggleFollow extends BaseRoute
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : new Array<{answer : Null<Int>, up : Bool}>(),
 						favorite : true, //+follow implies +fav
 						following : true,
@@ -233,7 +235,7 @@ class ToggleFollow extends BaseRoute
 				{				
 					d.following = !d.following;
 					exists = true;
-					ctx.userQuestions.update(questionUser);
+					ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 					break;
 				}				
 			}
@@ -244,7 +246,7 @@ class ToggleFollow extends BaseRoute
 										favorite : true, //+follow implies  +fav
 										following : true,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 		}
 		
@@ -254,17 +256,17 @@ class ToggleFollow extends BaseRoute
 
 class VoteUp extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );		
+		var q = ctx.questions.findOne( { _id : id } );		
 		var questionUser = ctx.userQuestions.findOne( { _id:myUser } );
 		
 		if (questionUser == null)
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : [{answer : answerIndex, up : true}],
 						favorite : false,
 						following : false,
@@ -275,20 +277,20 @@ class VoteUp extends BaseRoute
 			if (answerIndex == null)
 			{
 				q.voteSum++;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.user.get(ctx.users.col);
 				user.points++;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 			else
 			{
 				q.answers[answerIndex].voteSum++;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.answers[answerIndex].user.get(ctx.users.col);
 				user.points++;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 		}
 		else
@@ -311,20 +313,20 @@ class VoteUp extends BaseRoute
 								if (answerIndex == null)
 								{
 									q.voteSum += 2; //Minus downvote and Plus upvote
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.user.get(ctx.users.col);
 									user.points+= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 								else
 								{
 									q.answers[answerIndex].voteSum += 2; //Same
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.answers[answerIndex].user.get(ctx.users.col);
 									user.points+= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 							}
 							break;
@@ -336,25 +338,25 @@ class VoteUp extends BaseRoute
 						if (answerIndex == null)
 						{
 							q.voteSum++;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.user.get(ctx.users.col);
 							user.points++;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 						else
 						{
 							q.answers[answerIndex].voteSum++;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.answers[answerIndex].user.get(ctx.users.col);
 							user.points++;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 					}
 					break;
 				}		
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 			if (!exists)
 			{
@@ -363,17 +365,17 @@ class VoteUp extends BaseRoute
 										favorite : false,
 										following : false,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 				
 				if (answerIndex == null)
 				{
 					q.voteSum++;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 				else
 				{
 					q.answers[answerIndex].voteSum++;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 			}
 		}
@@ -384,17 +386,17 @@ class VoteUp extends BaseRoute
 
 class VoteDown extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int)
 	{		
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );		
+		var q = ctx.questions.findOne( { _id : id } );		
 		var questionUser = ctx.userQuestions.findOne( { _id:myUser } );
 		
 		if (questionUser == null)
 		{
 			var uq = {
 				_id : myUser,
-				data : [{ question : q,
+				data : [{ question : q._id,
 						votes : [{answer : answerIndex, up : false}],
 						favorite : false,
 						following : false,
@@ -405,20 +407,20 @@ class VoteDown extends BaseRoute
 			if (answerIndex == null)
 			{
 				q.voteSum--;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.user.get(ctx.users.col);
 				user.points--;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 			else
 			{
 				q.answers[answerIndex].voteSum--;
-				ctx.questions.update(q);
+				ctx.questions.update({ _id : q._id }, q);
 				
 				var user = q.answers[answerIndex].user.get(ctx.users.col);
 				user.points--;
-				ctx.users.update(user);
+				ctx.users.update({ _id : user._id }, user);
 			}
 		}
 		else
@@ -441,20 +443,20 @@ class VoteDown extends BaseRoute
 								if (answerIndex == null)
 								{
 									q.voteSum -= 2; //Minus upvote and Plus downvote
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.user.get(ctx.users.col);
 									user.points-= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 								else
 								{
 									q.answers[answerIndex].voteSum -= 2; //Same
-									ctx.questions.update(q);
+									ctx.questions.update({ _id : q._id }, q);
 									
 									var user = q.user.get(ctx.users.col);
 									user.points-= 2;
-									ctx.users.update(user);
+									ctx.users.update({ _id : user._id }, user);
 								}
 							}
 							break;
@@ -466,25 +468,25 @@ class VoteDown extends BaseRoute
 						if (answerIndex == null)
 						{
 							q.voteSum--;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.user.get(ctx.users.col);
 							user.points--;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 						else
 						{
 							q.answers[answerIndex].voteSum--;
-							ctx.questions.update(q);
+							ctx.questions.update({ _id : q._id }, q);
 							
 							var user = q.user.get(ctx.users.col);
 							user.points-= 2;
-							ctx.users.update(user);
+							ctx.users.update({ _id : user._id }, user);
 						}
 					}
 					break;
 				}		
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 			if (!exists)
 			{
@@ -493,17 +495,17 @@ class VoteDown extends BaseRoute
 										favorite : false,
 										following : false,
 										});
-				ctx.userQuestions.update(questionUser);
+				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 				
 				if (answerIndex == null)
 				{
 					q.voteSum--;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 				else
 				{
 					q.answers[answerIndex].voteSum--;
-					ctx.questions.update(q);
+					ctx.questions.update({ _id : q._id }, q);
 				}
 			}
 		}

@@ -1,18 +1,18 @@
 package routes.question;
+
 import db.helper.Location;
+import mweb.tools.*;
 import mweb.tools.HttpResponse.HttpResponse;
 import mweb.tools.TemplateLink;
-import org.bsonspec.*;
-import mweb.tools.*;
-import org.bsonspec.ObjectID;
+import routes.ObjectId;
 
 class QuestionRoute extends BaseRoute
 {
 	@openRoute
-	public function getDefault(id:String):HttpResponse<{ data:{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, comments : Array<{userID : ObjectID, contents : String, date:Date, deleted : Bool}>, answers : Array<{ userID : ObjectID, deleted : Bool, loc : Location, voteSum : Int, date : Date, contents : String, comments : Array<{userID : ObjectID, contents : String, date:Date, deleted : Bool}>}>}, authenticated : Bool, myUser : Null<ObjectID>, username : String, userpoint : Int, isFav : Bool, isFollowing : Bool }>
+	public function getDefault(id:ObjectId):HttpResponse<{ data:{id : ObjectId, userID : ObjectId, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, comments : Array<{userID : ObjectId, contents : String, date:Date, deleted : Bool}>, answers : Array<{ userID : ObjectId, deleted : Bool, loc : Location, voteSum : Int, date : Date, contents : String, comments : Array<{userID : ObjectId, contents : String, date:Date, deleted : Bool}>}>}, authenticated : Bool, myUser : Null<ObjectId>, username : String, userpoint : Int, isFav : Bool, isFollowing : Bool }>
 	{
 		var q = this.ctx.questions.findOne( { _id : id } );
-		var myUser : Null<ObjectID> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
+		var myUser : Null<ObjectId> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
 		
 		if ( q == null )
 			return HttpResponse.fromContent(new TemplateLink({ data:null, authenticated : ctx.session.isAuthenticated(), myUser : myUser, username : '', userpoint : 0, isFav : false, isFollowing : false }, function(_) return '<h1>Invalid question</h1>'));
@@ -45,7 +45,7 @@ class QuestionRoute extends BaseRoute
 		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, comments : [for(c in q.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}], answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : ctx.session.isAuthenticated(), myUser : myUser, username : username, userpoint : userpoint, isFav : isFav, isFollowing : isFollowing }, new QuestionView()));
 	}
 
-	public function postAnswer(id:String, args:{ answer:String }):HttpResponse<Dynamic>
+	public function postAnswer(id:ObjectId, args:{ answer:String }):HttpResponse<Dynamic>
 	{
 		var q = this.ctx.questions.findOne({ _id : id });
 		if ( q == null )
@@ -69,7 +69,7 @@ class QuestionRoute extends BaseRoute
 		return HttpResponse.empty().redirect('/question/$id');
 	}
 	
-	public function postComment(id : String, ?answerIndex : Int, args : { comment : String } ) : HttpResponse<Dynamic>
+	public function postComment(id:ObjectId, ?answerIndex : Int, args : { comment : String } ) : HttpResponse<Dynamic>
 	{
 		var q = this.ctx.questions.findOne( { _id : id } );
 		if (q == null)
@@ -111,7 +111,7 @@ class QuestionRoute extends BaseRoute
 }
 
 @:includeTemplate("question.html")
-class QuestionView extends erazor.macro.SimpleTemplate<{ data:{id : String, userID : ObjectID, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, comments : Array<{userID : ObjectID, contents : String, date:Date, deleted : Bool}>, answers : Array<{ userID : ObjectID, deleted : Bool, loc : Location, voteSum : Int, date : Date, contents : String, comments : Array<{userID : ObjectID, contents : String, date:Date, deleted : Bool}>}>}, authenticated : Bool, myUser : Null<ObjectID>, username : String, userpoint : Int, isFav : Bool, isFollowing : Bool}>
+class QuestionView extends erazor.macro.SimpleTemplate<{ data:{id : ObjectId, userID : ObjectId, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, comments : Array<{userID : ObjectId, contents : String, date:Date, deleted : Bool}>, answers : Array<{ userID : ObjectId, deleted : Bool, loc : Location, voteSum : Int, date : Date, contents : String, comments : Array<{userID : ObjectId, contents : String, date:Date, deleted : Bool}>}>}, authenticated : Bool, myUser : Null<ObjectId>, username : String, userpoint : Int, isFav : Bool, isFollowing : Bool}>
 {
 }
 

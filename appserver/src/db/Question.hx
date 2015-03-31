@@ -1,9 +1,10 @@
 package db;
+
 import db.helper.*;
 import org.bsonspec.*;
 
 typedef Question = {
-	_id : String,
+	_id : ObjectID,
 
 	user : Ref<User>,
 	contents : String,
