@@ -4,23 +4,23 @@ import db.UserQuestions;
 import db.helper.Ref.Ref;
 import mweb.tools.HttpResponse;
 import mweb.tools.TemplateLink;
-import org.bsonspec.ObjectID;
 import routes.BaseRoute;
+import routes.ObjectId;
 import routes.question.QuestionRoute.QuestionView;
 
 //MASS TODO: Handle In-place array updates
 class DeleteQuestion extends BaseRoute
 {
-	public function any(id : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : (id:ObjectID) } );
+		var q = ctx.questions.findOne( { _id : id } );
 		var errorCode = -1; //Question não encontrada
 		if (q != null && q.user == ctx.session.user)
 		{
 			q.deleted = true;
 			q.modified = Date.now();
-			ctx.questions.update( { _id : (id:ObjectID) }, q);			
+			ctx.questions.update( { _id : id }, q);			
 		}
 		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : (ctx.session != null), myUser : myUser }, new QuestionView()));
 	}
@@ -28,7 +28,7 @@ class DeleteQuestion extends BaseRoute
 	
 class EditQuestion extends BaseRoute
 {
-	public function any(id : String)
+	public function any(id:ObjectId)
 	{
 		//TODO:
 		return HttpResponse.empty().redirect('/');	
@@ -37,10 +37,10 @@ class EditQuestion extends BaseRoute
 
 class DeleteAnswer extends BaseRoute
 {
-	public function any(questionId : String, index : Int)
+	public function any(id:ObjectId, index : Int)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 		var errorCode = -1; //Question não encontrada
 		if (q != null || !(index > 0))
 		{
@@ -52,7 +52,7 @@ class DeleteAnswer extends BaseRoute
 				{
 					ans.deleted = true;
 					ans.modified = Date.now();
-					ctx.questions.update( { _id : questionId }, q);					
+					ctx.questions.update( { _id : id }, q);					
 				}
 				else errorCode = -3; //Answer não encontrada
 			}
@@ -64,7 +64,7 @@ class DeleteAnswer extends BaseRoute
 
 class EditAnswer extends BaseRoute
 {
-	public function any(questionId : String, index : Int)
+	public function any(id:ObjectId, index : Int)
 	{
 		//TODO:
 		return HttpResponse.empty().redirect('/');
@@ -73,10 +73,10 @@ class EditAnswer extends BaseRoute
 
 class DeleteComment extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int, commentIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int, commentIndex : Int)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 		var errorCode = -1; //Question não encontrada
 		if (q != null || !(commentIndex > 0))
 		{
@@ -88,7 +88,7 @@ class DeleteComment extends BaseRoute
 				{
 					comment.deleted = true;
 					comment.modified = Date.now();
-					ctx.questions.update( { _id : questionId }, q);
+					ctx.questions.update( { _id : id }, q);
 				}
 				else
 					errorCode = -6; //Comentário para Pergunta não encontrado
@@ -108,7 +108,7 @@ class DeleteComment extends BaseRoute
 							{
 								comment.deleted = true;
 								comment.modified = Date.now();
-								ctx.questions.update( { _id : questionId }, q);
+								ctx.questions.update( { _id : id }, q);
 							}
 							else 
 								errorCode = -5; //Comentário para resposta não encontrado
@@ -127,7 +127,7 @@ class DeleteComment extends BaseRoute
 
 class EditComment extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int, commentIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int, commentIndex : Int)
 	{
 		//TODO:
 		return HttpResponse.empty().redirect('/');
@@ -136,7 +136,7 @@ class EditComment extends BaseRoute
 
 class MarkQuestionAsSolved extends BaseRoute
 {	
-	public function any(id : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
 		var q = ctx.questions.findOne( { _id : id } );
@@ -153,10 +153,10 @@ class MarkQuestionAsSolved extends BaseRoute
 
 class ToggleFavorite extends BaseRoute
 {
-	public function any(questionId : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 				
 		var questionUser = ctx.userQuestions.findOne({ _id:myUser});
 		trace(questionUser);
@@ -206,10 +206,10 @@ class ToggleFavorite extends BaseRoute
 
 class ToggleFollow extends BaseRoute
 {
-	public function any(questionId : String)
+	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );
+		var q = ctx.questions.findOne( { _id : id } );
 				
 		var questionUser = ctx.userQuestions.findOne({ _id:myUser});
 		trace(questionUser);
@@ -256,10 +256,10 @@ class ToggleFollow extends BaseRoute
 
 class VoteUp extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );		
+		var q = ctx.questions.findOne( { _id : id } );		
 		var questionUser = ctx.userQuestions.findOne( { _id:myUser } );
 		
 		if (questionUser == null)
@@ -386,10 +386,10 @@ class VoteUp extends BaseRoute
 
 class VoteDown extends BaseRoute
 {
-	public function any(questionId : String, ?answerIndex : Int)
+	public function any(id:ObjectId, ?answerIndex : Int)
 	{		
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : questionId } );		
+		var q = ctx.questions.findOne( { _id : id } );		
 		var questionUser = ctx.userQuestions.findOne( { _id:myUser } );
 		
 		if (questionUser == null)
