@@ -1,0 +1,4 @@
+Auth: create @openRoute /logout/force (how does mweb handle subdispatching again?)
+Auth: fix broken/old "is user authenticated" (use ctx.session.isAuthenticated())
+Menu: make it a proper view (drop the 'authenticated' parameter)
+
