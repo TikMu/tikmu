@@ -9,7 +9,7 @@ class LogOutRoute extends BaseRoute
 	{
 		ctx.session.close();
 		ctx.sessions.save(ctx.session);
-		return HttpResponse.empty().setCookie("_session", "").redirect("/");
+		return HttpResponse.empty().redirect("/");
 	}
 }
 
