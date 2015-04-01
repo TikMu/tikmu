@@ -1,9 +1,10 @@
+import croxit.Web;
+
 class Tools
 {
 	public static function getIp()
 	{
-		//FIXME: NOT IMPLEMENTED
-		return "??";
+		return Web.getClientIP();
 	}
 
 	public static function validEmail(email:String):Bool

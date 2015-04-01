@@ -1,6 +1,6 @@
 import Error;
 import croxit.Web;
-import db.Context;
+import db.*;
 import mweb.Dispatcher;
 import mweb.tools.*;
 import org.mongodb.Mongo;
@@ -16,38 +16,43 @@ class Main
 		if (!metas.has("openRoute"))
 		{
 			var s = ctx.session;
-			if (s == null)
-				throw NotLogged;
-			else if (!s.isValid())
+			if (!s.isValid())
 				throw ExpiredSession(s);
+			else if (!s.isAuthenticated())
+				throw NotLogged;
 		}
 	}
 
 	static function main()
 	{
+		// init log (and trace)
 		haxe.Log.trace = function (msg, ?p) {
 			var s = '[${Date.now()}][${Web.getClientIP()}] ${p.fileName}:${p.lineNumber}:  $msg\n';
 			Sys.stderr().writeString(s);
 		}
 
+		// init mongo
 		var mongo = new Mongo();
 		var ctx = new db.Context(mongo.tikmu);
 
-		var cookies = Web.getCookies();
 		// handle session
-		if (cookies.exists("_session"))
-		{
+		var cookies = Web.getCookies();
+		if (cookies.exists("_session")) {
 			var sid = cookies.get("_session");
-			if (sid == "")
-				ctx.session = null;
-			else
+			if (sid != "")
 				ctx.session = ctx.sessions.get(sid);
 		}
+		if (ctx.session == null) {
+			var s = new Session(null, null, 1e9, null);  // FIXME loc, device and real span
+			ctx.sessions.save(s);
+			ctx.session = s;
+		}
+		trace('Session: ${ctx.session._id} (user=${ctx.session.user})');
 
+		// init mweb
 		var d = new Dispatcher(Web);
 		d.addMetaHandler(handleLoggedMeta.bind(ctx));
-
-		var route = mweb.Route.anon({
+		var routes = mweb.Route.anon({
 			// keep sorted
 			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault(),
 			ask: new routes.ask.AskRoute(ctx),
@@ -73,15 +78,22 @@ class Main
 			votedown : new routes.nonroute.NonRouteFunctions.VoteDown(ctx),
 		});
 
+		// dispatch
 		var ret:HttpResponse<Dynamic>;
 		try {
-			ret = d.dispatch(route);
+			ret = d.dispatch(routes);
 		} catch (e:AuthorizationError) {
 			trace(e);
 			ret = HttpResponse.empty().redirect('/login');
 		}
 
+		// setCookie updated _session, if necessary
+		if (cookies.get("_session") != ctx.session._id)
+			ret.setCookie("_session", ctx.session._id);
+		else if (!ctx.session.isValid())
+			ret.setCookie("_session", "");
+
+		// response
 		HttpWriter.fromWeb(Web).writeResponse(ret);
-		// new HttpWriter(new NekoWebWriter()).writeResponse(ret);
 	}
 }

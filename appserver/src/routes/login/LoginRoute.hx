@@ -35,7 +35,8 @@ class LoginRoute extends BaseRoute
 		// set a session
 		var s = new Session(null, user._id, 1e9, null);  // FIXME loc, device and real span
 		ctx.sessions.save(s);
-		return HttpResponse.empty().setCookie("_session", s._id).redirect("/");
+		ctx.session = s;
+		return HttpResponse.empty().redirect("/");
 	}
 }
 

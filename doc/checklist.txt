@@ -1,0 +1,15 @@
+"Is working" checklist
+======================
+
+0. Compiling
+
+ - compiling (all subsystems)
+ - --interp unit tests
+
+1. Users & auth
+
+ - Register
+ - Sign in
+ - Sign off
+ - Sign in
+

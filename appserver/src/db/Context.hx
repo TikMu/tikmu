@@ -11,7 +11,7 @@ class Context
 
 	@:allow(Main)
 	@:allow(routes.login.LoginRoute)
-	public var session(default, null):Null<Session>;
+	public var session(default, null):Session;
 
 	public function new(db:Database)
 	{
