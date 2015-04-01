@@ -1,4 +1,14 @@
-Auth: create @openRoute /logout/force (how does mweb handle subdispatching again?)
+To-do list
+==========
+
+ - Begin with tag: subsystem, feature or other meaningful word
+ - Add a short description after ": "
+ - Add more details in parenthesis
+ - To assign Mark (user mrk), append @mrk
+ - Assigned tasks should not be taken without coordination with the assignee
+ - All other tasks are open
+
+Auth: create /logout/force with openRoute meta (how does mweb handle subdispatching again?)
 Auth: fix broken/old "is user authenticated" (use ctx.session.isAuthenticated())
-Menu: make it a proper view (drop the 'authenticated' parameter)
+Web: make 'Menu' a proper route (drop the 'authenticated' parameter)
 
