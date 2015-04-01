@@ -31,6 +31,7 @@ abstract Password(String) {
 		case SPlain:
 			plain;
 		case SSha256(it, salt):
+			trace("hashing");
 			var h = plain + salt + plain;
 			for (i in 0...it)
 				h = haxe.crypto.Sha256.encode(h);
@@ -60,16 +61,18 @@ abstract Password(String) {
 
 	public static function create(plain:String, ?security:PasswordSecurity)
 	{
-		// current minimum accepted security: Sha256 + iterations + salt
-		// WARNING: this doesn't protect weak passwords at all!!
-		// iterations: FIXME (verify and improve this analysis!!)
-		//  - bitcoin: 58+ bits/s (estimate for jan/2015)
-		//  - hypothesis: attacker has at most 1M times the bitcoin network => 78 bits
-		//  - hypothesis: attacker has 1 year to spend (or more computing power): add 25 bits => 103 bits
-		//  - NIST guidelines reduce the security of hashes by half
-		//  - so a single sha256 hash has still 25 bits of security in this attack model
-		//  - therefore, the iteration count is not important... lets keep 42 for now
-		// salt: 2**40 (~1T) variations for each password
+		// current minimum accepted security:
+		//  - Sha256 + iterations + salt
+		// iterations:
+		//  - bitcoin: 58 bits/s at 850k USD/day (april/2015)
+		//  - hypothesis: attacker has access to, at most, the equivalent to 1/1000 of the bitcoin network (-10 bits)
+		//  - hypothesis: attacker will spend no more than 1 day per password (+16 bits)
+		//  - hypothesis: user passwords have very low entropy (protect at least those with 30+ bits)
+		//  - we would need 2**34 iterations, which is infeasible at the moment
+		//  - FIXME use harder key strengthening function
+		//  - FIXME use better/faster hash implementations (~500 hashes/s on a 3.6 GHz i7 is too little)
+		// salt:
+		//  - 2**40 (~1T) variations for each password
 		if (security == null)
 			security = SSha256(42, Random.salt(5));
 
