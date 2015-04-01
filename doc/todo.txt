@@ -5,7 +5,7 @@ To-do list
  - Add a short description after ": "
  - Add more details in parenthesis
  - To assign Mark (user mrk), append @mrk
- - Assigned tasks should not be taken without coordination with the assignee
+ - Work on assigned tasks requires coordination with the assigned person
  - All other tasks are open
 
 Auth: create /logout/force with openRoute meta (how does mweb handle subdispatching again?)
