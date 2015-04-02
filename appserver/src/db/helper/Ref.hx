@@ -24,5 +24,8 @@ abstract Ref<V:Object<K>>(K) from K to K
 	{
 		return new Ref(o._id);
 	}
+
+	@:extern inline public function asId():ObjectID
+		return this;
 }
 

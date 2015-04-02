@@ -20,24 +20,24 @@
 				@userpoint				
 			</h2>
 			<br/>
-			<a onclick="js.Question.toggleFav(@data.id)">@if(isFav){-Fav}else{+Fav}</a>
-			<a onclick="js.Question.toggleFollow(data.id)">@if(isFollowing){-Follow}else{+Follow}</a>
+			<a onclick="js.Question.toggleFav(@data.id.toString())">@if(isFav){-Fav}else{+Fav}</a>
+			<a onclick="js.Question.toggleFollow(data.id.toString())">@if(isFollowing){-Follow}else{+Follow}</a>
 			<br/>
 			<br/>
 			@if(myUser != null && myUser == data.userID)
 			{
-				<a onclick="js.Question.confirmDeleteQuestion(@data.id)">Delete</a>
+				<a onclick="js.Question.confirmDeleteQuestion(@data.id.toString())">Delete</a>
 				<a onclick="alert('TODO');">Edit</a>
-				<a href="js.Question.markQuestionAsSolved(@data.id)">Mark as Solved</a>
+				<a href="js.Question.markQuestionAsSolved(@data.id.toString())">Mark as Solved</a>
 			}
 			<h1>
 			@data.contents			
 			</h1>
 			<br/>
 				<br/>
-				<a onclick="js.Question.voteUp(@data.id, null)">UP</a>
+				<a onclick="js.Question.voteUp(@data.id.toString(), null)">UP</a>
 				<h2>@data.voteSum</h2>votes
-				<a onclick="js.Question.voteDown(@data.id, null)">DOWN</a>
+				<a onclick="js.Question.voteDown(@data.id.toString(), null)">DOWN</a>
 				<br/>
 			<br/>
 			@for(tag in data.tags)
@@ -52,7 +52,7 @@
 				{
 					@if(myUser != null && myUser == c.userID)
 					{
-						<a onclick="js.Question.confirmDeleteComment(@data.id, null, @data.comments.indexOf(c)">Delete</a>
+						<a onclick="js.Question.confirmDeleteComment(@data.id.toString(), null, @data.comments.indexOf(c)">Delete</a>
 						<a onclick="alert('TODO');">Edit</a>
 					}
 					<div class="comment">
@@ -63,7 +63,7 @@
 			<br/>
 			<br/>
 				<div class="post comment">
-					<form method="POST" action="/question/comment/@data.id">
+					<form method="POST" action="/question/comment/@data.id.toString()">
 						<textarea placeholder="Deixe seu comentário" name="comment"></textarea>
 						<!--Workaround until I see how to pass nullable parameters to MWeb-->
 						<!--Should work fine without-->
@@ -79,16 +79,16 @@
 				{
 					@if(myUser != null && myUser == ans.userID)
 					{
-						<a onclick="js.Question.confirmDeleteAnswer(@data.id, @data.answers.indexOf(ans))">Delete</a>
+						<a onclick="js.Question.confirmDeleteAnswer(@data.id.toString(), @data.answers.indexOf(ans))">Delete</a>
 						<a onclick="alert('TODO');">Edit</a>						
 					}
 					<div class="answer">
 						
 						
 						<br/>
-						<a onclick="js.Question.voteUp(@data.id, @data.answers.indexOf(ans))">UP</a>
+						<a onclick="js.Question.voteUp(@data.id.toString(), @data.answers.indexOf(ans))">UP</a>
 						<h2>@ans.voteSum</h2>votes
-						<a onclick="js.Question.voteDown(@data.id, @data.answers.indexOf(ans))">DOWN</a>
+						<a onclick="js.Question.voteDown(@data.id.toString(), @data.answers.indexOf(ans))">DOWN</a>
 						<br/>
 						
 						@ans.contents
@@ -99,7 +99,7 @@
 							{
 								@if(myUser != null && myUser == c.userID)
 								{
-									<a onclick="js.Question.confirmDeleteComment(@data.id, @data.answers.indexOf(ans), @ans.comments.indexOf(c)">Delete</a>
+									<a onclick="js.Question.confirmDeleteComment(@data.id.toString(), @data.answers.indexOf(ans), @ans.comments.indexOf(c)">Delete</a>
 									<a onclick="alert('TODO');">Edit</a>
 								}
 								<div class="comment">
@@ -109,7 +109,7 @@
 						}
 						
 						<div class="post comment">
-							<form method="POST" action="/question/comment/@data.id">
+							<form method="POST" action="/question/comment/@data.id.toString()">
 								<textarea placeholder="Deixe seu comentário" name="comment"></textarea>
 								<input type="hidden" name="answerIndex" id="answerIndex" value="@data.answers.indexOf(ans)"/>
 								<input type="submit" />
@@ -118,7 +118,7 @@
 					</div>
 				}
 			}
-			<form method="POST" action="/question/answer/@data.id">
+			<form method="POST" action="/question/answer/@data.id.toString()">
 				<textarea placeholder="Deixe sua resposta" name="answer"></textarea>
 				<input type="submit" />
 			</form>
