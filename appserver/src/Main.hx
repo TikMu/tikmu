@@ -54,10 +54,9 @@ class Main
 		d.addMetaHandler(handleLoggedMeta.bind(ctx));
 		var routes = mweb.Route.anon({
 			// keep sorted
-			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault(),
+			anyDefault: @openRoute function(d:Dispatcher<Dynamic>, ?args) return d.getRoute(routes.list.ListRoute).anyDefault(args),
 			ask: new routes.ask.AskRoute(ctx),
 			list: new routes.list.ListRoute(ctx),
-			listfavorites: new routes.list.ListFavoritesRoute(ctx),
 			login: new routes.login.LoginRoute(ctx),
 			logout: new routes.login.LogOutRoute(ctx),
 			question: new routes.question.QuestionRoute(ctx),

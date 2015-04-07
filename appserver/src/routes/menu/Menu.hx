@@ -6,12 +6,12 @@ import routes.BaseRoute;
 @:includeTemplate("menu.html")
 class MenuView extends erazor.macro.SimpleTemplate<{ authenticated : Bool }> {
 }
- 
+
 class Menu
 {
 	public static function doMenu(authenticated : Bool)
 	{
-		
+
 		return new TemplateLink( { authenticated : authenticated }, new MenuView());
 	}
 }

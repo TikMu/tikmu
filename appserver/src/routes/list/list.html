@@ -7,6 +7,10 @@
 		<div class="main">
 		@routes.menu.Menu.doMenu(authenticated)
 		<br/><br/>
+		@if (msg != null)
+		{
+			<p>@msg</p>
+		}
 		@if (qs.length == 0)
 		{
 			<h1>Parabens voce chegou ao FIM</h1> <h6>(da internet)</h6>
