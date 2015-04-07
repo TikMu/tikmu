@@ -9,29 +9,12 @@ import routes.ObjectId;
 import routes.question.QuestionRoute.QuestionView;
 
 //MASS TODO: Handle In-place array updates
-class DeleteQuestion extends BaseRoute
-{
-	public function any(id:ObjectId)
-	{
-		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : id } );
-		var errorCode = -1; //Question não encontrada
-		if (q != null && q.user == ctx.session.user)
-		{
-			q.deleted = true;
-			q.modified = Date.now();
-			ctx.questions.update( { _id : id }, q);			
-		}
-		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : (ctx.session != null), myUser : myUser }, new QuestionView()));
-	}
-}
-	
 class EditQuestion extends BaseRoute
 {
 	public function any(id:ObjectId)
 	{
 		//TODO:
-		return HttpResponse.empty().redirect('/');	
+		return HttpResponse.empty().redirect('/');
 	}
 }
 
@@ -52,7 +35,7 @@ class DeleteAnswer extends BaseRoute
 				{
 					ans.deleted = true;
 					ans.modified = Date.now();
-					ctx.questions.update( { _id : id }, q);					
+					ctx.questions.update( { _id : id }, q);
 				}
 				else errorCode = -3; //Answer não encontrada
 			}
@@ -110,7 +93,7 @@ class DeleteComment extends BaseRoute
 								comment.modified = Date.now();
 								ctx.questions.update( { _id : id }, q);
 							}
-							else 
+							else
 								errorCode = -5; //Comentário para resposta não encontrado
 						}
 						else
@@ -135,7 +118,7 @@ class EditComment extends BaseRoute
 }
 
 class MarkQuestionAsSolved extends BaseRoute
-{	
+{
 	public function any(id:ObjectId)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
@@ -145,7 +128,7 @@ class MarkQuestionAsSolved extends BaseRoute
 		{
 			q.solved = !q.solved;
 			q.modified = Date.now();
-			ctx.questions.update( { _id : id }, q);			
+			ctx.questions.update( { _id : id }, q);
 		}
 		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : (ctx.session != null), myUser : myUser }, new QuestionView()));
 	}
@@ -157,10 +140,10 @@ class ToggleFavorite extends BaseRoute
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
 		var q = ctx.questions.findOne( { _id : id } );
-				
+
 		var questionUser = ctx.userQuestions.findOne({ _id:myUser});
 		trace(questionUser);
-		
+
 		if (questionUser == null)
 		{
 			var uq = {
@@ -182,12 +165,12 @@ class ToggleFavorite extends BaseRoute
 				{
 					//if Toggle favorite off, must toggle follow off
 					if (d.favorite && d.following)
-						d.following = false;					
+						d.following = false;
 					d.favorite = !d.favorite;
 					exists = true;
 					ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 					break;
-				}				
+				}
 			}
 			if (!exists)
 			{
@@ -199,7 +182,7 @@ class ToggleFavorite extends BaseRoute
 				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 		}
-		
+
 		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : (ctx.session != null), myUser : myUser }, new QuestionView()));
 	}
 }
@@ -210,10 +193,10 @@ class ToggleFollow extends BaseRoute
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
 		var q = ctx.questions.findOne( { _id : id } );
-				
+
 		var questionUser = ctx.userQuestions.findOne({ _id:myUser});
 		trace(questionUser);
-		
+
 		if (questionUser == null)
 		{
 			var uq = {
@@ -232,12 +215,12 @@ class ToggleFollow extends BaseRoute
 			for (d in questionUser.data)
 			{
 				if (d.question == q)
-				{				
+				{
 					d.following = !d.following;
 					exists = true;
 					ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 					break;
-				}				
+				}
 			}
 			if (!exists)
 			{
@@ -249,7 +232,7 @@ class ToggleFollow extends BaseRoute
 				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 		}
-		
+
 		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : (ctx.session != null), myUser : myUser }, new QuestionView()));
 	}
 }
@@ -259,9 +242,9 @@ class VoteUp extends BaseRoute
 	public function any(id:ObjectId, ?answerIndex : Int)
 	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : id } );		
+		var q = ctx.questions.findOne( { _id : id } );
 		var questionUser = ctx.userQuestions.findOne( { _id:myUser } );
-		
+
 		if (questionUser == null)
 		{
 			var uq = {
@@ -272,13 +255,13 @@ class VoteUp extends BaseRoute
 						following : false,
 				}]
 			};
-			ctx.userQuestions.insert(uq);			
-			
+			ctx.userQuestions.insert(uq);
+
 			if (answerIndex == null)
 			{
 				q.voteSum++;
 				ctx.questions.update({ _id : q._id }, q);
-				
+
 				var user = q.user.get(ctx.users.col);
 				user.points++;
 				ctx.users.update({ _id : user._id }, user);
@@ -287,7 +270,7 @@ class VoteUp extends BaseRoute
 			{
 				q.answers[answerIndex].voteSum++;
 				ctx.questions.update({ _id : q._id }, q);
-				
+
 				var user = q.answers[answerIndex].user.get(ctx.users.col);
 				user.points++;
 				ctx.users.update({ _id : user._id }, user);
@@ -299,11 +282,11 @@ class VoteUp extends BaseRoute
 			for (d in questionUser.data)
 			{
 				if (d.question == q)
-				{				
+				{
 					exists = true;
 					var alreadyVoted = false;
 					for (v in d.votes)
-					{						
+					{
 						if (v.answer == answerIndex)
 						{
 							alreadyVoted = true;
@@ -314,7 +297,7 @@ class VoteUp extends BaseRoute
 								{
 									q.voteSum += 2; //Minus downvote and Plus upvote
 									ctx.questions.update({ _id : q._id }, q);
-									
+
 									var user = q.user.get(ctx.users.col);
 									user.points+= 2;
 									ctx.users.update({ _id : user._id }, user);
@@ -323,14 +306,14 @@ class VoteUp extends BaseRoute
 								{
 									q.answers[answerIndex].voteSum += 2; //Same
 									ctx.questions.update({ _id : q._id }, q);
-									
+
 									var user = q.answers[answerIndex].user.get(ctx.users.col);
 									user.points+= 2;
 									ctx.users.update({ _id : user._id }, user);
 								}
 							}
 							break;
-						}						
+						}
 					}
 					if (!alreadyVoted)
 					{
@@ -339,7 +322,7 @@ class VoteUp extends BaseRoute
 						{
 							q.voteSum++;
 							ctx.questions.update({ _id : q._id }, q);
-							
+
 							var user = q.user.get(ctx.users.col);
 							user.points++;
 							ctx.users.update({ _id : user._id }, user);
@@ -348,14 +331,14 @@ class VoteUp extends BaseRoute
 						{
 							q.answers[answerIndex].voteSum++;
 							ctx.questions.update({ _id : q._id }, q);
-							
+
 							var user = q.answers[answerIndex].user.get(ctx.users.col);
 							user.points++;
 							ctx.users.update({ _id : user._id }, user);
 						}
 					}
 					break;
-				}		
+				}
 				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 			if (!exists)
@@ -366,7 +349,7 @@ class VoteUp extends BaseRoute
 										following : false,
 										});
 				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
-				
+
 				if (answerIndex == null)
 				{
 					q.voteSum++;
@@ -379,7 +362,7 @@ class VoteUp extends BaseRoute
 				}
 			}
 		}
-		
+
 		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : (ctx.session != null), myUser : myUser }, new QuestionView()));
 	}
 }
@@ -387,11 +370,11 @@ class VoteUp extends BaseRoute
 class VoteDown extends BaseRoute
 {
 	public function any(id:ObjectId, ?answerIndex : Int)
-	{		
+	{
 		var myUser = ctx.session.user.get(ctx.users.col)._id;
-		var q = ctx.questions.findOne( { _id : id } );		
+		var q = ctx.questions.findOne( { _id : id } );
 		var questionUser = ctx.userQuestions.findOne( { _id:myUser } );
-		
+
 		if (questionUser == null)
 		{
 			var uq = {
@@ -402,13 +385,13 @@ class VoteDown extends BaseRoute
 						following : false,
 				}]
 			};
-			ctx.userQuestions.insert(uq);			
-			
+			ctx.userQuestions.insert(uq);
+
 			if (answerIndex == null)
 			{
 				q.voteSum--;
 				ctx.questions.update({ _id : q._id }, q);
-				
+
 				var user = q.user.get(ctx.users.col);
 				user.points--;
 				ctx.users.update({ _id : user._id }, user);
@@ -417,7 +400,7 @@ class VoteDown extends BaseRoute
 			{
 				q.answers[answerIndex].voteSum--;
 				ctx.questions.update({ _id : q._id }, q);
-				
+
 				var user = q.answers[answerIndex].user.get(ctx.users.col);
 				user.points--;
 				ctx.users.update({ _id : user._id }, user);
@@ -429,11 +412,11 @@ class VoteDown extends BaseRoute
 			for (d in questionUser.data)
 			{
 				if (d.question == q)
-				{				
+				{
 					exists = true;
 					var alreadyVoted = false;
 					for (v in d.votes)
-					{						
+					{
 						if (v.answer == answerIndex)
 						{
 							alreadyVoted = true;
@@ -444,7 +427,7 @@ class VoteDown extends BaseRoute
 								{
 									q.voteSum -= 2; //Minus upvote and Plus downvote
 									ctx.questions.update({ _id : q._id }, q);
-									
+
 									var user = q.user.get(ctx.users.col);
 									user.points-= 2;
 									ctx.users.update({ _id : user._id }, user);
@@ -453,14 +436,14 @@ class VoteDown extends BaseRoute
 								{
 									q.answers[answerIndex].voteSum -= 2; //Same
 									ctx.questions.update({ _id : q._id }, q);
-									
+
 									var user = q.user.get(ctx.users.col);
 									user.points-= 2;
 									ctx.users.update({ _id : user._id }, user);
 								}
 							}
 							break;
-						}						
+						}
 					}
 					if (!alreadyVoted)
 					{
@@ -469,7 +452,7 @@ class VoteDown extends BaseRoute
 						{
 							q.voteSum--;
 							ctx.questions.update({ _id : q._id }, q);
-							
+
 							var user = q.user.get(ctx.users.col);
 							user.points--;
 							ctx.users.update({ _id : user._id }, user);
@@ -478,14 +461,14 @@ class VoteDown extends BaseRoute
 						{
 							q.answers[answerIndex].voteSum--;
 							ctx.questions.update({ _id : q._id }, q);
-							
+
 							var user = q.user.get(ctx.users.col);
 							user.points-= 2;
 							ctx.users.update({ _id : user._id }, user);
 						}
 					}
 					break;
-				}		
+				}
 				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
 			}
 			if (!exists)
@@ -496,7 +479,7 @@ class VoteDown extends BaseRoute
 										following : false,
 										});
 				ctx.userQuestions.update({ _id : questionUser._id }, questionUser);
-				
+
 				if (answerIndex == null)
 				{
 					q.voteSum--;
@@ -509,7 +492,7 @@ class VoteDown extends BaseRoute
 				}
 			}
 		}
-		
+
 		return HttpResponse.fromContent(new TemplateLink({ data: { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answers : [for(a in q.answers) { userID : a.user.get(ctx.users.col)._id, deleted : a.deleted, loc : a.loc, voteSum : a.voteSum, date : a.created, contents : a.contents, comments : [for(c in a.comments){userID : c.user.get(ctx.users.col)._id, contents : c.contents, date:c.created, deleted : c.deleted}] } ] }, authenticated : (ctx.session != null), myUser : myUser }, new QuestionView()));
 	}
 }

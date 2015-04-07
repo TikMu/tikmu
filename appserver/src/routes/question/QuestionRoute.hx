@@ -45,6 +45,23 @@ class QuestionRoute extends BaseRoute
 		return HttpResponse.fromContent(new TemplateLink(toResult(q, ctx, { myUser:myUser, username:username, userpoint:userpoint, isFav:isFav, isFollowing:isFollowing }), new QuestionView()));
 	}
 
+	public function deleteDefault(id:ObjectId):HttpResponse<Dynamic>
+	{
+		var myUser = ctx.session.user.get(ctx.users.col);
+		var q = ctx.questions.findOne( { _id : id } );
+		if (q == null)
+			return HttpResponse.empty().setStatus(NotFound);
+
+		if (q.user.asId().toString() != myUser._id.toString())
+			return HttpResponse.empty().setStatus(Forbidden);
+
+		q.deleted = true;
+		q.modified = Date.now();
+		ctx.questions.update( { _id : id }, q);
+
+		return HttpResponse.empty().redirect('/?msg=' + StringTools.urlEncode('Question successfully deleted'));
+	}
+
 	inline public static function toResult(q:db.Question, ctx:db.Context, extra:{ myUser:Null<ObjectId>, username:String, userpoint:Int, isFav:Bool, isFollowing:Bool }):QuestionResult
 	{
 		var q_user = q.user.get(ctx.users.col);

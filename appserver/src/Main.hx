@@ -11,7 +11,7 @@ class Main
 {
 	static function handleLoggedMeta(ctx:Context, metas:Array<String>)
 	{
-		// TODO: Change this test to handle sessions with no users 
+		// TODO: Change this test to handle sessions with no users
 		// (for now, sessions are being created on logging in, so no sessions without users)
 		if (!metas.has("openRoute"))
 		{
@@ -67,7 +67,6 @@ class Main
 			// These will be changed to remoting functions (keep sorted too)
 			deleteanswer : new routes.nonroute.NonRouteFunctions.DeleteAnswer(ctx),
 			deletecomment : new routes.nonroute.NonRouteFunctions.DeleteComment(ctx),
-			deletequestion : new routes.nonroute.NonRouteFunctions.DeleteQuestion(ctx),
 			editanswer : new routes.nonroute.NonRouteFunctions.EditAnswer(ctx),
 			editcomment : new routes.nonroute.NonRouteFunctions.EditComment(ctx),
 			editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(ctx),
