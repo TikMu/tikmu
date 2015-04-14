@@ -9,10 +9,14 @@ using Lambda;
 
 class Main
 {
-	static function handleLoggedMeta(ctx:Context, metas:Array<String>)
+	var db:Database;
+	var ctx:Context;
+
+	function handleLoggedMeta(metas:Array<String>)
 	{
 		// TODO: Change this test to handle sessions with no users
 		// (for now, sessions are being created on logging in, so no sessions without users)
+		// TODO does this still apply?
 		if (!metas.has("openRoute"))
 		{
 			var s = ctx.session;
@@ -23,32 +27,32 @@ class Main
 		}
 	}
 
-	public static function dispatch(context:Context, request:HttpRequest)
+	function dispatch(request:HttpRequest)
 	{
 		var d = new Dispatcher(request);
-		d.addMetaHandler(handleLoggedMeta.bind(context));
+		d.addMetaHandler(handleLoggedMeta);
 		var routes = mweb.Route.anon({
 			// keep sorted
 			anyDefault: @openRoute function(d:Dispatcher<Dynamic>, ?args) return d.getRoute(routes.list.ListRoute).anyDefault(args),
-			ask: new routes.ask.AskRoute(context),
-			list: new routes.list.ListRoute(context),
-			login: new routes.login.LoginRoute(context),
-			logout: new routes.login.LogOutRoute(context),
-			question: new routes.question.QuestionRoute(context),
-			register: new routes.register.RegisterRoute(context),
-			search: new routes.search.SearchRoute(context),
+			ask: new routes.ask.AskRoute(ctx),
+			list: new routes.list.ListRoute(ctx),
+			login: new routes.login.LoginRoute(ctx),
+			logout: new routes.login.LogOutRoute(ctx),
+			question: new routes.question.QuestionRoute(ctx),
+			register: new routes.register.RegisterRoute(ctx),
+			search: new routes.search.SearchRoute(ctx),
 
 			// These will be changed to remoting functions (keep sorted too)
-			deleteanswer : new routes.nonroute.NonRouteFunctions.DeleteAnswer(context),
-			deletecomment : new routes.nonroute.NonRouteFunctions.DeleteComment(context),
-			editanswer : new routes.nonroute.NonRouteFunctions.EditAnswer(context),
-			editcomment : new routes.nonroute.NonRouteFunctions.EditComment(context),
-			editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(context),
-			markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(context),
-			togglefavorite : new routes.nonroute.NonRouteFunctions.ToggleFavorite(context),
-			togglefollow : new routes.nonroute.NonRouteFunctions.ToggleFollow(context),
-			voteup : new routes.nonroute.NonRouteFunctions.VoteUp(context),
-			votedown : new routes.nonroute.NonRouteFunctions.VoteDown(context),
+			deleteanswer : new routes.nonroute.NonRouteFunctions.DeleteAnswer(ctx),
+			deletecomment : new routes.nonroute.NonRouteFunctions.DeleteComment(ctx),
+			editanswer : new routes.nonroute.NonRouteFunctions.EditAnswer(ctx),
+			editcomment : new routes.nonroute.NonRouteFunctions.EditComment(ctx),
+			editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(ctx),
+			markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(ctx),
+			togglefavorite : new routes.nonroute.NonRouteFunctions.ToggleFavorite(ctx),
+			togglefollow : new routes.nonroute.NonRouteFunctions.ToggleFollow(ctx),
+			voteup : new routes.nonroute.NonRouteFunctions.VoteUp(ctx),
+			votedown : new routes.nonroute.NonRouteFunctions.VoteDown(ctx),
 		});
 
 		var ret:HttpResponse<Dynamic>;
@@ -63,6 +67,66 @@ class Main
 	}
 
 	@:access(mweb.tools.HttpRequest) 
+	function subHtml(url:String)
+	{
+		var method = "GET";
+		var url = url.split("?");
+		var uri = url[0];
+		var params = new Map();
+		HttpRequest.splitArgs(url[1], params);
+		var request = HttpRequest.fromData(method, uri, params);
+		return dispatch(request);
+	}
+
+	function subValue(url:String)
+	{
+		var html = subHtml(url);
+		return switch (html.response) {
+		case Content(data):
+			data.data;
+		case None:
+			null;
+		case Redirect(_):
+			throw "Can't transform redirect into value";
+		}
+	}
+
+	function incoming()
+	{
+		var cookies = Web.getCookies();
+
+		// handle session
+		ctx.session = null;
+		if (cookies.exists("_session")) {
+			var sid = cookies.get("_session");
+			if (sid != "")
+				ctx.session = ctx.sessions.get(sid);
+		}
+		if (ctx.session == null) {
+			var s = new Session(null, null, 1e9, null);  // FIXME loc, device and real span
+			ctx.sessions.save(s);
+			ctx.session = s;
+		}
+		trace('Session: ${ctx.session._id} (user=${ctx.session.user})');
+
+		var request = Web;
+		var response = dispatch(request);
+
+		// setCookie updated _session, if necessary
+		if (cookies.get("_session") != ctx.session._id)
+			response.setCookie("_session", ctx.session._id);
+		else if (!ctx.session.isValid())
+			response.setCookie("_session", "");
+
+		HttpWriter.fromWeb(request).writeResponse(response);
+	}
+
+	function new(db)
+	{
+		this.db = db;
+		ctx = new Context(db);
+	}
+
 	static function main()
 	{
 		haxe.Log.trace = function (msg, ?p) {
@@ -71,61 +135,10 @@ class Main
 		}
 
 		var mongo = new Mongo();
-		var context = new Context(mongo.tikmu);
-
-		var subHtml = function (url:String)
-		{
-			var method = "GET";
-			var url = url.split("?");
-			var uri = url[0];
-			var data = url[1];
-			var params = new Map();
-			HttpRequest.splitArgs(data, params);
-			var request = HttpRequest.fromData(method, uri, params);
-			var response = dispatch(context, request);
-			return response;
-		}
-
-		var subValue = function (url:String)
-		{
-			var response = subHtml(url);
-			return switch (response.response) {
-			case Content(data):
-				data.data;
-			case None:
-				null;
-			case all:
-				throw "Can't transform a redirect into value";
-			}
-		}
+		var main = new Main(mongo.tikmu);
 
 		/* TODO rinse and repeat */ {
-			var cookies = Web.getCookies();
-
-			// handle session
-			context.session = null;
-			if (cookies.exists("_session")) {
-				var sid = cookies.get("_session");
-				if (sid != "")
-					context.session = context.sessions.get(sid);
-			}
-			if (context.session == null) {
-				var s = new Session(null, null, 1e9, null);  // FIXME loc, device and real span
-				context.sessions.save(s);
-				context.session = s;
-			}
-			trace('Session: ${context.session._id} (user=${context.session.user})');
-
-			var request = Web;
-			var response = dispatch(context, request);
-
-			// setCookie updated _session, if necessary
-			if (cookies.get("_session") != context.session._id)
-				response.setCookie("_session", context.session._id);
-			else if (!context.session.isValid())
-				response.setCookie("_session", "");
-
-			HttpWriter.fromWeb(request).writeResponse(response);
+			main.incoming();
 		}
 	}
 }
