@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<div class="main">
-		@routes.menu.Menu.doMenu(authenticated)
+		@ctx.subHtml("/helper/menu")
 		<br/><br/>
 		@if (msg != null)
 		{

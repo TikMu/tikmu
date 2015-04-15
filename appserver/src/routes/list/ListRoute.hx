@@ -6,13 +6,15 @@ import db.Question;
 
 class ListRoute extends BaseRoute
 {
+	var view:ListView;
+
 	@openRoute
 	public function anyDefault(?args:{ msg:String }):HttpResponse<ListResponse>
 	{
 		var myUser : Null<ObjectId> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
 		var qs = [ for (q in ctx.questions.find({})) { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answersCount : q.answers.length } ];
 
-		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg: args != null ? args.msg : null, authenticated : (ctx.session != null), myUser : myUser }, new ListView()));
+		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg: args != null ? args.msg : null, authenticated : (ctx.session != null), myUser : myUser }, new ListView(ctx)));
 	}
 
 	public function anyFavorites()
@@ -32,7 +34,7 @@ class ListRoute extends BaseRoute
 
 		var qs = [ for (q in qArr) { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answersCount : q.answers.length } ];
 
-		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg: null, authenticated : (ctx.session != null), myUser : myUser }, new ListView()));
+		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg: null, authenticated : (ctx.session != null), myUser : myUser }, new ListView(ctx)));
 	}
 }
 
@@ -46,4 +48,12 @@ typedef ListResponse = {
 @:includeTemplate("list.html")
 class ListView extends erazor.macro.SimpleTemplate<ListResponse>
 {
+	public var ctx:Context;
+
+	public function new(ctx)
+	{
+		this.ctx = ctx;
+		super();
+	}
 }
+

@@ -27,7 +27,7 @@ class SearchRoute extends BaseRoute
 
 		var qs = [ for (q in ctx.questions.find({})) { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answersCount : q.answers.length } ];
 
-		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg:null, authenticated : (ctx.session != null), myUser : myUser }, new routes.list.ListRoute.ListView()));
+		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg:null, authenticated : (ctx.session != null), myUser : myUser }, new routes.list.ListRoute.ListView(ctx)));
 	}
 }
 
