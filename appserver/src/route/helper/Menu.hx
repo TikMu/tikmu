@@ -4,7 +4,7 @@ import mweb.tools.*;
 
 @:includeTemplate("menuView.html")
 class MenuView extends erazor.macro.SimpleTemplate<{}> {
-	public var ctx:Context;
+	var ctx:Context;
 
 	public function new(ctx)
 	{
@@ -14,7 +14,6 @@ class MenuView extends erazor.macro.SimpleTemplate<{}> {
 }
 
 class Menu extends routes.BaseRoute {
-
 	var view:MenuView;
 
 	@openRoute
@@ -28,6 +27,5 @@ class Menu extends routes.BaseRoute {
 		super(ctx);
 		view = new MenuView(ctx);
 	}
-
 }
 

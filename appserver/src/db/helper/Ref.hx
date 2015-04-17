@@ -8,7 +8,7 @@ typedef Object<K> = {
 	_id : K
 }
 
-abstract Ref<V:Object<K>>(K) from K to K
+@:forward abstract Ref<V:Object<K>>(K) from K to K
 {
 	inline public function new(id)
 	{

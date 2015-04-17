@@ -1,52 +1,14 @@
 package routes.list;
-import db.helper.Location;
+
 import mweb.tools.*;
-import routes.ObjectId;
-import db.Question;
 
-class ListRoute extends BaseRoute
-{
-	var view:ListView;
-
-	@openRoute
-	public function anyDefault(?args:{ msg:String }):HttpResponse<ListResponse>
-	{
-		var myUser : Null<ObjectId> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
-		var qs = [ for (q in ctx.questions.find({})) { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answersCount : q.answers.length } ];
-
-		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg: args != null ? args.msg : null, authenticated : (ctx.session != null), myUser : myUser }, new ListView(ctx)));
-	}
-
-	public function anyFavorites()
-	{
-		//TODO:
-		var myUser = ctx.session.user.get(ctx.users.col)._id;
-
-		var userQuestions = ctx.userQuestions.findOne( { _id : ctx.session.user } );
-		var qArr : Array<Question> = [];
-		for (d in userQuestions.data)
-		{
-			if (d.favorite)
-			{
-				qArr.push(d.question.get(ctx.questions.col));
-			}
-		}
-
-		var qs = [ for (q in qArr) { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answersCount : q.answers.length } ];
-
-		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg: null, authenticated : (ctx.session != null), myUser : myUser }, new ListView(ctx)));
-	}
+typedef ListViewData = {
+	questions : Array<db.Question>,
+	title : String,
 }
 
-typedef ListResponse = {
-	qs : Array<{ id : ObjectId, userID : ObjectId, userName : String, contents : String, tags : Array<String>, loc : db.helper.Location, voteSum : Int, favorites : Int, watchers : Int, date : Date, solved : Bool, answersCount : Int }>,
-	msg : Null<String>,
-	authenticated : Bool,
-	myUser : Null<ObjectId>
-};
-
 @:includeTemplate("list.html")
-class ListView extends erazor.macro.SimpleTemplate<ListResponse>
+class ListView extends erazor.macro.SimpleTemplate<ListViewData>
 {
 	public var ctx:Context;
 
@@ -54,6 +16,46 @@ class ListView extends erazor.macro.SimpleTemplate<ListResponse>
 	{
 		this.ctx = ctx;
 		super();
+	}
+}
+
+class ListRoute extends BaseRoute
+{
+	var view:ListView;
+
+	@openRoute
+	public function anyDefault()
+	{
+		var data = { 
+			questions : ctx.questions.find({}).toArray(),
+			title : "Discover"
+		};
+		return HttpResponse.fromContent(new TemplateLink(data, view));
+	}
+
+	public function anyFavorites()
+	{
+		var uq = ctx.userQuestions.findOne({ _id : ctx.session.user });
+		var qds = uq != null ? uq.data : [];
+
+		var qs = [ for (qd in qds) if (qd.favorite) qd.question.get(ctx.questions.col) ];
+
+		var data = {
+			questions : qs,
+			title : "Favorites"
+		};
+		return HttpResponse.fromContent(new TemplateLink(data, view));
+	}
+
+	@openRoute
+	public function anySearch(?args:{searchString : Array<String>, ?tagSearch : Bool})
+	{
+	}
+
+	public function new(ctx)
+	{
+		super(ctx);
+		view = new ListView(ctx);
 	}
 }
 

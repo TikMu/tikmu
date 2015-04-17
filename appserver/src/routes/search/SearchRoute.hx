@@ -13,21 +13,22 @@ using Lambda;
 class SearchRoute extends BaseRoute
 {
 	@openRoute
-	public function anyDefault(?args:{searchString : Array<String>, ?tagSearch : Bool}) : HttpResponse<ListResponse>
+	public function anyDefault(?args:{searchString : Array<String>, ?tagSearch : Bool})
 	{
-		var myUser : Null<ObjectId> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
-
-		var q:Array<Question>;
-		if (args.tagSearch) {
-			q = ctx.questions.col.find({ tags : { "$in" : args.searchString } }).sort({ _id : 1 }).array();
-		} else {
-			var rs = [for (s in args.searchString) { "$regex" : s, "$options" : "ix" }];
-			q = ctx.questions.col.find({ contents : { "$in" : rs } }).sort({ _id : 1 }).array();
-		}
-
-		var qs = [ for (q in ctx.questions.find({})) { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answersCount : q.answers.length } ];
-
-		return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg:null, authenticated : (ctx.session != null), myUser : myUser }, new routes.list.ListRoute.ListView(ctx)));
+		// var myUser : Null<ObjectId> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
+                //
+		// var q:Array<Question>;
+		// if (args.tagSearch) {
+		// 	q = ctx.questions.col.find({ tags : { "$in" : args.searchString } }).sort({ _id : 1 }).array();
+		// } else {
+		// 	var rs = [for (s in args.searchString) { "$regex" : s, "$options" : "ix" }];
+		// 	q = ctx.questions.col.find({ contents : { "$in" : rs } }).sort({ _id : 1 }).array();
+		// }
+                //
+		// var qs = [ for (q in ctx.questions.find({})) { id : q._id, userID : q.user.get(ctx.users.col)._id, userName : q.user.get(ctx.users.col).name, contents : q.contents, tags : q.tags, loc : q.loc, voteSum : q.voteSum, favorites : q.favorites, watchers : q.watchers, date : q.created, solved : q.solved, answersCount : q.answers.length } ];
+                //
+		// return HttpResponse.fromContent(new TemplateLink({ qs : qs, msg:null, authenticated : (ctx.session != null), myUser : myUser }, new routes.list.ListRoute.ListView(ctx)));
+		return HttpResponse.empty();
 	}
 }
 

@@ -1,32 +1,30 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>TikMu Question List</title>
+		<title>TikMu – @title</title>
 	</head>
 	<body>
-		<div class="main">
 		@ctx.subHtml("/helper/menu")
-		<br/><br/>
-		@if (msg != null)
-		{
-			<p>@msg</p>
-		}
-		@if (qs.length == 0)
-		{
-			<h1>Parabens voce chegou ao FIM</h1> <h6>(da internet)</h6>
-		}
-		@for (q in qs)
-		{
-			<article class="question">
-				<h1>@q.userName</h1>
-				<h3>--USERPOINTS--</h3>
-				<h2><a href="/question/@q.id.toString()">@q.contents</a></h2>
-				<h2>(@q.loc.lat ; @q.loc.lon)</h2>
-				<a onclick="alert('TODO');">Follow</a>
-				<a onclick="alert('TODO');">Fav</a>
-				<a href="/question/@q.id.toString()">@q.answersCount Resposta@if(q.answersCount > 1){s}</a>
+		<div>
+			@for (q in questions)
+			{
+			@{var u = ctx.subValue("/user/id/" + q.user.valueOf()).user;}
+			<article>
+				<div>@u.name</div>
+				<div>302</div><!-- TODO -->
+				<a href="/question/@q._id.valueOf()">@q.contents</a>
+				<div>São Paulo, 1h atrás</div><!-- TODO -->
+				@if (q.answers.length > 0)
+				{
+				<a href="/question/@q._id.valueOf()">@q.answers.length answers</a>
+				}
+				else
+				{
+				<a href="/question/@q._id.valueOf()">Answer</a>
+				}
+				<a href="">F!</a><!-- TODO -->
 			</article>
-		}
+			}
 		</div>
 	</body>
 </html>

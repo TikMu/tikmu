@@ -1,10 +1,10 @@
 <nav class="nav">
 	<ul>
 		@if(ctx.session.isAuthenticated()) {
-		<li><a href="/logout" onclick="alert('TODO');">Sair</a></li>
+		<li><a href="/logout">Sair</a></li>
 		} else {
 		<li><a href="/register">Registrar</a></li>
-		<li><a href="/login" onclick="alert('TODO');">Entrar</a></li>
+		<li><a href="/login">Entrar</a></li>
 		}
 		<li><a href="/ask">Perguntar</a></li>
 		<li><span class="tagContainer" id="tagContainer"></span><input type="text" id="searchString" name="searchString" placeholder="Busca" /><input type="checkbox" id="istag" name="istag"/>Tag Search<input type="button" name="submitsearch" id="submitsearch" value="Buscar"/> </li>
