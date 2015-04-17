@@ -50,6 +50,7 @@ class ListRoute extends BaseRoute
 	@openRoute
 	public function anySearch(?args:{searchString : Array<String>, ?tagSearch : Bool})
 	{
+		return HttpResponse.empty();
 	}
 
 	public function new(ctx)
