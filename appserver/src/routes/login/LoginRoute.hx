@@ -6,6 +6,12 @@ import mweb.tools.*;
 @:includeTemplate("login.html")
 class LoginView extends erazor.macro.SimpleTemplate<{ msg:String }>
 {
+	var ctx:Context;
+	public function new(ctx)
+	{
+		this.ctx = ctx;
+		super();
+	}
 }
 
 class LoginRoute extends BaseRoute
@@ -13,7 +19,7 @@ class LoginRoute extends BaseRoute
 	@openRoute
 	public function get(?args:{ email:String, msg:String }):HttpResponse<{ msg:String }>
 	{
-		return HttpResponse.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView()));
+		return HttpResponse.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView(ctx)));
 	}
 
 	@openRoute

@@ -6,13 +6,20 @@ import org.bsonspec.ObjectID;
 
 @:includeTemplate("register.html")
 class RegisterView extends erazor.macro.SimpleTemplate<{ email:String, msg:String }> {
+	var ctx:Context;
+
+	public function new(ctx)
+	{
+		this.ctx = ctx;
+		super();
+	}
 }
 
 class RegisterRoute extends BaseRoute {
 	@openRoute
 	public function get(?args:{ email:String, msg:String }):HttpResponse<{ email:String, msg:String }>
 	{
-		return HttpResponse.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView()));
+		return HttpResponse.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(ctx)));
 	}
 
 	@openRoute

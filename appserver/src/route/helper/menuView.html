@@ -1,18 +1,22 @@
-<nav class="nav">
-	<ul>
-		@if(ctx.session.isAuthenticated()) {
-		<li><a href="/logout">Sair</a></li>
-		} else {
-		<li><a href="/register">Registrar</a></li>
-		<li><a href="/login">Entrar</a></li>
-		}
-		<li><a href="/ask">Perguntar</a></li>
-		<li><span class="tagContainer" id="tagContainer"></span><input type="text" id="searchString" name="searchString" placeholder="Busca" /><input type="checkbox" id="istag" name="istag"/>Tag Search<input type="button" name="submitsearch" id="submitsearch" value="Buscar"/> </li>
-		@if(ctx.session.isAuthenticated())
-		{
-		<li><a href="/list/favorites">Listar Favoritos (private)</a></li>
-		<li><a href="" onclick="alert('TODO');">Preferências (private)</a></li>
-		}
-		<li><a href="" onclick="alert('TODO');">Especificar Localização</a></li>
-	</ul>
-</nav>
+<header>
+	<a href="">Back!</a>
+	<a href="">Menu!</a>
+	<a href="/">TikMu</a>
+	<a href="">Loc!</a>
+	<a href="/ask">Ask!</a>
+</header>
+<menu>
+	<li><form action="" method="post">
+		<button name="submit" type="submit">Find!</button>
+		<input name="string" type="text" placeholder="Search" />
+		<label><input name="type" type="checkbox" value="useTags" /> tags</label>
+	</form></li>
+	@if(ctx.session.isAuthenticated()) {
+	<li><a href="/list/favorites">Favorites</a></li>
+	<li><a href="">Settings</a></li>
+	<li><a href="/logout">Log out</a></li>
+	} else {
+	<li><a href="/login">Log in</a></li>
+	}
+</menu>
+

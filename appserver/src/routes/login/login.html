@@ -1,14 +1,26 @@
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>TikMu login</title>
-	</head>
-	<body>
+<head>
+	<meta charset="UTF-8">
+	<title>TikMu – Log in</title>
+</head>
+<body>
+	@ctx.subHtml("/helper/menu")
+	<main>
 		@if (msg != null)
 		{
+		<header>
 			<p>@msg</p>
+		</header>
 		}
-		<form method="POST" action="/login"><input type="text" name="email" /><br/><input type="password" name="pass" /><input type="submit" /></form>
-		<a href="/register">Register here</a>
-	</body>
+		<form action="/login" method="post">
+			<input type="text" name="email" placeholder="Email" />
+			<input type="password" name="pass" placeholder="********" />
+			<button type="submit" />login</button>
+		</form>
+		<footer>
+			<a href="/register"><strong>Not a user yet</strong>? Register here</a></a>
+		</footer>
+	</main>
+</body>
 </html>
+

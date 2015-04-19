@@ -1,23 +1,25 @@
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>TikMu new user</title>
-		<script src="js/jquery-1.11.2.min.js"></script>
-		<script>
-			js.Functions.run();
-		</script>
-	</head>
-	<body>
+<head>
+<meta charset="UTF-8">
+<title>TikMu – Register</title>
+</head>
+<body>
+	@ctx.subHtml("/helper/menu")
+	<main>
 		@if (msg != null)
 		{
+		<header>
 			<p>@msg</p>
+		</header>
 		}
-		<form method="POST" action="/register" >
-			E-mail*: <input type="text" name="email" placeholder="Email" /><br/>
-			Password*: <input type="password" name="pass" placeholder="Password" /><br/>
-			Name: <input type="text" name="username" placeholder="Name" /><br/>			
-			*campos requeridos&nbsp;<input type="submit" /></form>
-		<a href="/login">Or simply login here</a>
-	</body>
+		<form action="/register" method="post">
+			<input type="text" name="name" placeholder="Name" />
+			<input type="text" name="email" placeholder="Email" />
+			<input type="password" name="pass" placeholder="********" />
+			<button type="cancel" />cancel</button>
+			<button type="submit" />sign in</button>
+		</form>
+	</main>
+</body>
 </html>
 
