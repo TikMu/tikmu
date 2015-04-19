@@ -26,7 +26,7 @@ class List extends BaseRoute
 	@openRoute
 	public function any()
 	{
-		var qs = ctx.questions.find({}).toArray();
+		var qs = ctx.questions.find({ deleted : false }).toArray();
 		qs = [ for (q in qs) if (!q.deleted) q ];
 
 		var data = { 
@@ -53,7 +53,6 @@ class Favorites extends BaseRoute
 		var qds = uq != null ? uq.data : [];
 
 		var qs = [ for (qd in qds) if (qd.favorite) qd.question.get(ctx.questions.col) ];
-		qs = [ for (q in qs) if (!q.deleted) q ];
 
 		var data = {
 			questions : qs,
@@ -76,17 +75,14 @@ class Search extends BaseRoute
 	@openRoute
 	public function get(?args:{query:String, ?useTags:Bool})
 	{
+		var qry = ~/\s+/g.split(args.query);
 		var qs;
-		trace(args);
 		if (args.useTags) {
-			qs = ctx.questions.col.find({ tags : { "$in" : args.query } }).sort({ _id : 1 }).toArray();
+			qs = ctx.questions.col.find({ tags : { "$in" : qry }, deleted : false }).toArray();
 		} else {
-			var query = ~/\s+/g.split(args.query);
-			var rs = [ for (s in query) { contents : { "$regex" : s, "$options" : "ix" } } ];
-			trace(rs);
-			qs = ctx.questions.col.find({ "$and" : rs }).toArray();
+			var rs = [ for (s in qry) { contents : { "$regex" : s, "$options" : "ix" } } ];
+			qs = ctx.questions.col.find({ "$and" : rs, deleted : false }).toArray();
 		}
-		qs = [ for (q in qs) if (!q.deleted) q ];
 
 		var data = {
 			questions : qs,
@@ -96,8 +92,10 @@ class Search extends BaseRoute
 	}
 
 	@openRoute
-	public function any(?args)
+	public function post(?args)
 	{
+		// necessary because for increased safety mweb only exposes GET
+		// arguments to GET *only* requests
 		return get(args);
 	}
 
