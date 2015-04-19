@@ -1,4 +1,4 @@
-package routes.list;
+package route;
 
 import mweb.tools.*;
 
@@ -19,7 +19,7 @@ class ListView extends erazor.macro.SimpleTemplate<ListViewData>
 	}
 }
 
-class ListRoute extends BaseRoute
+class List extends routes.BaseRoute
 {
 	var view:ListView;
 
@@ -40,7 +40,7 @@ class ListRoute extends BaseRoute
 	}
 }
 
-class Favorites extends BaseRoute
+class Favorites extends routes.BaseRoute
 {
 	var view:ListView;
 
@@ -65,7 +65,7 @@ class Favorites extends BaseRoute
 	}
 }
 
-class Search extends BaseRoute
+class Search extends routes.BaseRoute
 {
 	var view:ListView;
 
