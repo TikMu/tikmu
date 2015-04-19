@@ -50,9 +50,9 @@ class Favorites extends BaseRoute
 	public function any()
 	{
 		var uq = ctx.userQuestions.findOne({ _id : ctx.session.user });
-		var qds = uq != null ? uq.data : [];
+		var qds = uq != null ? [ for (qd in uq.data) if (qd.favorite) qd.question.asId() ] : [];
 
-		var qs = [ for (qd in qds) if (qd.favorite) qd.question.get(ctx.questions.col) ];
+		var qs = ctx.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
 
 		var data = {
 			questions : qs,
