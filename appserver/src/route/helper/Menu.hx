@@ -2,7 +2,7 @@ package route.helper;
 
 import mweb.tools.*;
 
-@:includeTemplate("menuView.html")
+@:includeTemplate("menu.html")
 class MenuView extends erazor.macro.SimpleTemplate<{}> {
 	var ctx:Context;
 

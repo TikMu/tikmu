@@ -1,0 +1,22 @@
+<header>
+	<a href="#" onclick="window.history.back()">Back!</a><!-- TODO only on some views -->
+	<a href="">Menu!</a>
+	<a href="/">TikMu</a>
+	<a href="">Loc!</a>
+	<a href="/ask">Ask!</a>
+</header>
+<menu>
+	<li><form action="/search" method="get">
+		<button name="submit" type="submit">Find!</button>
+		<input name="query" type="text" placeholder="Search" />
+		<label><input name="type" type="checkbox" value="useTags" /> tags</label>
+	</form></li>
+	@if(ctx.session.isAuthenticated()) {
+	<li><a href="/favorites">Favorites</a></li>
+	<li><a href="">Settings</a></li>
+	<li><a href="/logout">Log out</a></li>
+	} else {
+	<li><a href="/login">Log in</a></li>
+	}
+</menu>
+
