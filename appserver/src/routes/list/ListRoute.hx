@@ -24,7 +24,7 @@ class ListRoute extends BaseRoute
 	var view:ListView;
 
 	@openRoute
-	public function anyDefault()
+	public function any()
 	{
 		var data = { 
 			questions : ctx.questions.find({}).toArray(),
@@ -33,7 +33,18 @@ class ListRoute extends BaseRoute
 		return HttpResponse.fromContent(new TemplateLink(data, view));
 	}
 
-	public function anyFavorites()
+	public function new(ctx)
+	{
+		super(ctx);
+		view = new ListView(ctx);
+	}
+}
+
+class Favorites extends BaseRoute
+{
+	var view:ListView;
+
+	public function any()
 	{
 		var uq = ctx.userQuestions.findOne({ _id : ctx.session.user });
 		var qds = uq != null ? uq.data : [];
@@ -47,10 +58,21 @@ class ListRoute extends BaseRoute
 		return HttpResponse.fromContent(new TemplateLink(data, view));
 	}
 
-	@openRoute
-	public function anySearch(?args:{searchString : Array<String>, ?tagSearch : Bool})
+	public function new(ctx)
 	{
-		return HttpResponse.empty();
+		super(ctx);
+		view = new ListView(ctx);
+	}
+}
+
+class Search extends BaseRoute
+{
+	var view:ListView;
+
+	@openRoute
+	public function any(?args:{query:Array<String>, ?useTags:Bool})
+	{
+		return HttpResponse.empty().redirect("/");
 	}
 
 	public function new(ctx)

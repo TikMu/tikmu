@@ -133,15 +133,18 @@ class Context
 			// keep sorted and keep trailing commas
 
 			// basic features
-			anyDefault: @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).anyDefault(),
 			ask: new routes.ask.AskRoute(this),
+			favorites : new routes.list.ListRoute.Favorites(this),
 			list: new routes.list.ListRoute(this),
 			login: new routes.login.LoginRoute(this),
 			logout: new routes.login.LogOutRoute(this),
 			question: new routes.question.QuestionRoute(this),
 			register: new routes.register.RegisterRoute(this),
-			search: new routes.search.SearchRoute(this),
+			search : new routes.list.ListRoute.Search(this),
 			user : new route.User(this),
+
+			// aliases
+			any : @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(routes.list.ListRoute).any(),
 
 			// old hackish api
 			// TODO refactor
