@@ -19,7 +19,7 @@ class ListView extends erazor.macro.SimpleTemplate<ListViewData>
 	}
 }
 
-class List extends routes.BaseRoute
+class List extends BaseRoute
 {
 	var view:ListView;
 
@@ -40,7 +40,7 @@ class List extends routes.BaseRoute
 	}
 }
 
-class Favorites extends routes.BaseRoute
+class Favorites extends BaseRoute
 {
 	var view:ListView;
 
@@ -65,7 +65,7 @@ class Favorites extends routes.BaseRoute
 	}
 }
 
-class Search extends routes.BaseRoute
+class Search extends BaseRoute
 {
 	var view:ListView;
 

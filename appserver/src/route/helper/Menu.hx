@@ -13,7 +13,7 @@ class MenuView extends erazor.macro.SimpleTemplate<{}> {
 	}
 }
 
-class Menu extends routes.BaseRoute {
+class Menu extends BaseRoute {
 	var view:MenuView;
 
 	@openRoute

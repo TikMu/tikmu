@@ -20,7 +20,7 @@ class UserView extends erazor.macro.SimpleTemplate<UserViewData> {
 	}
 }
 
-class User extends routes.BaseRoute {
+class User extends BaseRoute {
 	var view:UserView;
 
 	@openRoute
