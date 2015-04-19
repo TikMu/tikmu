@@ -7,9 +7,9 @@
 </header>
 <menu>
 	<li><form action="/search" method="get">
-		<button name="submit" type="submit">Find!</button>
+		<button type="submit">Find!</button>
 		<input name="query" type="text" placeholder="Search" />
-		<label><input name="type" type="checkbox" value="useTags" /> tags</label>
+		<label><input name="useTags" type="checkbox" value="true" /> tags</label>
 	</form></li>
 	@if(ctx.session.isAuthenticated()) {
 	<li><a href="/favorites">Favorites</a></li>
