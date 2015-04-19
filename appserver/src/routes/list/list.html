@@ -1,31 +1,39 @@
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>TikMu – @title</title>
-	</head>
-	<body>
-		@ctx.subHtml("/helper/menu")
-		<div>
-			@for (q in questions)
-			{
-			@{var u = ctx.subValue("/user/id/" + q.user.valueOf()).user;}
-			<article>
+<head>
+	<meta charset="UTF-8">
+	<title>TikMu – @title</title>
+</head>
+<body>
+	@ctx.subHtml("/helper/menu")
+	<main>
+		@for (q in questions)
+		{
+		@{var u = ctx.subValue("/user/id/" + q.user.valueOf()).user;}
+		<article>
+			<header>
 				<div>@u.name</div>
 				<div>302</div><!-- TODO -->
-				<a href="/question/@q._id.valueOf()">@q.contents</a>
-				<div>São Paulo, 1h atrás</div><!-- TODO -->
-				@if (q.answers.length > 0)
-				{
-				<a href="/question/@q._id.valueOf()">@q.answers.length answers</a>
-				}
-				else
-				{
-				<a href="/question/@q._id.valueOf()">Answer</a>
-				}
-				<a href="">F!</a><!-- TODO -->
-			</article>
-			}
-		</div>
-	</body>
+			</header>
+			<a href="/question/@q._id.valueOf()">@q.contents</a><!-- TODO toHtml -->
+			<footer>
+				<div>
+					<span>São Paulo, 1h atrás</span><!-- TODO -->
+					<a href="">F!</a><!-- TODO -->
+				</div>
+				<div>
+					@if (q.answers.length > 0)
+					{
+					<a href="/question/@q._id.valueOf()">@q.answers.length answers</a>
+					}
+					else
+					{
+					<a href="/question/@q._id.valueOf()">Answer</a>
+					}
+				</div>
+			</footer>
+		</article>
+		}
+	</main>
+</body>
 </html>
 
