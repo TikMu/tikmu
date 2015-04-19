@@ -1,6 +1,6 @@
-# app server
--neko www/index.n
--main Main
+# some unit tests
+--interp
+-main test.TestAll
 
 -lib croxit-1
 -lib mongodb
@@ -8,9 +8,7 @@
 -lib geotools
 -lib mweb
 -lib erazor
+-lib utest
 
 -cp src
-
---times
--D macro-times
 
