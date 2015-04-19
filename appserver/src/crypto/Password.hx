@@ -31,7 +31,6 @@ abstract Password(String) {
 		case SPlain:
 			plain;
 		case SSha256(it, salt):
-			trace("hashing");
 			var h = plain + salt + plain;
 			for (i in 0...it)
 				h = haxe.crypto.Sha256.encode(h);
