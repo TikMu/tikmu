@@ -7,12 +7,12 @@ import utest.Assert;
 
 class TestSessionCache {
 	var mongo:Mongo;
-	var ctx:db.Context;
+	var ctx:StorageContext;
 
 	public function new()
 	{
 		mongo = new Mongo();
-		ctx = new db.Context(mongo.tikmu_TestSessionCache);
+		ctx = new StorageContext(mongo.tikmu_TestSessionCache);
 	}
 
 	public function testBasic()

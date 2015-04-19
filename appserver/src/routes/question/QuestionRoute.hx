@@ -11,13 +11,13 @@ class QuestionRoute extends BaseRoute
 	@openRoute
 	public function getDefault(id:ObjectId):HttpResponse<QuestionResult>
 	{
-		var q = this.ctx.questions.findOne( { _id : id } );
-		var myUser : Null<ObjectId> = (ctx.session.isAuthenticated()) ? ctx.session.user.get(ctx.users.col)._id : null;
+		var q = data.questions.findOne( { _id : id } );
+		var myUser : Null<ObjectId> = (loop.session.isAuthenticated()) ? loop.session.user.get(data.users.col)._id : null;
 
 		if ( q == null )
-			return HttpResponse.fromContent(new TemplateLink({ data:null, authenticated : ctx.session.isAuthenticated(), myUser : myUser, username : '', userpoint : 0, isFav : false, isFollowing : false }, function(_) return '<h1>Invalid question</h1>'));
+			return HttpResponse.fromContent(new TemplateLink({ data:null, authenticated : loop.session.isAuthenticated(), myUser : myUser, username : '', userpoint : 0, isFav : false, isFollowing : false }, function(_) return '<h1>Invalid question</h1>'));
 
-		var user = q.user.get(ctx.users.col);
+		var user = q.user.get(data.users.col);
 
 		var username = user.name;
 		var userpoint = user.points;
@@ -25,13 +25,13 @@ class QuestionRoute extends BaseRoute
 		var isFav = false;
 		var isFollowing = false;
 
-		var uq = ctx.userQuestions.findOne( { _id : user._id } );
+		var uq = data.userQuestions.findOne( { _id : user._id } );
 		if (uq != null)
 		{
 			//TODO: Change searchType for $elemMatch
 			for (d in uq.data)
 			{
-				if (d.question.get(ctx.questions.col) == q)
+				if (d.question.get(data.questions.col) == q)
 				{
 					if (d.favorite)
 						isFav = true;
@@ -42,13 +42,13 @@ class QuestionRoute extends BaseRoute
 			}
 		}
 
-		return HttpResponse.fromContent(new TemplateLink(toResult(q, ctx, { myUser:myUser, username:username, userpoint:userpoint, isFav:isFav, isFollowing:isFollowing }), new QuestionView()));
+		return HttpResponse.fromContent(new TemplateLink(toResult(q, this, { myUser:myUser, username:username, userpoint:userpoint, isFav:isFav, isFollowing:isFollowing }), new QuestionView()));
 	}
 
 	public function deleteDefault(id:ObjectId):HttpResponse<Dynamic>
 	{
-		var myUser = ctx.session.user.get(ctx.users.col);
-		var q = ctx.questions.findOne( { _id : id } );
+		var myUser = loop.session.user.get(data.users.col);
+		var q = data.questions.findOne( { _id : id } );
 		if (q == null)
 			return HttpResponse.empty().setStatus(NotFound);
 
@@ -57,14 +57,14 @@ class QuestionRoute extends BaseRoute
 
 		q.deleted = true;
 		q.modified = Date.now();
-		ctx.questions.update( { _id : id }, q);
+		data.questions.update( { _id : id }, q);
 
 		return HttpResponse.empty().redirect('/?msg=' + StringTools.urlEncode('Question successfully deleted'));
 	}
 
-	inline public static function toResult(q:db.Question, ctx:db.Context, extra:{ myUser:Null<ObjectId>, username:String, userpoint:Int, isFav:Bool, isFollowing:Bool }):QuestionResult
+	inline public static function toResult(q:db.Question, r:BaseRoute, extra:{ myUser:Null<ObjectId>, username:String, userpoint:Int, isFav:Bool, isFollowing:Bool }):QuestionResult
 	{
-		var q_user = q.user.get(ctx.users.col);
+		var q_user = q.user.get(r.data.users.col);
 		return {
 			data: {
 				id : q._id,
@@ -99,7 +99,7 @@ class QuestionRoute extends BaseRoute
 					} ]
 				} ]
 			},
-			authenticated : ctx.session.isAuthenticated(),
+			authenticated : r.loop.session.isAuthenticated(),
 			myUser : extra.myUser,
 			username : extra.username,
 			userpoint : extra.userpoint,
@@ -110,14 +110,14 @@ class QuestionRoute extends BaseRoute
 
 	public function postAnswer(id:ObjectId, args:{ answer:String }):HttpResponse<Dynamic>
 	{
-		var q = this.ctx.questions.findOne({ _id : id });
+		var q = data.questions.findOne({ _id : id });
 		if ( q == null )
 			return HttpResponse.fromContent(
 					new TemplateLink({ q:null }, function(_) return '<h1>Invalid question id $id</h1>'));
 
 		q.answers.push({
 			deleted: false,
-			user: ctx.session.user,
+			user: loop.session.user,
 			contents: args.answer,
 			loc: { lat: -23, lon: -43 },
 			voteSum: 0,
@@ -128,13 +128,13 @@ class QuestionRoute extends BaseRoute
 			comments: []
 		});
 
-		this.ctx.questions.update({ _id : id }, q);
+		data.questions.update({ _id : id }, q);
 		return HttpResponse.empty().redirect('/question/$id');
 	}
 
 	public function postComment(id:ObjectId, ?answerIndex : Int, args : { comment : String } ) : HttpResponse<Dynamic>
 	{
-		var q = this.ctx.questions.findOne( { _id : id } );
+		var q = data.questions.findOne( { _id : id } );
 		if (q == null)
 			return HttpResponse.fromContent(
 					new TemplateLink( { q:null }, function(_) return '<h1>Invalid question id $id</h1>'));
@@ -142,14 +142,14 @@ class QuestionRoute extends BaseRoute
 		if (answerIndex == null)
 		{
 			q.comments.push( {
-				user : ctx.session.user,
+				user : loop.session.user,
 				contents : args.comment,
 				created : Date.now(),
 				modified : Date.now(),
 				deleted : false
 			});
 
-			this.ctx.questions.update( { _id : id }, q);
+			data.questions.update( { _id : id }, q);
 			return HttpResponse.empty().redirect('/question/$id');
 		}
 		else
@@ -160,14 +160,14 @@ class QuestionRoute extends BaseRoute
 						new TemplateLink( { q:null }, function(_) return '<h1>Invalid answer index $answerIndex</h1>'));
 
 			ans.comments.push( {
-				user : ctx.session.user,
+				user : loop.session.user,
 				contents : args.comment,
 				created : Date.now(),
 				modified : Date.now(),
 				deleted : false
 			});
 
-			this.ctx.questions.update( { _id : id }, q);
+			data.questions.update( { _id : id }, q);
 			return HttpResponse.empty().redirect('/question/$id');
 		}
 	}

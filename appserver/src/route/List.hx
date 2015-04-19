@@ -8,16 +8,7 @@ typedef ListViewData = {
 }
 
 @:includeTemplate("list.html")
-class ListView extends erazor.macro.SimpleTemplate<ListViewData>
-{
-	public var ctx:Context;
-
-	public function new(ctx)
-	{
-		this.ctx = ctx;
-		super();
-	}
-}
+class ListView extends BaseView<ListViewData> {}
 
 class List extends BaseRoute
 {
@@ -26,7 +17,7 @@ class List extends BaseRoute
 	@openRoute
 	public function any()
 	{
-		var qs = ctx.questions.find({ deleted : false }).toArray();
+		var qs = data.questions.find({ deleted : false }).toArray();
 		qs = [ for (q in qs) if (!q.deleted) q ];
 
 		var data = { 
@@ -39,7 +30,7 @@ class List extends BaseRoute
 	public function new(ctx)
 	{
 		super(ctx);
-		view = new ListView(ctx);
+		view = new ListView(_ctx);
 	}
 }
 
@@ -49,10 +40,10 @@ class Favorites extends BaseRoute
 
 	public function any()
 	{
-		var uq = ctx.userQuestions.findOne({ _id : ctx.session.user });
+		var uq = data.userQuestions.findOne({ _id : loop.session.user });
 		var qds = uq != null ? [ for (qd in uq.data) if (qd.favorite) qd.question.asId() ] : [];
 
-		var qs = ctx.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
+		var qs = data.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
 
 		var data = {
 			questions : qs,
@@ -64,7 +55,7 @@ class Favorites extends BaseRoute
 	public function new(ctx)
 	{
 		super(ctx);
-		view = new ListView(ctx);
+		view = new ListView(_ctx);
 	}
 }
 
@@ -78,10 +69,10 @@ class Search extends BaseRoute
 		var qry = ~/\s+/g.split(args.query);
 		var qs;
 		if (args.useTags) {
-			qs = ctx.questions.col.find({ tags : { "$in" : qry }, deleted : false }).toArray();
+			qs = data.questions.col.find({ tags : { "$in" : qry }, deleted : false }).toArray();
 		} else {
 			var rs = [ for (s in qry) { contents : { "$regex" : s, "$options" : "ix" } } ];
-			qs = ctx.questions.col.find({ "$and" : rs, deleted : false }).toArray();
+			qs = data.questions.col.find({ "$and" : rs, deleted : false }).toArray();
 		}
 
 		var data = {
@@ -102,7 +93,7 @@ class Search extends BaseRoute
 	public function new(ctx)
 	{
 		super(ctx);
-		view = new ListView(ctx);
+		view = new ListView(_ctx);
 	}
 }
 

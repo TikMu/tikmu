@@ -5,21 +5,14 @@ import mweb.tools.*;
 import org.bsonspec.ObjectID;
 
 @:includeTemplate("register.html")
-class RegisterView extends erazor.macro.SimpleTemplate<{ email:String, msg:String }> {
-	var ctx:Context;
-
-	public function new(ctx)
-	{
-		this.ctx = ctx;
-		super();
-	}
+class RegisterView extends BaseView<{ email:String, msg:String }> {
 }
 
 class RegisterRoute extends BaseRoute {
 	@openRoute
 	public function get(?args:{ email:String, msg:String }):HttpResponse<{ email:String, msg:String }>
 	{
-		return HttpResponse.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(ctx)));
+		return HttpResponse.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(_ctx)));
 	}
 
 	@openRoute
@@ -33,7 +26,7 @@ class RegisterRoute extends BaseRoute {
 		if (args.pass.length < 6 || args.pass.length > 64)
 			return get({ email : args.email, msg : "Password length must be between 6 and 64" });
 		// pre-check if a user already exists
-		if (ctx.users.findOne({ email : args.email }) != null)
+		if (data.users.findOne({ email : args.email }) != null)
 			return get({ email : args.email, msg : 'Email ${args.email} already registred' });
 
 		// attempt to create the user
@@ -46,9 +39,9 @@ class RegisterRoute extends BaseRoute {
 			avatar : null,
 			points : 0,
 		};
-		ctx.users.insert(u);  // FIXME handle possible errors
+		data.users.insert(u);  // FIXME handle possible errors
 
-                return new routes.login.LoginRoute(ctx).post(args);
+                return new routes.login.LoginRoute(_ctx).post(args);  // TODO fix
 	}
 }
 

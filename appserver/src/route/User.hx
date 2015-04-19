@@ -10,15 +10,7 @@ typedef UserViewData = {
 }
 
 @:template("Viewing user @user.name (@user.email)")
-class UserView extends erazor.macro.SimpleTemplate<UserViewData> {
-	var ctx:Context;
-
-	public function new(ctx)
-	{
-		this.ctx = ctx;
-		super();
-	}
-}
+class UserView extends BaseView<UserViewData> {}
 
 class User extends BaseRoute {
 	var view:UserView;
@@ -28,9 +20,9 @@ class User extends BaseRoute {
 	{
 		var user = null;
 		if (email != null)
-			user = ctx.users.findOne({ email : email });
-		else if (ctx.session.isAuthenticated())
-			user = ctx.session.user.get(ctx.users.col);
+			user = data.users.findOne({ email : email });
+		else if (loop.session.isAuthenticated())
+			user = loop.session.user.get(data.users.col);
 
 		var ret = new HttpResponse();
 
@@ -53,7 +45,7 @@ class User extends BaseRoute {
 	@openRoute
 	public function anyId(id:routes.ObjectId)
 	{
-		var user = ctx.users.col.findOne({ _id : id });
+		var user = data.users.col.findOne({ _id : id });
 
 		var ret = new HttpResponse();
 
@@ -76,7 +68,7 @@ class User extends BaseRoute {
 	public function new(ctx)
 	{
 		super(ctx);
-		view = new UserView(ctx);
+		view = new UserView(_ctx);
 	}
 }
 

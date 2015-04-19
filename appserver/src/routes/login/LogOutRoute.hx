@@ -7,8 +7,8 @@ class LogOutRoute extends BaseRoute
 {
 	public function any():HttpResponse<Void>
 	{
-		ctx.session.close();
-		ctx.sessions.save(ctx.session);
+		loop.session.close();
+		data.sessions.save(loop.session);
 		return HttpResponse.empty().redirect("/");
 	}
 }

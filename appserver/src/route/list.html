@@ -4,11 +4,11 @@
 	<title>TikMu – @title</title>
 </head>
 <body>
-	@ctx.subHtml("/helper/menu")
+	@loop.subHtml("/helper/menu")
 	<main>
 		@for (q in questions)
 		{
-		@{var u = ctx.subValue("/user/id/" + q.user.valueOf()).user;}
+		@{var u = loop.subValue("/user/id/" + q.user.valueOf()).user;}
 		<article>
 			<header>
 				<div>@u.name</div>

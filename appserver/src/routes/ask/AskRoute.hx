@@ -14,7 +14,7 @@ class AskRoute extends BaseRoute
 		var q:db.Question = {
 			_id : new ObjectID(),
 
-			user : ctx.session.user,
+			user : loop.session.user,
 			contents : args.data,
 			tags : [],
 			loc : { lat:-23, lon:-43, },
@@ -31,7 +31,7 @@ class AskRoute extends BaseRoute
 			answers : [],
 		};
 
-		this.ctx.questions.insert(q);
+		data.questions.insert(q);
 		return HttpResponse.empty().redirect('/');
 	}
 }
