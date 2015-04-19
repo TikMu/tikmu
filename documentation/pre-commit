@@ -1,0 +1,12 @@
+#!/bin/sh
+
+runtests() {
+	echo "... $1/$2"
+	if !(cd $1 && haxe $2 -D hidesuccess) then
+		exit 1
+	fi
+}
+
+echo "Pre-commit: running some unit tests"
+runtests "appserver" "test.hxml"
+
