@@ -1,14 +1,13 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>TikMu – @title</title>
+	<title>TikMu</title>
 </head>
 <body>
 	@loop.subHtml("/helper/menu")
 	<main>
-		@for (q in questions)
-		{
-		@{var u = loop.subValue("/user/id/" + q.user.valueOf()).user;}
+                @{var q:Dynamic = cast { };}
+                @{var u:Dynamic = cast { };}
 		<article>
 			<header>
 				<div>@u.name</div>
@@ -18,7 +17,7 @@
 			<footer>
 				<div>
 					<span>São Paulo, 1h atrás</span><!-- TODO -->
-					<a href="/question/@q._id.valueOf()/favorite">F!</a><!-- TODO -->
+					<a href="">F!</a><!-- TODO -->
 				</div>
 				<div>
 					@if (q.answers.length > 0)
@@ -32,8 +31,8 @@
 				</div>
 			</footer>
 		</article>
-		}
 	</main>
 </body>
 </html>
+
 

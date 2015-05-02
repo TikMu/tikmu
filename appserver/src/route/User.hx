@@ -43,7 +43,7 @@ class User extends BaseRoute {
 	}
 
 	@openRoute
-	public function anyId(id:routes.ObjectId)
+	public function anyId(id:ObjectId)
 	{
 		var user = data.users.col.findOne({ _id : id });
 

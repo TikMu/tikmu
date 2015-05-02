@@ -4,7 +4,6 @@ import db.helper.Location;
 import mweb.tools.*;
 import mweb.tools.HttpResponse.HttpResponse;
 import mweb.tools.TemplateLink;
-import routes.ObjectId;
 
 class QuestionRoute extends BaseRoute
 {

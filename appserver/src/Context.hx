@@ -55,7 +55,7 @@ class Context
 			list: new route.List(this),
 			login: new routes.login.LoginRoute(this),
 			logout: new routes.login.LogOutRoute(this),
-			question: new routes.question.QuestionRoute(this),
+			question: new route.Question(this),
 			register: new routes.register.RegisterRoute(this),
 			search : new route.List.Search(this),
 			user : new route.User(this),

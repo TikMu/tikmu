@@ -1,5 +1,3 @@
-package routes;
-
 import org.bsonspec.ObjectID in ObjectIdImpl;
 
 /*
