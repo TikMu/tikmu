@@ -44,6 +44,31 @@ class SomeQuestion extends BaseRoute {
 		return new HttpResponse().setStatus(NoContent);
 	}
 
+	public function anyFollow()
+	{
+		var uq = data.userQuestions.findOne({ _id : loop.session.user });
+		if (uq == null)
+			uq = { 
+				_id : loop.session.user,
+				data : []
+			}
+
+		var uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
+		if (uqq == null) {
+			uq.data.push({
+				question : question._id,
+				votes : [],
+				favorite : true,  // spec (p. 14)
+				following : true
+			});
+		} else {
+			uqq.following = !uqq.following;
+		}
+
+		data.userQuestions.update({ _id : loop.session.user }, uq, true);
+		return new HttpResponse().setStatus(NoContent);
+	}
+
 	public function new(ctx, question)
 	{
 		super(ctx);
