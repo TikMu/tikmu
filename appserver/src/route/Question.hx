@@ -17,7 +17,30 @@ class SomeQuestion extends BaseRoute {
 		return new routes.question.QuestionRoute(_ctx).getDefault(question._id);
 	}
 
-	public function anyFavorite()
+	public function getState()
+	{
+		var uqq = null;
+
+		var uq = data.userQuestions.findOne({ _id : loop.session.user });
+		if (uq != null)
+			uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
+
+		var data = if (uqq != null) {
+			votes : uqq.votes,
+			favorite : uqq.favorite,
+			following : uqq.following
+		} else {
+			votes : [],
+			favorite : false,
+			following : false
+		}
+
+		var ret = new HttpResponse();
+		ret.setContent(new TemplateLink(data, haxe.Json.stringify.bind(_)));
+		return ret;
+	}
+
+	public function postFavorite()
 	{
 		var uq = data.userQuestions.findOne({ _id : loop.session.user });
 		if (uq == null)
@@ -28,6 +51,7 @@ class SomeQuestion extends BaseRoute {
 
 		var uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
 		if (uqq == null) {
+			trace("favorite on");
 			uq.data.push({
 				question : question._id,
 				votes : [],
@@ -35,6 +59,7 @@ class SomeQuestion extends BaseRoute {
 				following : false  // spec (p. 14)
 			});
 		} else {
+			trace("favorite " + (uqq.favorite ? "off" : "on"));
 			uqq.favorite = !uqq.favorite;
 			if (!uqq.favorite)
 				uqq.following = false;  // spec (p. 14)
@@ -44,7 +69,7 @@ class SomeQuestion extends BaseRoute {
 		return new HttpResponse().setStatus(NoContent);
 	}
 
-	public function anyFollow()
+	public function postFollow()
 	{
 		var uq = data.userQuestions.findOne({ _id : loop.session.user });
 		if (uq == null)
@@ -55,6 +80,7 @@ class SomeQuestion extends BaseRoute {
 
 		var uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
 		if (uqq == null) {
+			trace("following on");
 			uq.data.push({
 				question : question._id,
 				votes : [],
@@ -62,6 +88,7 @@ class SomeQuestion extends BaseRoute {
 				following : true
 			});
 		} else {
+			trace("following " + (uqq.following ? "off" : "on"));
 			uqq.following = !uqq.following;
 		}
 
