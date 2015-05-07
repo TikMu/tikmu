@@ -21,8 +21,7 @@ class ListView extends BaseView<ListViewData> {
 	}
 }
 
-class List extends BaseRoute
-{
+class List extends BaseRoute {
 	var view:ListView;
 
 	@openRoute
@@ -45,8 +44,7 @@ class List extends BaseRoute
 	}
 }
 
-class Favorites extends BaseRoute
-{
+class Favorites extends BaseRoute {
 	var view:ListView;
 
 	public function any()
@@ -70,8 +68,7 @@ class Favorites extends BaseRoute
 	}
 }
 
-class Search extends BaseRoute
-{
+class Search extends BaseRoute {
 	var view:ListView;
 
 	@openRoute

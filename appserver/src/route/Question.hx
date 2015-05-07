@@ -3,12 +3,20 @@ package route;
 import mweb.tools.*;
 
 typedef SomeQuestionViewData = {
+	question : db.Question
 }
 
 @:includeTemplate("question.html")
 class SomeQuestionView extends BaseView<SomeQuestionViewData> {
-	function getUser()
+	function getUser(id)
 	{
+		var u = ctx.data.users.col.findOne({ _id : id });
+		if (u == null)
+			return null;
+		return {
+			email : u.email,
+			name : u.name
+		}
 	}
 }
 
@@ -19,7 +27,8 @@ class SomeQuestion extends BaseRoute {
 	@openRoute
 	public function any()
 	{
-		return new routes.question.QuestionRoute(_ctx).getDefault(question._id);
+		var data = { question : question };
+		return HttpResponse.fromContent(new TemplateLink(data, view));
 	}
 
 	public function getState()

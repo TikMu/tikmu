@@ -6,30 +6,37 @@
 <body>
 	@ctx.loop.subHtml("/helper/menu")
 	<main>
-                @{var q:Dynamic = cast { };}
-                @{var u:Dynamic = cast { };}
-		<article>
+                @{var u = this.getUser(question.user);}
+		<article class="question">
 			<header>
 				<div>@u.name</div>
 				<div>302</div><!-- TODO -->
+				<div><a href="#" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@question._id.valueOf()/favorite', false); r.send();">F!</a></div>
 			</header>
-			<a href="/question/@q._id.valueOf()">@q.contents</a><!-- TODO toHtml -->
+			<p>@question.contents</p><!-- TODO toHtml -->
 			<footer>
-				<div>
-					<span>São Paulo, 1h atrás</span><!-- TODO -->
-					<a href="">F!</a><!-- TODO -->
-				</div>
-				<div>
-					@if (q.answers.length > 0)
-					{
-					<a href="/question/@q._id.valueOf()">@q.answers.length answers</a>
-					}
-					else
-					{
-					<a href="/question/@q._id.valueOf()">Answer</a>
-					}
-				</div>
+				<span>São Paulo, 1h atrás</span><!-- TODO -->
+				<a href="">S!</a><!-- TODO -->
+				<a href="">A!</a><!-- TODO -->
 			</footer>
+			<section>
+				<article class="answer">
+					<header>
+					</header>
+					<p></p>
+					<footer>
+					</footer>
+					<section>
+						<article class="comment">
+							<header>
+							</header>
+							<p></p>
+						</article>
+					</section>
+				</article>
+			</section>
+			<form>
+			</form>
 		</article>
 	</main>
 </body>
