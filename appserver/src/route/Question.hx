@@ -2,14 +2,19 @@ package route;
 
 import mweb.tools.*;
 
-typedef QuestionViewData = {
+typedef SomeQuestionViewData = {
 }
 
 @:includeTemplate("question.html")
-class QuestionView extends BaseView<QuestionViewData> {}
+class SomeQuestionView extends BaseView<SomeQuestionViewData> {
+	function getUser()
+	{
+	}
+}
 
 class SomeQuestion extends BaseRoute {
 	var question:db.Question;
+	var view:SomeQuestionView;
 
 	@openRoute
 	public function any()
@@ -100,6 +105,7 @@ class SomeQuestion extends BaseRoute {
 	{
 		super(ctx);
 		this.question = question;
+		view = new SomeQuestionView(ctx);
 	}
 }
 

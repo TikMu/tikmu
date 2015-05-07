@@ -1,14 +1,11 @@
 @:abstractTemplate
 class BaseView<T> extends erazor.macro.SimpleTemplate<T> {
-	var _ctx:Context;
-	var loop(get,never):IterationContext;
-
-	inline function get_loop() return _ctx.loop;
+	var ctx:Context;
 
 	public function new(ctx)
 	{
 		super();
-		_ctx = ctx;
+		this.ctx = ctx;
 	}
 }
 

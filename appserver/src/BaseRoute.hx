@@ -1,7 +1,4 @@
-import mweb.tools.*;
-
-class BaseRoute extends mweb.Route<HttpResponse<Dynamic>>
-{
+class BaseRoute extends mweb.Route<mweb.tools.HttpResponse<Dynamic>> {
 	var _ctx:Context;
 	var data(get,never):StorageContext;
 	var loop(get,never):IterationContext;
