@@ -1,0 +1,139 @@
+/*  Main CSS */
+
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+	font-size: 14px;
+}
+
+a {
+	color: #fff;
+}
+
+li {
+	list-style: none;
+}
+
+
+/* Header */
+
+#header {
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+	background-color: #333;
+}
+
+#header_nav {
+	margin: 0 auto;
+	width:100%;
+	max-width:960px;
+	padding: 18px 20px;
+}
+
+#header_nav li {
+	display: inline;
+}
+
+.right{
+	float: right;
+}
+
+
+#main_menu {
+	background-image: url('../img/icon-menu.png');
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	background-position: center;
+	cursor: pointer;	
+}
+
+#logo {
+	background-image: url('../img/logo.png');
+	background-repeat: no-repeat;
+	background-size: 57px 17px;
+	background-position: center;
+	padding: 0 20px 0 0;
+	border: none;
+}
+
+#location {
+	background-image: url('../img/icon-location.png');
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	background-position: center;
+	border: none;
+	cursor: pointer;
+}
+
+#post_question {
+	background-image: url('../img/icon-post-question.png');
+	background-repeat: no-repeat;
+	background-size: 19px 17px;
+	background-position: center;
+	border: none;
+	cursor: pointer;
+}
+
+.hidden-text {
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-decoration: none;
+	visibility: hidden;
+}
+
+
+/* Cards */
+
+#question_card {
+	background-color: #95B300;
+	border-radius: 5px; 
+	width: 240px;
+	color: #fff;
+	display: inline-block;
+}
+
+#user_avatar {
+	background-image: url('../img/icon-user-avatar');
+	background-repeat: no-repeat;
+	background-size: 30px 30px;
+	display: inline;
+}
+
+#question_card_header {
+	display: inline-block;
+}
+
+#user_name {
+}
+
+#user_reputation {
+	color: rgba(255,255,255,0.6);
+}
+
+#question_card_question {
+	font-size: 1.3em;
+	line-height: 2em;
+	margin: 30px 0 15px 0;
+	padding-bottom: 30px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+#question_card_footer {
+	margin: 0 0 15px 0;
+	display: inline-block;
+}
+
+#location_date {
+	display: inline;
+}
+
+#question_card_answers {
+	margin: 0;
+	padding: 30px;
+	display: inline-block;
+	background-color: rgba(255, 255, 255, 0.14);
+}
