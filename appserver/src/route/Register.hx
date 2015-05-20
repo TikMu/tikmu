@@ -1,4 +1,4 @@
-package routes.register;
+package route;
 
 import crypto.Password;
 import mweb.tools.*;
@@ -8,7 +8,7 @@ import org.bsonspec.ObjectID;
 class RegisterView extends BaseView<{ email:String, msg:String }> {
 }
 
-class RegisterRoute extends BaseRoute {
+class Register extends BaseRoute {
 	@openRoute
 	public function get(?args:{ email:String, msg:String }):HttpResponse<{ email:String, msg:String }>
 	{
@@ -41,7 +41,7 @@ class RegisterRoute extends BaseRoute {
 		};
 		data.users.insert(u);  // FIXME handle possible errors
 
-                return new routes.login.LoginRoute(_ctx).post(args);  // TODO fix
+                return new route.Login(_ctx).post(args);  // TODO fix
 	}
 }
 

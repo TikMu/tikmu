@@ -1,0 +1,18 @@
+section {
+	border: 1px dashed #afafaf;
+	margin: 10px;
+	padding: 5px;
+}
+
+article {
+	border: 1px solid #afafaf;
+	margin: 10px;
+	padding: 5px;
+}
+
+header, footer, form {
+	border: 1px dotted #afafaf;
+	margin: 0px 2px;
+	padding: 0px 2px;
+}
+

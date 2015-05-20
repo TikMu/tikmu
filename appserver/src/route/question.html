@@ -2,40 +2,60 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TikMu</title>
+	<link href="/static/dev.css" rel="stylesheet">
 </head>
 <body>
 	@ctx.loop.subHtml("/helper/menu")
 	<main>
-                @{var u = this.getUser(question.user);}
-		<article class="question">
+                @{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
+		<article id="@qid" class="question">
 			<header>
 				<div>@u.name</div>
 				<div>302</div><!-- TODO -->
-				<div><a href="#" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@question._id.valueOf()/favorite', false); r.send();">F!</a></div>
+				<div><a href="#" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@qid/favorite', false); r.send();">F!</a></div>
 			</header>
 			<p>@question.contents</p><!-- TODO toHtml -->
 			<footer>
-				<span>São Paulo, 1h atrás</span><!-- TODO -->
-				<a href="">S!</a><!-- TODO -->
-				<a href="">A!</a><!-- TODO -->
+				<span>@Std.random(10)km @this.getPrettyDelta(question.created)</span>
+				<a href="#@qid">Share</a><!-- TODO -->
+				<a href="#answer_box">Answer</a>
 			</footer>
 			<section>
-				<article class="answer">
+				@for (a in question.answers)
+				{ @{ var u = this.getUser(a.user); var aid = a._id.valueOf(); }
+				<article id="@aid" class="answer">
 					<header>
+						<span>@u.name</span>
+						<span>@this.getPrettyDelta(a.created)</span>
 					</header>
-					<p></p>
+					<p>@a.contents</p><!-- TODO toHtml -->
 					<footer>
+					<a href="">Share</a><!-- TODO -->
+					<a href="#" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>
+					<form id="@aid/comment" action="/answer/@aid/comment" method="post" hidden="true">
+						<input name="comment" type="text" placeholder="Comment" />
+						<button type="submit">&gt</button>
+						<button type="button" onclick="document.getElementById('@aid/comment').hidden = true">^</button>
+					</form>
 					</footer>
 					<section>
-						<article class="comment">
+						@for (c in a.comments)
+						{ @{var u = this.getUser(c.user); var cid = c._id.valueOf(); }
+						<article id="@cid" class="comment">
 							<header>
+								<span>@u.name</span>
+								<span>@this.getPrettyDelta(c.created)</span>
 							</header>
-							<p></p>
+							<p>@c.contents</p><!-- TODO toHtml -->
 						</article>
+						}
 					</section>
 				</article>
+				}
 			</section>
-			<form>
+			<form id="answer_box" action="/question/@qid/answer" method="post">
+				<input name="answer" type="text" placeholder="Answer" />
+				<button type="submit">&gt</button>
 			</form>
 		</article>
 	</main>

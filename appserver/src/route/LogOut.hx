@@ -1,9 +1,8 @@
-package routes.login;
+package route;
 
-import db.*;
 import mweb.tools.*;
 
-class LogOutRoute extends BaseRoute
+class LogOut extends BaseRoute
 {
 	public function any():HttpResponse<Void>
 	{

@@ -27,7 +27,6 @@ class AskRoute extends BaseRoute
 			created : Date.now(),
 			modified : Date.now(),
 
-			comments : [],
 			answers : [],
 		};
 

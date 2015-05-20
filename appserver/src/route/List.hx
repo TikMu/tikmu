@@ -21,32 +21,53 @@ class ListView extends BaseView<ListViewData> {
 	}
 }
 
-class List extends BaseRoute {
+class BaseList extends BaseRoute {
 	var view:ListView;
-
-	@openRoute
-	public function any()
-	{
-		var qs = data.questions.find({ deleted : false }).toArray();
-		qs = [ for (q in qs) if (!q.deleted) q ];
-
-		var data = { 
-			questions : qs,
-			title : "Discover"
-		};
-		return HttpResponse.fromContent(new TemplateLink(data, view));
-	}
 
 	public function new(ctx)
 	{
 		super(ctx);
 		view = new ListView(_ctx);
 	}
+
+	function cleanRawData(questions:Array<db.Question>)
+	{
+		var qs = [];
+		for (q in questions) if (!q.deleted) {
+			q = Reflect.copy(q);
+			var as = [];
+			for (a in q.answers) if (!a.deleted) {
+				a = Reflect.copy(a);
+				var cs = [];
+				for (c in a.comments) if (!c.deleted) {
+					cs.push(c);
+				}
+				a.comments = cs;
+				as.push(a);
+			}
+			q.answers = as;
+			qs.push(q);
+		}
+		return qs;
+	}
 }
 
-class Favorites extends BaseRoute {
-	var view:ListView;
+class List extends BaseList {
+	@openRoute
+	public function any()
+	{
+		var qs = data.questions.find({ deleted : false }).toArray();
+		qs = [ for (q in qs) if (!q.deleted) q ];
 
+		var data = {
+			questions : cleanRawData(qs),
+			title : "Discover"
+		};
+		return HttpResponse.fromContent(new TemplateLink(data, view));
+	}
+}
+
+class Favorites extends BaseList {
 	public function any()
 	{
 		var uq = data.userQuestions.findOne({ _id : loop.session.user });
@@ -55,22 +76,14 @@ class Favorites extends BaseRoute {
 		var qs = data.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
 
 		var data = {
-			questions : qs,
+			questions : cleanRawData(cast qs),  // FIXME
 			title : "Favorites"
 		};
 		return HttpResponse.fromContent(new TemplateLink(data, view));
 	}
-
-	public function new(ctx)
-	{
-		super(ctx);
-		view = new ListView(_ctx);
-	}
 }
 
-class Search extends BaseRoute {
-	var view:ListView;
-
+class Search extends BaseList {
 	@openRoute
 	public function get(?args:{query:String, ?useTags:Bool})
 	{
@@ -84,7 +97,7 @@ class Search extends BaseRoute {
 		}
 
 		var data = {
-			questions : qs,
+			questions : cleanRawData(cast qs),  // FIXME
 			title : "Search results"
 		}
 		return HttpResponse.fromContent(new TemplateLink(data, view));
@@ -96,12 +109,6 @@ class Search extends BaseRoute {
 		// necessary because for increased safety mweb only exposes GET
 		// arguments to GET *only* requests
 		return get(args);
-	}
-
-	public function new(ctx)
-	{
-		super(ctx);
-		view = new ListView(_ctx);
 	}
 }
 

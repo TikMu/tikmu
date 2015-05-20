@@ -8,8 +8,10 @@ class IterationContext {
 	var routeMap:Route<Dynamic>;
 
 	@:allow(Context)
-	@:allow(routes.login.LoginRoute)
-	public var session(default, null):Session;
+	@:allow(route.Login)
+	public var session(default,null):Session;
+
+	public var now(default,null):Date;
 
 	function handleLoggedMeta(metas:Array<String>)
 	{
@@ -84,7 +86,9 @@ class IterationContext {
 	public function new(routeMap)
 	{
 		this.routeMap = routeMap;
+
 		session = null;
+		now = Date.now();
 	}
 }
 

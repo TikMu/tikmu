@@ -1,4 +1,4 @@
-package routes.login;
+package route;
 
 import db.*;
 import mweb.tools.*;
@@ -6,8 +6,7 @@ import mweb.tools.*;
 @:includeTemplate("login.html")
 class LoginView extends BaseView<{ msg:String }> {}
 
-class LoginRoute extends BaseRoute
-{
+class Login extends BaseRoute {
 	@openRoute
 	public function get(?args:{ email:String, msg:String }):HttpResponse<{ msg:String }>
 	{

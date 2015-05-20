@@ -47,32 +47,30 @@ class Context
 		data = new StorageContext(db);
 
 		routeMap = Route.anon({
-			// keep sorted and keep trailing commas
+			// keep each group sorted and keep the trailing commas
 
 			// basic features
-			ask: new routes.ask.AskRoute(this),
+			answer : new route.Answer(this),
+			ask: new route.Ask(this),
+			comment : new route.Comment(this),
 			favorites : new route.List.Favorites(this),
-			list: new route.List(this),
-			login: new routes.login.LoginRoute(this),
-			logout: new routes.login.LogOutRoute(this),
-			question: new route.Question(this),
-			register: new routes.register.RegisterRoute(this),
+			list : new route.List(this),
+			login: new route.Login(this),
+			logout: new route.LogOut(this),
+			question : new route.Question(this),
+			register: new route.Register(this),
 			search : new route.List.Search(this),
 			user : new route.User(this),
 
 			// aliases
 			any : @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(route.List).any(),
 
+			// static
+			// anyStatic : function (rest:Array<String>) { Sys.exit(0); return null; },  // FIXME hack
+
 			// old hackish api
 			// TODO refactor
-			// deleteanswer : new routes.nonroute.NonRouteFunctions.DeleteAnswer(this),
-			// deletecomment : new routes.nonroute.NonRouteFunctions.DeleteComment(this),
-			// editanswer : new routes.nonroute.NonRouteFunctions.EditAnswer(this),
-			// editcomment : new routes.nonroute.NonRouteFunctions.EditComment(this),
-			// editquestion : new routes.nonroute.NonRouteFunctions.EditQuestion(this),
 			// markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(this),
-			// togglefavorite : new routes.nonroute.NonRouteFunctions.ToggleFavorite(this),
-			// togglefollow : new routes.nonroute.NonRouteFunctions.ToggleFollow(this),
 			// voteup : new routes.nonroute.NonRouteFunctions.VoteUp(this),
 			// votedown : new routes.nonroute.NonRouteFunctions.VoteDown(this),
 

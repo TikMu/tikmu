@@ -16,14 +16,14 @@ typedef Question = {
 
 	deleted : Bool,
 	created : Date,
-	modified : Date,
+	modified : Date,  // not changed by including/changing its children
 	solved : Bool,
 
-	comments : Array<Comment>,
 	answers : Array<Answer>,
 }
 
 typedef Comment = {
+	_id : ObjectID,
 	user : Ref<User>,   
 	contents : String,
 	created : Date,
@@ -32,6 +32,8 @@ typedef Comment = {
 }
 
 typedef Answer = {
+	_id : ObjectID,
+
 	deleted : Bool,
 	user : Ref<User>,
 	contents : String,
@@ -39,7 +41,7 @@ typedef Answer = {
 	voteSum : Int,
 
 	created : Date,
-	modified : Date,
+	modified : Date,  // not changed by including/changing its children
 
 	comments : Array<Comment>
 }

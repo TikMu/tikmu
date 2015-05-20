@@ -13,3 +13,17 @@
  - Sign off
  - Sign in
 
+2. Question
+
+ - Create a question
+ - Create another question
+ - View question list
+ - View question details
+ - Favorite and unfavorite
+
+3. Answer
+
+ - Answer a question
+ - Answer again
+ - Review on question's details
+
