@@ -4,12 +4,12 @@ import crypto.random.LinuxRandom;
 import haxe.io.Bytes;
 
 class Random {
-	static function fake(bytes):Bytes
+	static function fake(bytes):String
 	{
 		var b = Bytes.alloc(bytes);
 		for (i in 0...bytes)
 			b.set(i, Std.random(256));
-		return b;
+		return b.toHex();
 	}
 
 	public static function salt(bytes:Int):String
