@@ -65,9 +65,6 @@ class Context
 			// aliases
 			any : @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(route.List).any(),
 
-			// static
-			// anyStatic : function (rest:Array<String>) { Sys.exit(0); return null; },  // FIXME hack
-
 			// old hackish api
 			// TODO refactor
 			// markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(this),
