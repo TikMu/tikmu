@@ -1,26 +1,30 @@
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>TikMu – @title</title>
-</head>
-<body>
-	@ctx.loop.subHtml("/helper/menu")
-	<main>
-		@for (q in questions)
-		{
-		@{var u = this.getUser(q.user);}
-		<article>
-			<header>
-				<div>@u.name</div>
-				<div>302</div><!-- TODO -->
-			</header>
-			<a href="/question/@q._id.valueOf()">@q.contents</a><!-- TODO toHtml -->
-			<footer>
-				<div>
-					<span>São Paulo, 1h atrás</span><!-- TODO -->
-					<a href="#" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@q._id.valueOf()/favorite', false); r.send();">F!</a>
-				</div>
-				<div>
+	<head>
+		<meta charset="UTF-8">
+		<title>TikMu – @title</title>
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+		@ctx.loop.subHtml("/helper/menu")
+		<div>
+			@for (q in questions)
+			{ @{var u = this.getUser(q.user);}
+			<article id="question_card">
+				<header id="question_card_header">
+					<div id="user_avatar"></div>
+					<div id="user_description">
+						<div id="user_name">@u.name</div>
+						<div id="user_reputation">302</div><!-- TODO -->
+					</div>
+				</header>
+				<div id="question_card_question"><a href="/question/@q._id.valueOf()">@q.contents</a></div>
+				<footer id="question_card_footer">
+					<div id="location_date">São Paulo, 1h atrás</div><!-- TODO -->
+					<div id="favorite"><a href="#"></a></div>
+					<div id="follow"></div>
+				</footer>	
+				<div id="question_card_answers">
+					Responder
 					@if (q.answers.length > 0)
 					{
 					<a href="/question/@q._id.valueOf()">@q.answers.length answers</a>
@@ -29,11 +33,11 @@
 					{
 					<a href="/question/@q._id.valueOf()">Answer</a>
 					}
+					<a href="">F!</a><!-- TODO -->
 				</div>
-			</footer>
-		</article>
-		}
-	</main>
-</body>
+			</article>
+			}
+		</div>
+	</body>
 </html>
 
