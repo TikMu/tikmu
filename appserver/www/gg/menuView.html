@@ -1,0 +1,18 @@
+<nav class="nav">
+	<ul>
+		@if(ctx.session.isAuthenticated()) {
+		<li><a href="/logout">Sair</a></li>
+		} else {
+		<li><a href="/register">Registrar</a></li>
+		<li><a href="/login">Entrar</a></li>
+		}
+		<li><a href="/ask">Perguntar</a></li>
+		<li><span class="tagContainer" id="tagContainer"></span><input type="text" id="searchString" name="searchString" placeholder="Busca" /><input type="checkbox" id="istag" name="istag"/>Tag Search<input type="button" name="submitsearch" id="submitsearch" value="Buscar"/> </li>
+		@if(ctx.session.isAuthenticated())
+		{
+		<li><a href="/list/favorites">Listar Favoritos (private)</a></li>
+		<li><a href="" onclick="alert('TODO');">Preferências (private)</a></li>
+		}
+		<li><a href="" onclick="alert('TODO');">Especificar Localização</a></li>
+	</ul>
+</nav>
