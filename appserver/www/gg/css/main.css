@@ -8,6 +8,11 @@ body {
 	font-size: 14px;
 }
 
+input, button {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+}
+
 a {
 	color: #fff;
 	text-decoration: none;
@@ -118,7 +123,7 @@ li {
 	display: inline-block;
 }
 
-#question_card_header {
+#question_header {
 	padding-left: 20px;
 	margin: 0;
 }
@@ -163,14 +168,17 @@ li {
 	text-align: center;
 }
 
+
+
+/* Icons */
+
 #favorite {
 	background-image: url('../img/icon-favorite.png');
 	background-repeat: no-repeat;
 	background-size: 20px 20px;
 	height: 20px;
 	width: 20px;
-	padding-right: 20px;
-	float: right;
+	padding-right: 35px;
 	border: none;
 	display: inline;
 	cursor: pointer;
@@ -182,9 +190,96 @@ li {
 	background-size: 20px 20px;
 	height: 20px;
 	width: 20px;
-	padding: 0 20px 0 0;
-	float: right;
+	padding: 0 35px 0 0;
 	border: none;
 	display: inline;
 	cursor: pointer;
 }
+
+#share {
+	background-image: url('../img/icon-share.png');
+	background-repeat: no-repeat;
+	background-size: 18px 24px;
+	height: 24px;
+	width: 18px;
+	padding: 5px 35px 0 0;
+	border: none;
+	display: inline;
+	cursor: pointer;
+	margin-top: -4px;
+}
+
+#answer {
+	background-image: url('../img/icon-answer.png');
+	background-repeat: no-repeat;
+	background-size: 24px 18px;
+	height: 20px;
+	width: 24px;
+	padding: 0 35px 0 0;
+	border: none;
+	display: inline;
+	cursor: pointer;
+}
+
+/* Questions open */
+
+.question_open {
+	max-width: 620px;
+	background-color: #95B300;
+	color: #FFF;
+}
+
+#answer_list {
+	background-color: #FFF;
+	color: #333;
+	margin-top: 20px;
+	padding: 20px;
+}
+
+#answer_user_name {
+	color: #8763DD;
+}
+
+#answer_user_date {
+	color: #AAA;
+}
+
+#answer_content {
+	font-size: 16px;
+}
+
+#answer_box {
+	background-color: #EEE;
+	padding: 15px 20px;
+}
+
+#answer_textinput {
+	padding: 10px;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	font-size: 16px;
+	width: 77%;
+}
+
+#answer_submit_button {
+	padding: 11px 15px 8px 15px;
+	background-color: #ABCD00;
+	border-radius: 5px;
+	border-bottom: 3px solid #99B800;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	color: #FFF;
+	font-size: 16px;
+	margin-left: 2%;
+	width: 20%;
+	text-align: center;
+
+}
+
+#footer_icons {
+	text-align: right;
+	margin-top: -20px;
+}
+
+
