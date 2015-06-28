@@ -2,33 +2,40 @@
 <head>
 	<meta charset="UTF-8">
 	<title>TikMu</title>
-	<link href="/static/dev.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/main.css">	
 </head>
 <body>
 	@ctx.loop.subHtml("/helper/menu")
 	<main>
                 @{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
-		<article id="@qid" class="question">
-			<header>
-				<div>@u.name</div>
-				<div>302</div><!-- TODO -->
+		<article id="@qid" class="question_open">
+			<header id="question_header">
+				<div id="user_avatar"></div>
+				<div id="user_description">
+					<div id="user_name">@u.name</div>
+					<div id="user_reputation">302</div><!-- TODO -->
+				</div>
 				<div><a href="#" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@qid/favorite', false); r.send();">F!</a></div>
 			</header>
-			<p>@question.contents</p><!-- TODO toHtml -->
+			<p id="question_card_question">@question.contents</p><!-- TODO toHtml -->
 			<footer>
-				<span>@Std.random(10)km @this.getPrettyDelta(question.created)</span>
-				<a href="#@qid">Share</a><!-- TODO -->
-				<a href="#answer_box">Answer</a>
+				<div id="location_date">@Std.random(10)km @this.getPrettyDelta(question.created)</div>
+				<div id="footer_icons">
+					<span id="answer"><a href="#answer_box"></a></span>
+					<span id="share"><a href="#@qid"></a></span><!-- TODO -->
+					<span id="favorite"><a href="#"></a></span>
+					<span id="follow"></span>
+				</div>
 			</footer>
-			<section>
+			<section id="answer_list">
 				@for (a in question.answers)
 				{ @{ var u = this.getUser(a.user); var aid = a._id.valueOf(); }
-				<article id="@aid" class="answer">
+				<article id="@aid">
 					<header>
-						<span>@u.name</span>
-						<span>@this.getPrettyDelta(a.created)</span>
+						<div id="answer_user_name">@u.name</div>
+						<div id="answer_user_date">@this.getPrettyDelta(a.created)</div>
 					</header>
-					<p>@a.contents</p><!-- TODO toHtml -->
+					<p id="answer_content">@a.contents</p><!-- TODO toHtml -->
 					<footer>
 					<a href="">Share</a><!-- TODO -->
 					<a href="#" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>
@@ -43,23 +50,23 @@
 						{ @{var u = this.getUser(c.user); var cid = c._id.valueOf(); }
 						<article id="@cid" class="comment">
 							<header>
-								<span>@u.name</span>
-								<span>@this.getPrettyDelta(c.created)</span>
+								<div id="answer_user_name">@u.name</div>
+								<div id="answer_user_date">@this.getPrettyDelta(c.created)</div>
 							</header>
-							<p>@c.contents</p><!-- TODO toHtml -->
+							<p id="answer_content">@c.contents</p><!-- TODO toHtml -->
 						</article>
 						}
+
 					</section>
 				</article>
 				}
 			</section>
 			<form id="answer_box" action="/question/@qid/answer" method="post">
-				<input name="answer" type="text" placeholder="Answer" />
-				<button type="submit">&gt</button>
+				<input name="answer" type="text" placeholder="Answer" id="answer_textinput" />
+				<button type="submit" id="answer_submit_button">Send</button>
 			</form>
 		</article>
 	</main>
 </body>
 </html>
-
 
