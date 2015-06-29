@@ -8,17 +8,22 @@ enum LibSrc {
 }
 
 class Git {
-    public static function clone(repo:String, ?path:String, ?ref:String, ?depth:Int)
+    public static function clone(repo:String, ?path:String, ?branch:String, ?depth:Int)
     {
         var args = ["clone", "--recursive"];
         if (depth != null)
             args.concat(["--depth", Std.string(depth)]);
-        if (ref != null)
-            args.concat(["--branch", ref]);
+        if (branch != null)
+            args.concat(["--branch", branch]);
         args.push(repo);
         if (path != null)
             args.push(path);
         return command("git", args);
+    }
+
+    public static function checkout(ref:String)
+    {
+        return command("git", ["checkout", ref]);
     }
 }
 
@@ -81,16 +86,16 @@ class Build {
         baseDir = FileSystem.absolutePath(baseDir);
         buildDir = FileSystem.absolutePath(buildDir);
 
-        println('Cloning "$baseDir" into temp build dir "$buildDir"');
+        println('Cloning "$baseDir" into build dir "$buildDir"');
         if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
             println("Deleting previous build directory");
-            // rmrf(buildDir);
+            rmrf(buildDir);
         }
         Git.clone(baseDir, buildDir);
         println('Changing current working dir to "$buildDir"');
         setCwd(buildDir);
         println('Checking out commit "$commit"');
-        // Git.checkout(commit);
+        Git.checkout(commit);
 
         println("Fetching haxelibs and other dependencies");
         Haxelib.localSetup();
@@ -113,18 +118,17 @@ class Build {
     static function main()
     {
         try {
-            var baseDir = "./../../../";
-            baseDir = FileSystem.absolutePath(baseDir);
+            var baseDir = FileSystem.absolutePath("./../../../");
             println('Current working dir is $baseDir');
 
-            var branches = args();
-            if (branches.length == 0)
-                branches = ["master"];
-            println('Building branches $branches');
+            var commits = args();
+            if (commits.length == 0)
+                commits = ["master"];
+            println('Building commits $commits');
 
-            for (br in branches) {
-                var buildDir = '../.build-$br';
-                build(baseDir, br, buildDir);
+            for (commit in commits) {
+                var buildDir = FileSystem.absolutePath('../.build-$commit');
+                build(baseDir, commit, buildDir);
                 setCwd(baseDir);
             }
         } catch (e:Dynamic) {
