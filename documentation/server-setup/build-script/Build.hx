@@ -8,7 +8,7 @@ enum LibSrc {
 }
 
 class Git {
-    public static function clone(repo:String, ?ref:String, ?depth:Int, ?path:String)
+    public static function clone(repo:String, ?path:String, ?ref:String, ?depth:Int)
     {
         var args = ["clone", "--recursive"];
         if (depth != null)
@@ -44,7 +44,7 @@ class Haxelib {
         case LGit(lib, repo, ref):
             // don't use `haxelib git` even when it would suffice to avoid local+dependency issues
             var p = './.dev-haxelibs/$lib';
-            if (Git.clone(repo, ref, 1, p) != 0)
+            if (Git.clone(repo, p, ref, 1) != 0)
                 throw 'Git error while clonning $repo';
             if (dev(lib, p) != 0)
                 throw 'Haxelib error while setting up a dev path for $lib';
@@ -56,7 +56,7 @@ class Haxelib {
 class Build {
 
     static var libs = [
-        LOfficial("hscript"),  // dep for erazor
+        LOfficial("hscript"),  // for erazor
 
         LOfficial("croxit-1"),
         LGit("mongodb", "https://github.com/jonasmalacofilho/mongo-haxe-driver.git", "managers"),
@@ -76,10 +76,45 @@ class Build {
         command("rm", ["-rf", path]);
     }
 
+    public static function build(baseDir:String, commit:String, buildDir:String)
+    {
+        baseDir = FileSystem.absolutePath(baseDir);
+        buildDir = FileSystem.absolutePath(buildDir);
+
+        println('Cloning "$baseDir" into temp build dir "$buildDir"');
+        if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
+            println("Deleting previous build directory");
+            // rmrf(buildDir);
+        }
+        Git.clone(baseDir, buildDir);
+        println('Changing current working dir to "$buildDir"');
+        setCwd(buildDir);
+        println('Checking out commit "$commit"');
+        // Git.checkout(commit);
+
+        println("Fetching haxelibs and other dependencies");
+        Haxelib.localSetup();
+        for (lib in libs)
+            Haxelib.smartInstall(lib);
+
+        println("Building the appserver");
+        println('Moving into "./appserver"');
+        setCwd("appserver");
+        command("haxe", ["build.hxml"]);
+
+        // build other stuff
+        // println('Moving back to "$buildDir"');
+        // setCwd(buildDir);
+
+        println('Moving back to "$baseDir"');
+        setCwd(baseDir);
+    }
+
     static function main()
     {
         try {
-            var baseDir = getCwd();
+            var baseDir = "./../../../";
+            baseDir = FileSystem.absolutePath(baseDir);
             println('Current working dir is $baseDir');
 
             var branches = args();
@@ -89,27 +124,7 @@ class Build {
 
             for (br in branches) {
                 var buildDir = '../.build-$br';
-                println("Cloning into temp build dir");
-                if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
-                    println("Deleting previous build directory");
-                    rmrf(buildDir);
-                }
-                Git.clone(".", "master", 1, buildDir);
-                setCwd(buildDir);
-                buildDir = getCwd();
-                println('Working dir changed to $buildDir');
-
-                println("Fetching haxelibs");
-                Haxelib.localSetup();
-                for (lib in libs)
-                    Haxelib.smartInstall(lib);
-
-                println("Building");
-                setCwd("appserver");
-                command("haxe", ["build.hxml"]);
-                setCwd(buildDir);
-                // build more subsystems
-
+                build(baseDir, br, buildDir);
                 setCwd(baseDir);
             }
         } catch (e:Dynamic) {
