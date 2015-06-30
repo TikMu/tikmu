@@ -71,7 +71,6 @@ enum EventType {
     EOther;
 }
 
-@:access(Build.rmrf)
 class Listen {
     static var config = {
         repository : "jonasmalacofilho/temp",
@@ -88,6 +87,17 @@ class Listen {
             case "push": EPush;
             case _: EOther;
             }
+    }
+
+    static function rmrf(path:String)
+    {
+        // this is fucking dangerous, considering path errors and escaping
+        // issues...
+        //
+        // don't use this script with this unless you're brave and have nothing
+        // to loose!  you have been warned.
+        if (Sys.command("rm", ["-rf", path]) != 0)
+            throw 'Failed rm -rf command (path: $path)';
     }
 
     static function cpr(origin:String, destination:String)
