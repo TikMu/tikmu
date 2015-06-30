@@ -73,8 +73,8 @@ enum EventType {
 
 class Listen {
     static var config = {
-        remote : "temp",
-        repository : "jonasmalacofilho/temp",
+        remote : "origin",
+        repository : "jonasmalacofilho/tikmu",
         baseDir : "/var/build/tikmu",
         baseBuildDir : "/var/build/tikmu-builds",
         baseOutputDir : "/var/www/tikmu"
