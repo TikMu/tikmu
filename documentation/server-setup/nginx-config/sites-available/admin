@@ -1,6 +1,6 @@
 server {
-	listen 6666;
-	listen [::]:6666;
+	listen 2000;
+	listen [::]:2000;
 
 	server_name _;
 
