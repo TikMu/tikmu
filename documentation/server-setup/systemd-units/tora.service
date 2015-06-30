@@ -1,0 +1,14 @@
+[Unit]
+Description=Neko Tora Server
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/run/tora.pid
+ExecStart=/usr/bin/neko /var/build/tora/tora.n -fcgi
+TimeoutStopSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target
+
