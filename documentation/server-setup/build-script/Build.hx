@@ -4,7 +4,7 @@ using StringTools;
 
 enum LibSrc {
     LOfficial(lib:String);
-    LGit(lib:String, repo:String, ?ref:String);
+    LGit(lib:String, repo:String, ?ref:String, ?src:String);
 }
 
 class Git {
@@ -45,17 +45,25 @@ class Haxelib {
         switch (src) {
         case LOfficial(lib):
             if (install(lib) != 0)
-                throw 'Haxelib error while installing official $lib';
-        case LGit(lib, repo, ref):
+                throw 'Haxelib error while installing';
+        case LGit(lib, repo, ref, src):
             // don't use `haxelib git` even when it would suffice to avoid local+dependency issues
+            var cwd = getCwd();
             var p = './.dev-haxelibs/$lib';
-            if (Git.clone(repo, p, ref, 1) != 0)
-                throw 'Git error while clonning $repo';
-            if (dev(lib, p) != 0)
-                throw 'Haxelib error while setting up a dev path for $lib';
+            if (Git.clone(repo, p) != 0)
+                throw 'Git error while clonning "$repo"';
+            setCwd(p);
+            if (ref != null && Git.checkout(ref) != 0)
+                throw 'Git error while checking out "$ref"';
+            setCwd(cwd);  // can't use local haxelib from a subdirectory
+            var ps = src != null ? p + "/" + src : p;
+            if (dev(lib, ps) != 0)
+                throw 'Haxelib error while setting up a dev path';
         }
     }
 
+    public static function linkLocalSetup(path:String)
+        return command("ln", ["--symbolic", '$path/.haxelib', "."]);
 }
 
 class Build {
@@ -65,9 +73,9 @@ class Build {
 
         LOfficial("croxit-1"),
         LGit("mongodb", "https://github.com/jonasmalacofilho/mongo-haxe-driver.git", "managers"),
-        LGit("mongodb-managers", "https://github.com/jonasmalacofilho/mongo-haxe-managers.git", "master"),
+        LGit("mongodb-managers", "https://github.com/jonasmalacofilho/mongo-haxe-managers.git", "master", "lib"),
         LGit("geotools", "https://github.com/waneck/geotools.git"),
-        LGit("mweb", "https://github.com/jonasmalacofilho/mweb.git"),
+        LGit("mweb", "https://github.com/jonasmalacofilho/mweb.git", null, "src"),
         LGit("erazor", "https://github.com/waneck/erazor.git"),
     ];
 
@@ -99,13 +107,23 @@ class Build {
 
         println("Fetching haxelibs and other dependencies");
         Haxelib.localSetup();
-        for (lib in libs)
+        for (lib in libs) {
+            switch (lib) {
+            case LOfficial(lib):
+                println('Installing official "$lib" haxelib');
+            case LGit(lib, repo, ref, _):
+                println('Installing "$lib" from ' + (ref != null ? '"$repo@$ref"' : '"$repo"'));
+            }
             Haxelib.smartInstall(lib);
+        }
 
         println("Building the appserver");
         println('Moving into "./appserver"');
         setCwd("appserver");
-        command("haxe", ["build.hxml"]);
+        Haxelib.linkLocalSetup("..");  // can't use local haxelib from a subdirectory
+        println('Running haxe');
+        if (command("haxe", ["build.hxml"]) != 0)
+            throw 'Compilation failed';
 
         // build other stuff
         // println('Moving back to "$buildDir"');
@@ -117,7 +135,7 @@ class Build {
 
     static function main()
     {
-        try {
+        // try {
             var baseDir = FileSystem.absolutePath("./../../../");
             println('Current working dir is $baseDir');
 
@@ -127,13 +145,13 @@ class Build {
             println('Building commits $commits');
 
             for (commit in commits) {
-                var buildDir = FileSystem.absolutePath('../.build-$commit');
+                var buildDir = FileSystem.absolutePath(baseDir + '/../.build-$commit');
                 build(baseDir, commit, buildDir);
                 setCwd(baseDir);
             }
-        } catch (e:Dynamic) {
-            println('Build error: $e');
-        }
+        // } catch (e:Dynamic) {
+        //     println('Build error: $e');
+        // }
     }
 
 }
