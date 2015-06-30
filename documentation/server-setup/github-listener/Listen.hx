@@ -136,9 +136,18 @@ class Listen {
         rmrf(outputDir);
         cpr('$buildDir/appserver/www', outputDir);
 
-        sys.io.File.saveContent('$outputDir/built_at', Std.string(Date.now()));
-        sys.io.File.saveContent('$outputDir/branch', branch);
-        sys.io.File.saveContent('$outputDir/commit', head);
+        var infos = {
+            built_at : Date.now(),
+            branch : branch,
+            commit : {
+                id : push.head_commit.id,
+                timestamp : push.head_commit.timestamp,
+                author : push.head_commit.author.name,
+                message : push.head_commit.message,
+            }
+        }
+
+        sys.io.File.saveContent('$outputDir/infos.json', haxe.Json.stringify(infos));
     }
 
     static function main()
