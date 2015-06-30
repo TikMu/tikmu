@@ -15,6 +15,11 @@ import Sys.*;
 import sys.FileSystem;
 using StringTools;
 
+typedef Define = {
+    name : String,
+    ?value : String
+}
+
 enum LibSrc {
     LOfficial(lib:String);
     LGit(lib:String, repo:String, ?ref:String, ?src:String);
@@ -101,7 +106,7 @@ class Build {
         return command("rm", ["-rf", path]);
     }
 
-    public static function build(baseDir:String, commit:String, buildDir:String)
+    public static function build(baseDir:String, commit:String, buildDir:String, defines:Array<Define>)
     {
         baseDir = FileSystem.absolutePath(baseDir);
         buildDir = FileSystem.absolutePath(buildDir);
@@ -140,8 +145,17 @@ class Build {
         setCwd("appserver");
         if (Haxelib.linkLocalSetup("..") != 0)  // can't use local haxelib from a subdirectory
             throw "Error while linking to another local haxelib setup";
+        println("Preparing to run haxe");
+        var args = ["build.hxml"];
+        for (d in defines) {
+            args.push("-D");
+            if (d.value != null)
+                args.push(d.name + "=" + d.value);
+            else
+                args.push(d.name);
+        }
         println('Running haxe');
-        if (command("haxe", ["build.hxml"]) != 0)
+        if (command("haxe", args) != 0)
             throw 'Compilation failed';
 
         // build other stuff
@@ -166,7 +180,7 @@ class Build {
 
         for (commit in commits) {
             var buildDir = FileSystem.absolutePath(baseDir + '/../.build-$commit');
-            build(baseDir, commit, buildDir);
+            build(baseDir, commit, buildDir, []);
             setCwd(baseDir);
         }
     }

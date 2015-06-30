@@ -77,7 +77,8 @@ class Listen {
         repository : "jonasmalacofilho/tikmu",
         baseDir : "/var/build/tikmu",
         baseBuildDir : "/var/build/tikmu-builds",
-        baseOutputDir : "/var/www/tikmu"
+        baseOutputDir : "/var/www/tikmu",
+        defines : []
     }
 
     static function getEventType():EventType
@@ -142,7 +143,7 @@ class Listen {
 
         println("Building...");
         var buildDir = '${config.baseBuildDir}/$branch';
-        Build.build(config.baseDir, head, buildDir);
+        Build.build(config.baseDir, head, buildDir, config.defines);
 
         println("Installing...");
         var outputDir = '${config.baseOutputDir}/$branch';
