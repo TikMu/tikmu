@@ -135,6 +135,10 @@ class Listen {
         var outputDir = '${config.baseOutputDir}/$branch';
         rmrf(outputDir);
         cpr('$buildDir/appserver/www', outputDir);
+
+        sys.io.File.saveContent('$outputDir/built_at', Std.string(Date.now()));
+        sys.io.File.saveContent('$outputDir/branch', branch);
+        sys.io.File.saveContent('$outputDir/commit', head);
     }
 
     static function main()
