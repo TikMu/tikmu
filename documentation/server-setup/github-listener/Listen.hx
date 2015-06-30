@@ -134,7 +134,7 @@ class Listen {
 
         var outputDir = '${config.baseOutputDir}/$branch';
         rmrf(outputDir);
-        cpr('$buildDir/appserver/www/*', outputDir);
+        cpr('$buildDir/appserver/www', outputDir);
     }
 
     static function main()
