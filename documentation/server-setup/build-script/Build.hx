@@ -22,9 +22,7 @@ class Git {
     }
 
     public static function checkout(ref:String)
-    {
         return command("git", ["checkout", ref]);
-    }
 }
 
 class Haxelib {
@@ -39,6 +37,9 @@ class Haxelib {
 
     public static function localSetup()
         return command("haxelib", ["newrepo"]);
+
+    public static function linkLocalSetup(path:String)
+        return command("ln", ["--symbolic", '$path/.haxelib', "."]);
 
     public static function smartInstall(src:LibSrc)
     {
@@ -62,8 +63,6 @@ class Haxelib {
         }
     }
 
-    public static function linkLocalSetup(path:String)
-        return command("ln", ["--symbolic", '$path/.haxelib', "."]);
 }
 
 class Build {
@@ -86,7 +85,7 @@ class Build {
         //
         // don't use this script with this unless you're brave and have nothing
         // to loose!  you have been warned.
-        command("rm", ["-rf", path]);
+        return command("rm", ["-rf", path]);
     }
 
     public static function build(baseDir:String, commit:String, buildDir:String)
@@ -97,16 +96,20 @@ class Build {
         println('Cloning "$baseDir" into build dir "$buildDir"');
         if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
             println("Deleting previous build directory");
-            rmrf(buildDir);
+            if (rmrf(buildDir) != 0)
+                throw "Possibly dangerous rm error";
         }
-        Git.clone(baseDir, buildDir);
+        if (Git.clone(baseDir, buildDir) != 0)
+            throw 'Git error while cloning';
         println('Changing current working dir to "$buildDir"');
         setCwd(buildDir);
         println('Checking out commit "$commit"');
-        Git.checkout(commit);
+        if (Git.checkout(commit) != 0)
+            throw 'Git error while checking out';
 
         println("Fetching haxelibs and other dependencies");
-        Haxelib.localSetup();
+        if (Haxelib.localSetup() != 0)
+            throw "Haxelib error while setting up locally";
         for (lib in libs) {
             switch (lib) {
             case LOfficial(lib):
@@ -120,7 +123,8 @@ class Build {
         println("Building the appserver");
         println('Moving into "./appserver"');
         setCwd("appserver");
-        Haxelib.linkLocalSetup("..");  // can't use local haxelib from a subdirectory
+        if (Haxelib.linkLocalSetup("..") != 0)  // can't use local haxelib from a subdirectory
+            throw "Error while linking to another local haxelib setup";
         println('Running haxe');
         if (command("haxe", ["build.hxml"]) != 0)
             throw 'Compilation failed';
@@ -135,23 +139,21 @@ class Build {
 
     static function main()
     {
-        // try {
-            var baseDir = FileSystem.absolutePath("./../../../");
-            println('Current working dir is $baseDir');
+        // TODO make this usable from any directory in the current git repo
 
-            var commits = args();
-            if (commits.length == 0)
-                commits = ["master"];
-            println('Building commits $commits');
+        var baseDir = FileSystem.absolutePath("./../../../");
+        println('Current working dir is $baseDir');
 
-            for (commit in commits) {
-                var buildDir = FileSystem.absolutePath(baseDir + '/../.build-$commit');
-                build(baseDir, commit, buildDir);
-                setCwd(baseDir);
-            }
-        // } catch (e:Dynamic) {
-        //     println('Build error: $e');
-        // }
+        var commits = args();
+        if (commits.length == 0)
+            commits = ["master"];
+        println('Building commits $commits');
+
+        for (commit in commits) {
+            var buildDir = FileSystem.absolutePath(baseDir + '/../.build-$commit');
+            build(baseDir, commit, buildDir);
+            setCwd(baseDir);
+        }
     }
 
 }
