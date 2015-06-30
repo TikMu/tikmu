@@ -15,17 +15,17 @@ class IterationContext {
 
 	function handleLoggedMeta(metas:Array<String>)
 	{
-		// TODO: Change this test to handle sessions with no users
-		// (for now, sessions are being created on logging in, so no sessions without users)
-		// TODO does this still apply?
-		if (!metas.has("openRoute"))
-		{
-			var s = session;
-			if (!s.isValid())
-				throw ExpiredSession(s);
-			else if (!s.isAuthenticated())
-				throw NotLogged;
-		}
+		// replace 'login' with 'openRoute' to enable open routes again;
+		// they have been closed so that a username is known for every
+		// online user on the test deployment
+		if (metas.has("login"))
+			return;
+
+		var s = session;
+		if (!s.isValid())
+			throw ExpiredSession(s);
+		else if (!s.isAuthenticated())
+			throw NotLogged;
 	}
 
 	@:allow(Context)

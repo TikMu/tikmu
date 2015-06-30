@@ -8,7 +8,7 @@ class MenuView extends BaseView<{}> {}
 class Menu extends BaseRoute {
 	var view:MenuView;
 
-	@openRoute
+	@openRoute @login
 	public function any()
 	{
 		return HttpResponse.fromContent(new TemplateLink(null, view));

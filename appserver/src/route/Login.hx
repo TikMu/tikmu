@@ -7,13 +7,13 @@ import mweb.tools.*;
 class LoginView extends BaseView<{ msg:String }> {}
 
 class Login extends BaseRoute {
-	@openRoute
+	@openRoute @login
 	public function get(?args:{ email:String, msg:String }):HttpResponse<{ msg:String }>
 	{
 		return HttpResponse.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView(_ctx)));
 	}
 
-	@openRoute
+	@openRoute @login
 	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
 	{
 		// pre-validate args.email
