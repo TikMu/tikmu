@@ -1,0 +1,15 @@
+server {
+	listen 8080;
+	listen [::]:80;
+
+	server_name _;
+
+	root /var/www/admin;
+
+	location /.+\.n {
+		fastcgi_split_path_info ^(.+\.n)(/.+)$;
+		include fastcgi-tora.conf;
+		fastcgi_pass 127.0.0.1:6666;
+	}
+}
+
