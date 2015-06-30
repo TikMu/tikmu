@@ -106,6 +106,8 @@ class Build {
         baseDir = FileSystem.absolutePath(baseDir);
         buildDir = FileSystem.absolutePath(buildDir);
 
+        setCwd(baseDir);  // make sure we start at someplace safe, otherwise git might fail
+
         println('Cloning "$baseDir" into build dir "$buildDir"');
         if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
             println("Deleting previous build directory");
