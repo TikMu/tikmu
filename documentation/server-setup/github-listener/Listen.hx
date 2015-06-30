@@ -78,7 +78,7 @@ class Listen {
         baseDir : "/var/build/tikmu",
         baseBuildDir : "/var/build/tikmu-builds",
         baseOutputDir : "/var/www/tikmu",
-        defines : []
+        defines : [{ name : "tikmu_require_login" }]
     }
 
     static function getEventType():EventType

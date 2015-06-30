@@ -15,10 +15,8 @@ class IterationContext {
 
 	function handleLoggedMeta(metas:Array<String>)
 	{
-		// replace 'login' with 'openRoute' to enable open routes again;
-		// they have been closed so that a username is known for every
-		// online user on the test deployment
-		if (metas.has("login"))
+		var noAuth = #if tikmu_require_login "login" #else "openRoute" #end;
+		if (metas.has(noAuth))
 			return;
 
 		var s = session;
