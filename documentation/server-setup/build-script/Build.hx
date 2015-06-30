@@ -1,3 +1,16 @@
+/**
+  Automated build recipe.
+
+  Usage: haxe --run Build [commit] ...
+
+  For each commit, this will create a .build-$commit directory above this git
+  tree, install all dependencies locally and compile the appserver.
+
+  A commit can be defined by any valid git reference, such as a partial hash, a
+  tag or a branch; if no commit is specified, a reference to 'master' is
+  assumed.
+**/
+
 import Sys.*;
 import sys.FileSystem;
 using StringTools;
