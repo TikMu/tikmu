@@ -116,14 +116,13 @@ class Listen {
 
         var branch = push.ref.replace("refs/heads/", "");
         var head = push.head_commit.id;
+        Web.setReturnCode(202);
 
         var buildDir = '${config.baseBuildDir}/$branch';
         Build.build(config.baseDir, head, buildDir);
 
         var outputDir = '${config.baseOutputDir}/$branch';
         cpr(buildDir, outputDir);
-
-        Web.setReturnCode(200);
     }
 
     static function main()
@@ -131,7 +130,6 @@ class Listen {
         try {
             _main();
         } catch (e:Dynamic) {
-            Web.setReturnCode(500);  // internal unexpected error
             Sys.println(e);
             var s = haxe.CallStack.exceptionStack();
             Sys.println(haxe.CallStack.toString(s));
