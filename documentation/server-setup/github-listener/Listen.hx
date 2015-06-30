@@ -1,4 +1,4 @@
-import Sys.println;
+import Sys.*;
 import neko.Web;
 using StringTools;
 
@@ -73,6 +73,7 @@ enum EventType {
 
 class Listen {
     static var config = {
+        remote : "temp",
         repository : "jonasmalacofilho/temp",
         baseDir : "/var/build/tikmu",
         baseBuildDir : "/var/build/tikmu-builds",
@@ -96,14 +97,14 @@ class Listen {
         //
         // don't use this script with this unless you're brave and have nothing
         // to loose!  you have been warned.
-        if (Sys.command("rm", ["-rf", path]) != 0)
+        if (command("rm", ["-rf", path]) != 0)
             throw 'Failed rm -rf command (path: $path)';
     }
 
     static function cpr(origin:String, destination:String)
     {
         var args = ["-r", origin, destination];
-        if (Sys.command("cp", args) != 0)
+        if (command("cp", args) != 0)
             throw 'Failed copy command (origin: $origin, destination: $destination)';
     }
 
@@ -128,6 +129,9 @@ class Listen {
         var branch = push.ref.replace("refs/heads/", "");
         var head = push.head_commit.id;
         Web.setReturnCode(202);
+
+        setCwd(config.baseDir);
+        command("git", ["fetch", config.remote]);
 
         var buildDir = '${config.baseBuildDir}/$branch';
         Build.build(config.baseDir, head, buildDir);
@@ -155,9 +159,9 @@ class Listen {
         try {
             _main();
         } catch (e:Dynamic) {
-            Sys.println(e);
+            println(e);
             var s = haxe.CallStack.exceptionStack();
-            Sys.println(haxe.CallStack.toString(s));
+            println(haxe.CallStack.toString(s));
         }
     }
 }
