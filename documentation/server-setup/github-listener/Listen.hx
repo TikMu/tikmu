@@ -110,12 +110,17 @@ class Listen {
 
     static function _main()
     {
+        // TODO verify the signature
+
         var event = getEventType();
-        if (event.match(EPing))
-            return Web.setReturnCode(200);
+        if (event.match(EPing)) {
+            Web.setReturnCode(200);
+            return;
+        }
         if (event.match(EOther)) {
             Web.setReturnCode(417);  // expectation failed
-            println('Expecting "push" or "ping" events');
+            println('ERROR: Expecting "push" or "ping" events');
+            return;
         }
 
         var data = Web.getPostData();
@@ -123,23 +128,28 @@ class Listen {
 
         if (push.repository.full_name != config.repository) {
             Web.setReturnCode(417);  // expectation failed
-            println('Expecting repository to be "${config.repository}"');
+            println('ERROR: Expecting repository to be "${config.repository}"');
         }
 
         var branch = push.ref.replace("refs/heads/", "");
         var head = push.head_commit.id;
-        Web.setReturnCode(202);
+        Web.setReturnCode(202);  // accepted
+        println('Accepted build request for branch "$branch" (head is "${head.substr(0,7)}")');
 
+        println('Fetching from ${config.remote}');
         setCwd(config.baseDir);
         command("git", ["fetch", config.remote]);
 
+        println("Building...");
         var buildDir = '${config.baseBuildDir}/$branch';
         Build.build(config.baseDir, head, buildDir);
 
+        println("Installing...");
         var outputDir = '${config.baseOutputDir}/$branch';
         rmrf(outputDir);
         cpr('$buildDir/appserver/www', outputDir);
 
+        println("Adding infos.json");
         var infos = {
             built_at : Date.now(),
             branch : branch,
@@ -150,8 +160,8 @@ class Listen {
                 message : push.head_commit.message,
             }
         }
-
         sys.io.File.saveContent('$outputDir/infos.json', haxe.Json.stringify(infos));
+        println("Build successfull");
     }
 
     static function main()
@@ -159,9 +169,9 @@ class Listen {
         try {
             _main();
         } catch (e:Dynamic) {
-            println(e);
+            println('Build aborted with error: $e');
             var s = haxe.CallStack.exceptionStack();
-            println(haxe.CallStack.toString(s));
+            println("Call stack: " + haxe.CallStack.toString(s));
         }
     }
 }
