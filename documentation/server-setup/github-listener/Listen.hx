@@ -71,6 +71,7 @@ enum EventType {
     EOther;
 }
 
+@:access(Build.rmrf)
 class Listen {
     static var config = {
         repository : "jonasmalacofilho/temp",
@@ -122,7 +123,8 @@ class Listen {
         Build.build(config.baseDir, head, buildDir);
 
         var outputDir = '${config.baseOutputDir}/$branch';
-        cpr(buildDir, outputDir);
+        rmrf(outputDir);
+        cpr('$buildDir/appserver/www/*', outputDir);
     }
 
     static function main()
