@@ -1,8 +1,14 @@
+import Sys.println;
 import neko.Web;
 using StringTools;
 
 typedef Path = String;
 typedef Url = String;
+
+typedef ShortUser = {
+    name : String,  // this actually is the username
+    email : String
+}
 
 typedef User = {
     name : String,
@@ -23,9 +29,25 @@ typedef Commit = {
     modified : Array<Path>
 }
 
-typedef Repository = Dynamic;
-typedef Pusher = Dynamic;
 typedef Sender = Dynamic;
+
+typedef Repository = {
+    id : Int,
+    name : String,
+    full_name : String,
+    owner : ShortUser,
+    html_url : Url,
+    description : String,
+    fork : Bool,
+    url : Url,
+    created_at : Dynamic,
+    update_at : Dynamic,
+    pushed_at : Dynamic,
+    default_branch : String,
+    master_branch : String
+    // more properties
+    // more urls
+}
 
 typedef PushEvent = {
     ref : String,
@@ -39,7 +61,7 @@ typedef PushEvent = {
     commits : Array<Commit>,
     head_commit : Commit,
     repository : Repository,
-    pusher : Pusher,
+    pusher : ShortUser,
     sender : Sender
 }
 
@@ -50,6 +72,13 @@ enum EventType {
 }
 
 class Listen {
+    static var config = {
+        repository : "jonasmalacofilho/temp",
+        baseDir : "/var/build/tikmu",
+        baseBuildDir : "/var/build/tikmu-builds",
+        baseOutputDir : "/var/www/tikmu"
+    }
+
     static function getEventType():EventType
     {
         return
@@ -60,24 +89,41 @@ class Listen {
             }
     }
 
+    static function cpr(origin:String, destination:String)
+    {
+        var args = ["-r", origin, destination];
+        if (Sys.command("cp", args) != 0)
+            throw 'Failed copy command (origin: $origin, destination: $destination)';
+    }
+
     static function _main()
     {
         var event = getEventType();
-        switch (event) {
-        case EPing:
+        if (event.match(EPing))
             return Web.setReturnCode(200);
-        case EOther:
-            return Web.setReturnCode(417);  // expectation failed of "push" or "ping"
-        case _:
-            // continue
+        if (event.match(EOther)) {
+            Web.setReturnCode(417);  // expectation failed
+            println('Expecting "push" or "ping" events');
         }
 
         var data = Web.getPostData();
         var push = (haxe.Json.parse(data):PushEvent);
-        var branch = push.ref.replace("refs/heads/", "");
-        Web.setReturnCode(202);  // accepted
 
-        // ... build
+        if (push.repository.full_name != config.repository) {
+            Web.setReturnCode(417);  // expectation failed
+            println('Expecting repository to be "${config.repository}"');
+        }
+
+        var branch = push.ref.replace("refs/heads/", "");
+        var head = push.head_commit.id;
+
+        var buildDir = '${config.baseBuildDir}/$branch';
+        Build.build(config.baseDir, head, buildDir);
+
+        var outputDir = '${config.baseOutputDir}/$branch';
+        cpr(buildDir, outputDir);
+
+        Web.setReturnCode(200);
     }
 
     static function main()
@@ -88,7 +134,7 @@ class Listen {
             Web.setReturnCode(500);  // internal unexpected error
             Sys.println(e);
             var s = haxe.CallStack.exceptionStack();
-            Sys.println(haxe.CallStack.toString(s.slice(0,1)));
+            Sys.println(haxe.CallStack.toString(s));
         }
     }
 }
