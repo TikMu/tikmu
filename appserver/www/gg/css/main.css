@@ -18,6 +18,11 @@ a {
 	text-decoration: none;
 }
 
+/* but keep the default color on 'temp' (unstiled) elements */
+.temp a, a.temp {
+	color: gray;
+}
+
 li {
 	list-style: none;
 }
@@ -88,10 +93,6 @@ a.icon {
 	white-space: nowrap;
 	overflow: hidden;
 	text-decoration: none;
-}
-
-menu a {  /* temporary */
-	color: gray;
 }
 
 
