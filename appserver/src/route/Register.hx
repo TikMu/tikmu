@@ -9,13 +9,13 @@ class RegisterView extends BaseView<{ email:String, msg:String }> {
 }
 
 class Register extends BaseRoute {
-	@openRoute
+	@openRoute @login
 	public function get(?args:{ email:String, msg:String }):HttpResponse<{ email:String, msg:String }>
 	{
 		return HttpResponse.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(_ctx)));
 	}
 
-	@openRoute
+	@openRoute @login
 	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
 	{
 		// validate args.email
