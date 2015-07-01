@@ -1,5 +1,6 @@
 <html>
-@ctx.aux.head.execute()
+@{ var teaser = question.contents.split("\n")[0].split(" ").slice(0, 4).join(" "); }
+@ctx.aux.head.setData({ title : teaser + (teaser != question.contents ? "..." : "") }).execute()
 <body>
 	@ctx.aux.menu.execute()
 	<main>
