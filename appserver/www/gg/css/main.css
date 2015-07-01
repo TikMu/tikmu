@@ -153,7 +153,6 @@ menu a {  /* temporary */
 #question_card_footer {
 	margin: 0 0 15px 0;
 	display: block;
-
 }
 
 #location_date {
@@ -175,6 +174,22 @@ menu a {  /* temporary */
 
 /* Icons */
 
+#answer {
+	background-image: url('../img/icon-answer.png');
+	background-size: 24px 18px;
+	width: 24px;
+	height: 20px;
+	margin: 0 10px 0 0;
+}
+
+#share {
+	background-image: url('../img/icon-share.png');
+	background-size: 18px 24px;
+	width: 18px;
+	height: 24px;
+	margin: 0 10px 0 0;
+}
+
 #favorite {
 	background-image: url('../img/icon-favorite.png');
 	background-size: 20px 20px;
@@ -188,32 +203,9 @@ menu a {  /* temporary */
 	background-size: 20px 20px;
 	width: 20px;
 	height: 20px;
+	margin: 0 20px 0 0;
 }
 
-#share {
-	background-image: url('../img/icon-share.png');
-	background-repeat: no-repeat;
-	background-size: 18px 24px;
-	height: 24px;
-	width: 18px;
-	padding: 5px 35px 0 0;
-	border: none;
-	display: inline;
-	cursor: pointer;
-	margin-top: -4px;
-}
-
-#answer {
-	background-image: url('../img/icon-answer.png');
-	background-repeat: no-repeat;
-	background-size: 24px 18px;
-	height: 20px;
-	width: 24px;
-	padding: 0 35px 0 0;
-	border: none;
-	display: inline;
-	cursor: pointer;
-}
 
 /* Questions open */
 

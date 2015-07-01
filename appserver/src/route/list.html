@@ -19,9 +19,11 @@
 				</header>
 				<div id="question_card_question"><a href="/question/@q._id.valueOf()">@q.contents</a></div>
 				<footer id="question_card_footer">
-					<span id="location_date">@Std.random(10)km @Std.random(20)h</span><!-- TODO -->
-					<a href="#" id="favorite" class="icon" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@q._id.valueOf()/favorite', false); r.send();">Favorite/unfavorite</a>
-					<a href="#" id="follow" class="icon" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@q._id.valueOf()/follow', false); r.send();">Follow/unfollow</a>
+					<div id="location_date">@Std.random(10)km @Std.random(20)h</div><!-- TODO -->
+					<div id="footer_icons">
+						<a href="#" id="favorite" class="icon" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@q._id.valueOf()/favorite', false); r.send();">Favorite/unfavorite</a>
+						<a href="#" id="follow" class="icon" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@q._id.valueOf()/follow', false); r.send();">Follow/unfollow</a>
+					</div>
 				</footer>	
 				<div id="question_card_answers">
 					@if (q.answers.length > 0)
