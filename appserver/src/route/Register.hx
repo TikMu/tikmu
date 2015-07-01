@@ -40,7 +40,7 @@ class Register extends BaseRoute {
 			points : 0,
 		};
 		data.users.insert(u);  // FIXME handle possible errors
-
+		trace('Created user for ${u.email} (${u.name})');
                 return new route.Login(_ctx).post(args);  // TODO fix
 	}
 }
