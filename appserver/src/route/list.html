@@ -5,7 +5,7 @@
 		<link rel="stylesheet" href="/css/main.css">
 	</head>
 	<body>
-		@ctx.loop.subHtml("/helper/menu")
+		@ctx.aux.menu.execute();
 		<div>
 			@for (q in questions)
 			{ @{var u = this.getUser(q.user);}

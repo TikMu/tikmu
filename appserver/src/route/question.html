@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="/css/main.css">	
 </head>
 <body>
-	@ctx.loop.subHtml("/helper/menu")
+	@ctx.aux.menu.execute();
 	<main>
                 @{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
 		<article id="@qid" class="question_open">

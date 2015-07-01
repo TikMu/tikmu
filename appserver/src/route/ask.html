@@ -4,7 +4,7 @@
 	<title>TikMu – Log in</title>
 </head>
 <body>
-	@ctx.loop.subHtml("/helper/menu")
+	@ctx.aux.menu.execute();
 	<main>
 		<form action="/ask" method="post">
 			<textarea name="question" placeholder="Write your question here..."></textarea>

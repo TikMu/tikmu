@@ -9,6 +9,7 @@ class Context
 
 	public var data(default,null):StorageContext;
 	public var loop(default,null):IterationContext;
+	public var aux(default,null):AuxiliaryContext;
 
 	@:allow(Main)
 	function respond()  // TODO receice Web
@@ -45,6 +46,7 @@ class Context
 	public function new(db)
 	{
 		data = new StorageContext(db);
+		aux = new AuxiliaryContext(this);
 
 		routeMap = Route.anon({
 			// keep each group sorted and keep the trailing commas
@@ -70,12 +72,6 @@ class Context
 			// markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(this),
 			// voteup : new routes.nonroute.NonRouteFunctions.VoteUp(this),
 			// votedown : new routes.nonroute.NonRouteFunctions.VoteDown(this),
-
-			// helpers (but don't put anything sensitive here!)
-			// FIXME don't forward them to the client anyway
-			helper : Route.anon({
-				menu: new route.helper.Menu(this),
-			}),
 		});
 	}
 }
