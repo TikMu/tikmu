@@ -1,11 +1,7 @@
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>TikMu – @title</title>
-		<link rel="stylesheet" href="/css/main.css">
-	</head>
+	@ctx.aux.head.execute()
 	<body>
-		@ctx.aux.menu.execute();
+		@ctx.aux.menu.execute()
 		<div>
 			@for (q in questions)
 			{ @{var u = this.getUser(q.user);}

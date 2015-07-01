@@ -1,11 +1,7 @@
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>TikMu</title>
-	<link rel="stylesheet" href="/css/main.css">	
-</head>
+@ctx.aux.head.execute()
 <body>
-	@ctx.aux.menu.execute();
+	@ctx.aux.menu.execute()
 	<main>
                 @{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
 		<article id="@qid" class="question_open">
