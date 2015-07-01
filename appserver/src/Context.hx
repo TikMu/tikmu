@@ -66,12 +66,6 @@ class Context
 
 			// aliases
 			any : @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(route.List).any(),
-
-			// old hackish api
-			// TODO refactor
-			// markquestionassolved : new routes.nonroute.NonRouteFunctions.MarkQuestionAsSolved(this),
-			// voteup : new routes.nonroute.NonRouteFunctions.VoteUp(this),
-			// votedown : new routes.nonroute.NonRouteFunctions.VoteDown(this),
 		});
 	}
 }
