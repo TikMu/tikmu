@@ -67,28 +67,28 @@ li {
 
 #location {
 	background-image: url('../img/icon-location.png');
-	background-repeat: no-repeat;
 	background-size: 16px 16px;
-	background-position: center;
-	border: none;
-	cursor: pointer;
 }
 
 #post_question {
 	background-image: url('../img/icon-post-question.png');
-	background-repeat: no-repeat;
 	background-size: 19px 17px;
+}
+
+a.icon {
+	background-repeat: no-repeat;
 	background-position: center;
 	border: none;
 	cursor: pointer;
-}
-
-.hidden-text {
-	text-indent: 100%;
+	display: inline-block;
+	text-indent: 1000%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-decoration: none;
-	visibility: hidden;
+}
+
+menu a {  /* temporary */
+	color: gray;
 }
 
 
