@@ -47,32 +47,35 @@ li {
 	float: right;
 }
 
-
 #main_menu {
 	background-image: url('../img/icon-menu.png');
-	background-repeat: no-repeat;
 	background-size: 16px 16px;
-	background-position: center;
-	cursor: pointer;	
+	width: 16px;
+	height: 16px;
+	margin: 0 10px 0 0;
 }
 
 #logo {
 	background-image: url('../img/logo.png');
-	background-repeat: no-repeat;
 	background-size: 57px 17px;
-	background-position: center;
-	padding: 0 20px 0 0;
-	border: none;
+	width: 57px;
+	height: 17px;
+	margin: 0 20px 0 0;
 }
 
 #location {
 	background-image: url('../img/icon-location.png');
 	background-size: 16px 16px;
+	width: 16px;
+	height: 16px;
+	margin: 0 10px 0 0;
 }
 
 #post_question {
 	background-image: url('../img/icon-post-question.png');
 	background-size: 19px 17px;
+	width: 19px;
+	height: 17px;
 }
 
 a.icon {
@@ -174,26 +177,17 @@ menu a {  /* temporary */
 
 #favorite {
 	background-image: url('../img/icon-favorite.png');
-	background-repeat: no-repeat;
 	background-size: 20px 20px;
-	height: 20px;
 	width: 20px;
-	padding-right: 35px;
-	border: none;
-	display: inline;
-	cursor: pointer;
+	height: 20px;
+	margin: 0 10px 0 0;
 }
 
 #follow {
 	background-image: url('../img/icon-follow.png');
-	background-repeat: no-repeat;
 	background-size: 20px 20px;
-	height: 20px;
 	width: 20px;
-	padding: 0 35px 0 0;
-	border: none;
-	display: inline;
-	cursor: pointer;
+	height: 20px;
 }
 
 #share {
