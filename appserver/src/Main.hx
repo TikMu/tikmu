@@ -6,7 +6,7 @@ class Main {
 	static var ctx = new Context(mongo.tikmu);
 
 	static function customTrace(msg:String, ?p:haxe.PosInfos) {
-		var s = '[${Date.now()}][${Web.getClientIP()}] ${p.fileName}:${p.lineNumber}:  $msg\n';
+		var s = '[${Web.getClientIP()}] ${p.fileName}:${p.lineNumber}:  $msg\n';
 		Sys.stderr().writeString(s);
 	}
 
