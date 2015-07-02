@@ -1,4 +1,5 @@
 import Sys.*;
+import haxe.crypto.Hmac;
 import haxe.io.Bytes;
 import neko.Web;
 using StringTools;
@@ -85,10 +86,13 @@ class Listen {
 
     static function verifiedSig(data:String, sig:String)
     {
+        var sig = sig.toLowerCase().split("=");
+        if (sig[0] != "sha1")
+            throw 'Unsupported hash algorithm in signature: ${sig[0]}';
         var secret = Bytes.ofString(config.secret);
         var data = Bytes.ofString(data);
-        var hmac = new haxe.crypto.Hmac(SHA1).make(secret, data);
-        return hmac.toHex() == sig;
+        var hmac = new Hmac(SHA1).make(secret, data);
+        return hmac.toHex() == sig[1];
     }
 
     static function getEventType():EventType
