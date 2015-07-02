@@ -102,8 +102,10 @@ class SessionCache {
     public function get(id:String):Null<Session>
     {
         var s = cache_get(id);
-        if (s == null)
+        if (s == null) {
+            trace('Cache miss for session $id');
             s = fetch(id);
+        }
         return s;
     }
 
