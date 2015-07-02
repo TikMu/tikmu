@@ -152,6 +152,16 @@ class Listen {
         }
 
         var branch = push.ref.replace("refs/heads/", "");
+        var buildDir = '${config.baseBuildDir}/$branch';
+        var outputDir = '${config.baseOutputDir}/$branch';
+
+        if (push.deleted) {
+            Web.setReturnCode(202);  // accepted
+            println('Accepted remove request for branch "$branch"');
+            rmrf(outputDir);
+            return;
+        }
+
         var head = push.head_commit.id;
         Web.setReturnCode(202);  // accepted
         println('Accepted build request for branch "$branch" (head is "${head.substr(0,7)}")');
@@ -161,11 +171,9 @@ class Listen {
         command("git", ["fetch", config.remote]);
 
         println("Building...");
-        var buildDir = '${config.baseBuildDir}/$branch';
         Build.build(config.baseDir, head, buildDir, config.defines);
 
         println("Installing...");
-        var outputDir = '${config.baseOutputDir}/$branch';
         rmrf(outputDir);
         cpr('$buildDir/appserver/www', outputDir);
 
