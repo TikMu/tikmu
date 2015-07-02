@@ -26,6 +26,13 @@ class SessionCache {
         return h;
     }
 
+    function cache_sessionPos(id)
+    {
+        var h = cache_sessionHash(id);
+        var p = h % size;
+        return p > 0 ? p : (-p);
+    }
+
     function cache_equalSessions(id1, id2) {
         return id1 == id2;
     }
@@ -37,14 +44,14 @@ class SessionCache {
 
     function cache_get(id)
     {
-        var pos = cache_sessionHash(id);
+        var pos = cache_sessionPos(id);
         var s = items.get(pos);
         return (s != null && cache_equalSessions(id, s._id)) ? s : null;
     }
 
     function cache_set(id, s)
     {
-        var pos = cache_sessionHash(id);
+        var pos = cache_sessionPos(id);
         var add = items.get(pos) == null;
         items.set(pos, s);
         if (add)
@@ -54,7 +61,7 @@ class SessionCache {
 
     function cache_remove(id)
     {
-        var pos = cache_sessionHash(id);
+        var pos = cache_sessionPos(id);
         var rem = items.get(pos) != null;
         items.set(pos, null);
         if (rem)
@@ -114,6 +121,7 @@ class SessionCache {
     {
         if (exists(session._id)) {
             manager.update({ _id : session._id }, session);
+            // exists already places the session in the cache, if necessary
         }
         else {
             manager.insert(session);

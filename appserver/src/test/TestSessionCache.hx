@@ -5,6 +5,7 @@ import db.Context;
 import org.mongodb.Mongo;
 import utest.Assert;
 
+@:access(db.SessionCache)
 class TestSessionCache {
 	var mongo:Mongo;
 	var ctx:StorageContext;
@@ -32,6 +33,7 @@ class TestSessionCache {
 		Assert.isFalse(ctx.sessions.exists(s._id));
 
 		ctx.sessions.save(s);
+		Assert.isTrue(ctx.sessions.cache_has(s._id));
 		Assert.isTrue(ctx.sessions.exists(s._id));
 
 		ctx.sessions.terminate(s);
