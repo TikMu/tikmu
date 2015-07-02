@@ -46,7 +46,6 @@ class SessionCache {
     {
         var pos = cache_sessionPos(id);
         var s = items.get(pos);
-        trace([id, s != null ? s._id : null]);
         return (s != null && cache_equalSessions(id, s._id)) ? s : null;
     }
 
@@ -103,7 +102,6 @@ class SessionCache {
     {
         if (cache_has(id))
             return true;
-        trace('Cache miss for session $id');
         return fetch(id) != null;
     }
 
@@ -111,10 +109,8 @@ class SessionCache {
     public function get(id:String):Null<Session>
     {
         var s = cache_get(id);
-        if (s == null) {
-            trace('Cache miss for session $id');
+        if (s == null)
             s = fetch(id);
-        }
         return s;
     }
 
