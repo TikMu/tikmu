@@ -123,7 +123,7 @@ class Listen {
             throw 'Failed copy command (origin: $origin, destination: $destination)';
     }
 
-    static function _main()
+    static function respond()
     {
         // TODO verify the signature
         var data = Web.getPostData();
@@ -187,7 +187,8 @@ class Listen {
     static function main()
     {
         try {
-            _main();
+            Web.cacheModule(main);
+            respond();
         } catch (e:Dynamic) {
             println('Build aborted with error: $e');
             var s = haxe.CallStack.exceptionStack();
