@@ -46,6 +46,7 @@ class SessionCache {
     {
         var pos = cache_sessionPos(id);
         var s = items.get(pos);
+        trace([id, s != null ? s._id : null]);
         return (s != null && cache_equalSessions(id, s._id)) ? s : null;
     }
 
