@@ -1,4 +1,5 @@
 import Sys.*;
+import haxe.io.Bytes;
 import neko.Web;
 using StringTools;
 
@@ -73,12 +74,21 @@ enum EventType {
 
 class Listen {
     static var config = {
+        secret : "not much of a secret, but will have to make due for now",
         remote : "origin",
         repository : "jonasmalacofilho/tikmu",
         baseDir : "/var/build/tikmu",
         baseBuildDir : "/var/build/tikmu-builds",
         baseOutputDir : "/var/www/tikmu",
         defines : [{ name : "tikmu_require_login" }]
+    }
+
+    static function verifiedSig(data:String, sig:String)
+    {
+        var secret = Bytes.ofString(config.secret);
+        var data = Bytes.ofString(data);
+        var hmac = new haxe.crypto.Hmac(SHA1).make(secret, data);
+        return hmac.toHex() == sig;
     }
 
     static function getEventType():EventType
@@ -112,6 +122,12 @@ class Listen {
     static function _main()
     {
         // TODO verify the signature
+        var data = Web.getPostData();
+        var sig = Web.getClientHeader("X-Hub-Signature");
+        if (!verifiedSig(data, sig)) {
+            Web.setReturnCode(403);  // forbidden
+            return;
+        }
 
         var event = getEventType();
         if (event.match(EPing)) {
@@ -124,7 +140,6 @@ class Listen {
             return;
         }
 
-        var data = Web.getPostData();
         var push = (haxe.Json.parse(data):PushEvent);
 
         if (push.repository.full_name != config.repository) {
