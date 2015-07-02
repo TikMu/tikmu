@@ -167,20 +167,16 @@ class Listen {
         Web.setReturnCode(202);  // accepted
         println('Accepted build request for branch "$branch" (head is "${head.substr(0,7)}")');
 
-        setCwd(config.baseDir);
-
         println('Fetching from ${config.remote}');
+        setCwd(config.baseDir);
         command("git", ["fetch", config.remote]);
 
-        setCwd(buildDir);
-
         println("Building...");
-        if (command("haxe", ["--run", "Build", config.baseDir, head, buildDir].concat(config.haxeArgs)) != 0)
-            throw "Failed build";
+        Build.begin(config.baseDir, head, buildDir, config.haxeArgs);
 
         println("Installing...");
         rmrf(outputDir);
-        cpr('appserver/www', outputDir);
+        cpr('$buildDir/appserver/www', outputDir);
 
         println("Adding infos.json");
         var infos = {

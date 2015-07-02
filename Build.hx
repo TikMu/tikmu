@@ -1,10 +1,10 @@
 /**
   Automated build recipe.
 
-  Usage: haxe --run Build [commit] ...
+  Usage: haxe --run Build <base dir> <commit> <buildDir> [haxe extra arguments]
 
-  For each commit, this will create a .build-$commit directory above this git
-  tree, install all dependencies locally and compile the appserver.
+  This will create the build directory, install all dependencies locally and
+  compile the appserver.
 
   A commit can be defined by any valid git reference, such as a partial hash, a
   tag or a branch; if no commit is specified, a reference to 'master' is
@@ -106,27 +106,8 @@ class Build {
         return command("rm", ["-rf", path]);
     }
 
-    public static function build(baseDir:String, commit:String, buildDir:String, haxeArgs:Array<String>)
+    static function build(haxeArgs:Array<String>)
     {
-        baseDir = FileSystem.absolutePath(baseDir);
-        buildDir = FileSystem.absolutePath(buildDir);
-
-        setCwd(baseDir);  // make sure we start at someplace safe, otherwise git might fail
-
-        println('Cloning "$baseDir" into build dir "$buildDir"');
-        if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
-            println("Deleting previous build directory");
-            if (rmrf(buildDir) != 0)
-                throw "Possibly dangerous rm error";
-        }
-        if (Git.clone(baseDir, buildDir) != 0)
-            throw 'Git error while cloning';
-        println('Changing current working dir to "$buildDir"');
-        setCwd(buildDir);
-        println('Checking out commit "$commit"');
-        if (Git.checkout(commit) != 0)
-            throw 'Git error while checking out';
-
         println("Fetching haxelibs and other dependencies");
         if (Haxelib.localSetup() != 0)
             throw "Haxelib error while setting up locally";
@@ -149,10 +130,30 @@ class Build {
         var args = haxeArgs.concat(["build.hxml"]);
         if (command("haxe", args) != 0)
             throw 'Compilation failed';
+    }
 
-        // build other stuff
-        // println('Moving back to "$buildDir"');
-        // setCwd(buildDir);
+    public static function begin(baseDir:String, commit:String, buildDir:String, haxeArgs:Array<String>)
+    {
+        baseDir = FileSystem.absolutePath(baseDir);
+        buildDir = FileSystem.absolutePath(buildDir);
+
+        setCwd(baseDir);  // make sure we start at someplace safe, otherwise git might fail
+
+        println('Cloning "$baseDir" into build dir "$buildDir"');
+        if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
+            println("Deleting previous build directory");
+            if (rmrf(buildDir) != 0)
+                throw "Possibly dangerous rm error";
+        }
+        if (Git.clone(baseDir, buildDir) != 0)
+            throw 'Git error while cloning';
+        println('Changing current working dir to "$buildDir"');
+        setCwd(buildDir);
+        println('Checking out commit "$commit"');
+        if (Git.checkout(commit) != 0)
+            throw 'Git error while checking out';
+
+        build(haxeArgs);
 
         println('Moving back to "$baseDir"');
         setCwd(baseDir);
@@ -164,7 +165,7 @@ class Build {
             switch (Sys.args().slice(0,3)) {
             case [baseDir, commit, buildDir]:
                 var haxeArgs = Sys.args().slice(3);
-                build(baseDir, commit, buildDir, haxeArgs);
+                begin(baseDir, commit, buildDir, haxeArgs);
             }
         } catch (e:Dynamic) {
             println('ERROR: $e');

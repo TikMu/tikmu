@@ -1,4 +1,4 @@
 -neko listen.n
 -main Listen
--cp ../build-script
+-cp ../../../
 
