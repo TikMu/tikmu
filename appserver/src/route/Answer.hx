@@ -2,6 +2,7 @@ package route;
 
 import db.Question;
 import mweb.tools.*;
+import mweb.http.*;
 import route.Question;
 
 class SomeAnswer extends BaseRoute {
@@ -11,7 +12,7 @@ class SomeAnswer extends BaseRoute {
 	@openRoute
 	public function any()
 	{
-		return new HttpResponse().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
+		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
 	}
 
 	public function postComment(args:{ comment:String })
@@ -26,29 +27,29 @@ class SomeAnswer extends BaseRoute {
 		};
 		answer.comments.push(cmt);
 		data.questions.update({ _id : question._id }, question);
-		return new HttpResponse().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
+		return new Response().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
 	}
 
 	public function postEdit(args:{ updated:String })
 	{
 		if (!answer.user.equals(loop.session.user))
-			return new HttpResponse().setStatus(Unauthorized);
+			return new Response().setStatus(Unauthorized);
 
 		answer.contents = args.updated;
 		answer.modified = loop.now;
 		data.questions.update({ _id : question._id }, question);
-		return new HttpResponse().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
+		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
 	}
 
 	public function postDelete()
 	{
 		if (!answer.user.equals(loop.session.user))
-			return new HttpResponse().setStatus(Unauthorized);
+			return new Response().setStatus(Unauthorized);
 
 		answer.deleted = true;
 		answer.modified = loop.now;
 		data.questions.update({ _id : question._id }, question);
-		return new HttpResponse().redirect('/question/${question._id.valueOf()}');
+		return new Response().redirect('/question/${question._id.valueOf()}');
 	}
 
 
@@ -62,7 +63,7 @@ class SomeAnswer extends BaseRoute {
 
 class Answer extends BaseRoute {
 	@openRoute
-	public function anyDefault(d:mweb.Dispatcher<HttpResponse<Dynamic>>, id:ObjectId):HttpResponse<Dynamic>
+	public function anyDefault(d:mweb.Dispatcher<Response<Dynamic>>, id:ObjectId):Response<Dynamic>
 	{
 		var question = data.questions.findOne({
 			answers : {"$elemMatch":{
@@ -72,8 +73,8 @@ class Answer extends BaseRoute {
 			deleted : false
 		});
 		if (question == null)
-			return new HttpResponse().setStatus(NotFound);  // TODO handle mweb behavior
-		
+			return new Response().setStatus(NotFound);  // TODO handle mweb behavior
+
 		var answer = Lambda.find(question.answers, function (x) return x._id.equals(id));
 		return d.dispatch(new SomeAnswer(_ctx, question, answer));
 	}
