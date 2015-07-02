@@ -1,14 +1,9 @@
 /**
   Automated build recipe.
 
-  Usage: haxe --run Build <base dir> <commit> <buildDir> [haxe extra arguments]
+  Usage: haxe --run Build [haxe extra arguments]
 
-  This will create the build directory, install all dependencies locally and
-  compile the appserver.
-
-  A commit can be defined by any valid git reference, such as a partial hash, a
-  tag or a branch; if no commit is specified, a reference to 'master' is
-  assumed.
+  This will install all dependencies locally and compile the appserver.
 **/
 
 import Sys.*;
@@ -129,7 +124,7 @@ class Build {
         println("Running haxe");
         var args = haxeArgs.concat(["build.hxml"]);
         if (command("haxe", args) != 0)
-            throw 'Compilation failed';
+            throw "Failed compilation";
     }
 
     public static function begin(baseDir:String, commit:String, buildDir:String, haxeArgs:Array<String>)
@@ -153,7 +148,8 @@ class Build {
         if (Git.checkout(commit) != 0)
             throw 'Git error while checking out';
 
-        build(haxeArgs);
+        if (command("haxe", ["--run", "Build"].concat(haxeArgs)) != 0)
+            throw "Failed compilation";
 
         println('Moving back to "$baseDir"');
         setCwd(baseDir);
@@ -162,11 +158,7 @@ class Build {
     static function main()
     {
         try {
-            switch (Sys.args().slice(0,3)) {
-            case [baseDir, commit, buildDir]:
-                var haxeArgs = Sys.args().slice(3);
-                begin(baseDir, commit, buildDir, haxeArgs);
-            }
+            build(Sys.args());
         } catch (e:Dynamic) {
             println('ERROR: $e');
             exit(-1);
