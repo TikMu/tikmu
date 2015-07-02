@@ -148,6 +148,7 @@ class Build {
         if (Git.checkout(commit) != 0)
             throw 'Git error while checking out';
 
+        println("Running the checkout build recipe");
         if (command("haxe", ["--run", "Build"].concat(haxeArgs)) != 0)
             throw "Failed compilation";
 
