@@ -10,12 +10,16 @@ class Main {
 		Sys.stderr().writeString(s);
 	}
 
+	@:access(db.SessionCache)
 	static function main()
 	{
 		haxe.Log.trace = customTrace;
 		neko.Web.cacheModule(main);
 
 		ctx.respond();
+
+		var s = ctx.loop.session;
+		trace(ctx.data.sessions.cache_has(s._id));
 	}
 }
 
