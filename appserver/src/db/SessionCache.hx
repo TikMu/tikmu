@@ -103,6 +103,7 @@ class SessionCache {
     {
         if (cache_has(id))
             return true;
+        trace('Cache miss for session $id');
         return fetch(id) != null;
     }
 
