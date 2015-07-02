@@ -8,7 +8,6 @@ PIDFile=/run/tora.pid
 ExecStart=/usr/bin/neko /var/build/tora/tora.n -fcgi
 TimeoutStopSec=5
 KillMode=mixed
-User=www-data
 
 [Install]
 WantedBy=multi-user.target
