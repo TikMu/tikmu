@@ -92,7 +92,7 @@ class Build {
         LGit("mongodb", "https://github.com/jonasmalacofilho/mongo-haxe-driver.git", "managers"),
         LGit("mongodb-managers", "https://github.com/jonasmalacofilho/mongo-haxe-managers.git", "master", "lib"),
         LGit("geotools", "https://github.com/waneck/geotools.git"),
-        LGit("mweb", "https://github.com/jonasmalacofilho/mweb.git", null, "src"),
+        LGit("mweb", "https://github.com/waneck/mweb.git", null, "src"),
         LGit("erazor", "https://github.com/waneck/erazor.git"),
     ];
 
@@ -106,7 +106,7 @@ class Build {
         return command("rm", ["-rf", path]);
     }
 
-    public static function build(baseDir:String, commit:String, buildDir:String, defines:Array<Define>)
+    public static function build(baseDir:String, commit:String, buildDir:String, haxeArgs:Array<String>)
     {
         baseDir = FileSystem.absolutePath(baseDir);
         buildDir = FileSystem.absolutePath(buildDir);
@@ -145,16 +145,8 @@ class Build {
         setCwd("appserver");
         if (Haxelib.linkLocalSetup("..") != 0)  // can't use local haxelib from a subdirectory
             throw "Error while linking to another local haxelib setup";
-        println("Preparing to run haxe");
-        var args = ["build.hxml"];
-        for (d in defines) {
-            args.push("-D");
-            if (d.value != null)
-                args.push(d.name + "=" + d.value);
-            else
-                args.push(d.name);
-        }
-        println('Running haxe');
+        println("Running haxe");
+        var args = haxeArgs.concat(["build.hxml"]);
         if (command("haxe", args) != 0)
             throw 'Compilation failed';
 
@@ -168,20 +160,15 @@ class Build {
 
     static function main()
     {
-        // TODO make this usable from any directory in the current git repo
-
-        var baseDir = FileSystem.absolutePath("./../../../");
-        println('Current working dir is $baseDir');
-
-        var commits = args();
-        if (commits.length == 0)
-            commits = ["master"];
-        println('Building commits $commits');
-
-        for (commit in commits) {
-            var buildDir = FileSystem.absolutePath(baseDir + '/../.build-$commit');
-            build(baseDir, commit, buildDir, []);
-            setCwd(baseDir);
+        try {
+            switch (Sys.args().slice(0,3)) {
+            case [baseDir, commit, buildDir]:
+                var haxeArgs = Sys.args().slice(3);
+                build(baseDir, commit, buildDir, haxeArgs);
+            }
+        } catch (e:Dynamic) {
+            println('ERROR: $e');
+            exit(-1);
         }
     }
 

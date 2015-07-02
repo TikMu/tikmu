@@ -81,7 +81,7 @@ class Listen {
         baseDir : "/var/build/tikmu",
         baseBuildDir : "/var/build/tikmu-builds",
         baseOutputDir : "/var/www/tikmu",
-        defines : [{ name : "tikmu_require_login" }]
+        haxeArgs : ["-D", "tikmu_require_login"]
     }
 
     static function verifiedSig(data:String, sig:String)
@@ -149,6 +149,7 @@ class Listen {
         if (push.repository.full_name != config.repository) {
             Web.setReturnCode(417);  // expectation failed
             println('ERROR: Expecting repository to be "${config.repository}"');
+            return;
         }
 
         var branch = push.ref.replace("refs/heads/", "");
@@ -166,16 +167,20 @@ class Listen {
         Web.setReturnCode(202);  // accepted
         println('Accepted build request for branch "$branch" (head is "${head.substr(0,7)}")');
 
-        println('Fetching from ${config.remote}');
         setCwd(config.baseDir);
+
+        println('Fetching from ${config.remote}');
         command("git", ["fetch", config.remote]);
 
+        setCwd(buildDir);
+
         println("Building...");
-        Build.build(config.baseDir, head, buildDir, config.defines);
+        if (command("haxe", ["--run", "Build", config.baseDir, head, buildDir].concat(config.haxeArgs)) != 0)
+            throw "Failed build";
 
         println("Installing...");
         rmrf(outputDir);
-        cpr('$buildDir/appserver/www', outputDir);
+        cpr('appserver/www', outputDir);
 
         println("Adding infos.json");
         var infos = {
