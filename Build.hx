@@ -87,7 +87,7 @@ class Build {
         LGit("mongodb", "https://github.com/jonasmalacofilho/mongo-haxe-driver.git", "managers"),
         LGit("mongodb-managers", "https://github.com/jonasmalacofilho/mongo-haxe-managers.git", "master", "lib"),
         LGit("geotools", "https://github.com/waneck/geotools.git"),
-        LGit("mweb", "https://github.com/jonasmalacofilho/mweb.git", "old_mweb", "src"),
+        LGit("mweb", "https://github.com/waneck/mweb.git", null, "src"),
         LGit("erazor", "https://github.com/waneck/erazor.git"),
     ];
 

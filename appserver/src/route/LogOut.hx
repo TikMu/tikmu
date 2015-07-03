@@ -1,14 +1,15 @@
 package route;
 
+import mweb.http.*;
 import mweb.tools.*;
 
 class LogOut extends BaseRoute
 {
-	public function any():HttpResponse<Void>
+	public function any():Response<Void>
 	{
 		loop.session.close();
 		data.sessions.save(loop.session);
-		return HttpResponse.empty().redirect("/");
+		return Response.empty().redirect("/");
 	}
 }
 

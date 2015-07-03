@@ -1,5 +1,6 @@
 package route;
 
+import mweb.http.*;
 import mweb.tools.*;
 
 typedef ListViewData = {
@@ -63,7 +64,7 @@ class List extends BaseList {
 			questions : cleanRawData(qs),
 			title : "Discover"
 		};
-		return HttpResponse.fromContent(new TemplateLink(data, view));
+		return Response.fromContent(new TemplateLink(data, view));
 	}
 }
 
@@ -79,7 +80,7 @@ class Favorites extends BaseList {
 			questions : cleanRawData(cast qs),  // FIXME
 			title : "Favorites"
 		};
-		return HttpResponse.fromContent(new TemplateLink(data, view));
+		return Response.fromContent(new TemplateLink(data, view));
 	}
 }
 
@@ -100,7 +101,7 @@ class Search extends BaseList {
 			questions : cleanRawData(cast qs),  // FIXME
 			title : "Search results"
 		}
-		return HttpResponse.fromContent(new TemplateLink(data, view));
+		return Response.fromContent(new TemplateLink(data, view));
 	}
 
 	@openRoute

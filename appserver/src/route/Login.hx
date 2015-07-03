@@ -1,6 +1,7 @@
 package route;
 
 import db.*;
+import mweb.http.*;
 import mweb.tools.*;
 
 @:includeTemplate("login.html")
@@ -8,13 +9,13 @@ class LoginView extends BaseView<{ msg:String }> {}
 
 class Login extends BaseRoute {
 	@openRoute @login
-	public function get(?args:{ email:String, msg:String }):HttpResponse<{ msg:String }>
+	public function get(?args:{ email:String, msg:String }):Response<{ msg:String }>
 	{
-		return HttpResponse.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView(_ctx)));
+		return Response.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView(_ctx)));
 	}
 
 	@openRoute @login
-	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
+	public function post(args:{ email:String, pass:String }):Response<Dynamic>
 	{
 		// pre-validate args.email
 		if (!Tools.validEmail(args.email))
@@ -34,7 +35,7 @@ class Login extends BaseRoute {
 		data.sessions.save(s);
 		loop.session = s;
 		trace('Logged in as ${user.email} (${user.name})');
-		return HttpResponse.empty().redirect("/");
+		return Response.empty().redirect("/");
 	}
 }
 
