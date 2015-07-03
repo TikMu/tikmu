@@ -1,7 +1,6 @@
 package route;
 
 import db.Question;
-import mweb.http.*;
 import mweb.tools.*;
 import route.Question;
 
@@ -13,29 +12,29 @@ class SomeComment extends BaseRoute {
 	@openRoute
 	public function any()
 	{
-		return new Response().redirect('/question/${question._id.valueOf()}#${comment._id.valueOf()}');
+		return new HttpResponse().redirect('/question/${question._id.valueOf()}#${comment._id.valueOf()}');
 	}
 
 	public function postEdit(args:{ updated:String })
 	{
 		if (!comment.user.equals(loop.session.user))
-			return new Response().setStatus(Unauthorized);
+			return new HttpResponse().setStatus(Unauthorized);
 
 		comment.contents = args.updated;
 		comment.modified = loop.now;
 		data.questions.update({ _id : question._id }, question);
-		return new Response().redirect('/question/${question._id.valueOf()}#${comment._id.valueOf()}');
+		return new HttpResponse().redirect('/question/${question._id.valueOf()}#${comment._id.valueOf()}');
 	}
 
 	public function postDelete()
 	{
 		if (!comment.user.equals(loop.session.user))
-			return new Response().setStatus(Unauthorized);
+			return new HttpResponse().setStatus(Unauthorized);
 
 		comment.deleted = true;
 		comment.modified = loop.now;
 		data.questions.update({ _id : question._id }, question);
-		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
+		return new HttpResponse().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
 	}
 
 	public function new(ctx, question, answer, comment)
@@ -49,7 +48,7 @@ class SomeComment extends BaseRoute {
 
 class Comment extends BaseRoute {
 	@openRoute
-	public function anyDefault(d:mweb.Dispatcher<Response<Dynamic>>, id:ObjectId):Response<Dynamic>
+	public function anyDefault(d:mweb.Dispatcher<HttpResponse<Dynamic>>, id:ObjectId):HttpResponse<Dynamic>
 	{
 		var question = data.questions.findOne({
 			answers : {"$elemMatch":{
@@ -62,8 +61,8 @@ class Comment extends BaseRoute {
 			deleted : false
 		});
 		if (question == null)
-			return new Response().setStatus(NotFound);  // TODO handle mweb behavior
-
+			return new HttpResponse().setStatus(NotFound);  // TODO handle mweb behavior
+		
 		for (answer in question.answers) {
 			for (comment in answer.comments) {
 				if (comment._id.equals(id))

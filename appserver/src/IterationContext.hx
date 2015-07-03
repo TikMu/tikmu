@@ -1,7 +1,6 @@
 import Error;
 import db.*;
 import mweb.*;
-import mweb.http.*;
 import mweb.tools.*;
 using Lambda;
 
@@ -28,60 +27,59 @@ class IterationContext {
 	}
 
 	@:allow(Context)
-	function dispatch(request:Request)
+	function dispatch(request:HttpRequest)
 	{
-		var d = Dispatcher.createWithRequest(request);
+		var d = new Dispatcher(request);
 		d.addMetaHandler(handleLoggedMeta);
-		var ret:Response<Dynamic>;
+		var ret:HttpResponse<Dynamic>;
 		try {
 			ret = d.dispatch(routeMap);
 		} catch (e:AuthorizationError) {
 			trace(e);
-			ret = Response.empty().redirect('/login');
+			ret = HttpResponse.empty().redirect('/login');
 		}
 
 		return ret;
 	}
 
-	// commented out for now: needs updating
-	// @:access(mweb.tools.Request)
-	// function sub(url:String)
-	// {
-	// 	var method = "GET";
-	// 	var url = url.split("?");
-	// 	var uri = url[0];
-	// 	var params = new Map();
-	// 	HttpRequest.splitArgs(url[1], params);
-	// 	var request = HttpRequest.fromData(method, uri, params);
-	// 	return dispatch(request);
-	// }
+	@:access(mweb.tools.HttpRequest) 
+	function sub(url:String)
+	{
+		var method = "GET";
+		var url = url.split("?");
+		var uri = url[0];
+		var params = new Map();
+		HttpRequest.splitArgs(url[1], params);
+		var request = HttpRequest.fromData(method, uri, params);
+		return dispatch(request);
+	}
 
-	// public function subHtml(url:String)
-	// {
-	// 	var res = sub(url);
-	// 	// FIXME reuse HttpWriter!
-	// 	return switch (res.response) {
-	// 	case Content(data):
-	// 		data.execute();
-	// 	case None:
-	// 		"";
-	// 	case Redirect(_):
-	// 		throw "Can't transform redirect into html";  // FIXME
-	// 	}
-	// }
+	public function subHtml(url:String)
+	{
+		var res = sub(url);
+		// FIXME reuse HttpWriter!
+		return switch (res.response) {
+		case Content(data):
+			data.execute();
+		case None:
+			"";
+		case Redirect(_):
+			throw "Can't transform redirect into html";  // FIXME
+		}
+	}
 
-	// public function subValue(url:String)
-	// {
-	// 	var res = sub(url);
-	// 	return switch (res.response) {
-	// 	case Content(data):
-	// 		data.data;
-	// 	case None:
-	// 		null;
-	// 	case Redirect(_):
-	// 		throw "Can't transform redirect into value";  // FIXME
-	// 	}
-	// }
+	public function subValue(url:String)
+	{
+		var res = sub(url);
+		return switch (res.response) {
+		case Content(data):
+			data.data;
+		case None:
+			null;
+		case Redirect(_):
+			throw "Can't transform redirect into value";  // FIXME
+		}
+	}
 
 	public function new(routeMap)
 	{

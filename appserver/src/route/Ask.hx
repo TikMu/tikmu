@@ -1,6 +1,5 @@
 package route;
 
-import mweb.http.*;
 import mweb.tools.*;
 
 @:includeTemplate("ask.html")
@@ -12,7 +11,7 @@ class Ask extends BaseRoute {
 
 	public function get()
 	{
-		return Response.fromContent(new TemplateLink(null, view));
+		return HttpResponse.fromContent(new TemplateLink(null, view));
 	}
 
 	public function post(args:{ question:String, tags:String })
@@ -30,7 +29,7 @@ class Ask extends BaseRoute {
 			voteSum : 0,
 			favorites : 0,
 			watchers : 0,
-
+			
 			deleted : false,
 			created : loop.now,
 			modified : loop.now,
@@ -39,7 +38,7 @@ class Ask extends BaseRoute {
 			answers : []
 		};
 		data.questions.insert(q);
-		return new Response().redirect('/question/${q._id.valueOf()}/');
+		return new HttpResponse().redirect('/question/${q._id.valueOf()}/');
 	}
 
 	public function new(ctx)

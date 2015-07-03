@@ -1,7 +1,6 @@
 package route;
 
 import crypto.Password;
-import mweb.http.*;
 import mweb.tools.*;
 import org.bsonspec.ObjectID;
 
@@ -11,13 +10,13 @@ class RegisterView extends BaseView<{ email:String, msg:String }> {
 
 class Register extends BaseRoute {
 	@openRoute @login
-	public function get(?args:{ email:String, msg:String }):Response<{ email:String, msg:String }>
+	public function get(?args:{ email:String, msg:String }):HttpResponse<{ email:String, msg:String }>
 	{
-		return Response.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(_ctx)));
+		return HttpResponse.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(_ctx)));
 	}
 
 	@openRoute @login
-	public function post(args:{ email:String, pass:String }):Response<Dynamic>
+	public function post(args:{ email:String, pass:String }):HttpResponse<Dynamic>
 	{
 		// validate args.email
 		if (!Tools.validEmail(args.email))
