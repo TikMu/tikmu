@@ -1,6 +1,5 @@
 package route;
 
-import mweb.http.*;
 import mweb.tools.*;
 
 typedef SomeQuestionViewData = {
@@ -46,7 +45,7 @@ class SomeQuestion extends BaseRoute {
 	public function any()
 	{
 		var data = { question : question };
-		return Response.fromContent(new TemplateLink(data, view));
+		return HttpResponse.fromContent(new TemplateLink(data, view));
 	}
 
 	public function postAnswer(args:{ answer:String })
@@ -67,7 +66,7 @@ class SomeQuestion extends BaseRoute {
 		};
 		question.answers.push(ans);
 		data.questions.update({ _id : question._id }, question);
-		return new Response().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
+		return new HttpResponse().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
 	}
 
 	public function getState()
@@ -88,7 +87,7 @@ class SomeQuestion extends BaseRoute {
 			following : false
 		}
 
-		var ret = new Response();
+		var ret = new HttpResponse();
 		ret.setContent(new TemplateLink(data, haxe.Json.stringify.bind(_)));
 		return ret;
 	}
@@ -129,7 +128,7 @@ class SomeQuestion extends BaseRoute {
 
 		data.userQuestions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
-		return new Response().setStatus(NoContent);
+		return new HttpResponse().setStatus(NoContent);
 	}
 
 	public function postFollow()
@@ -166,29 +165,29 @@ class SomeQuestion extends BaseRoute {
 
 		data.userQuestions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
-		return new Response().setStatus(NoContent);
+		return new HttpResponse().setStatus(NoContent);
 	}
 
 	public function postEdit(args:{ updated:String })
 	{
 		if (!question.user.equals(loop.session.user))
-			return new Response().setStatus(Unauthorized);
+			return new HttpResponse().setStatus(Unauthorized);
 
 		question.contents = args.updated;
 		question.modified = loop.now;
 		data.questions.update({ _id : question._id }, question);
-		return new Response().redirect('/question/${question._id.valueOf()}');
+		return new HttpResponse().redirect('/question/${question._id.valueOf()}');
 	}
 
 	public function postDelete()
 	{
 		if (!question.user.equals(loop.session.user))
-			return new Response().setStatus(Unauthorized);
+			return new HttpResponse().setStatus(Unauthorized);
 
 		question.deleted = true;
 		question.modified = loop.now;
 		data.questions.update({ _id : question._id }, question);
-		return new Response().redirect('/');
+		return new HttpResponse().redirect('/');
 	}
 
 	public function new(ctx, question)
@@ -202,15 +201,15 @@ class SomeQuestion extends BaseRoute {
 class Question extends BaseRoute {
 
 	@openRoute
-	public function anyDefault(d:mweb.Dispatcher<Response<Dynamic>>, id:ObjectId)
+	public function anyDefault(d:mweb.Dispatcher<HttpResponse<Dynamic>>, id:ObjectId)
 	{
 		var question = data.questions.findOne({
 			_id : id,
 			deleted : false
 		});
-		var ret:Response<Dynamic>;
+		var ret:HttpResponse<Dynamic>;
 		if (question == null)
-			ret = new Response().setStatus(NotFound);
+			ret = new HttpResponse().setStatus(NotFound);
 		else
 			ret = d.dispatch(new SomeQuestion(_ctx, question));
 		return ret;

@@ -1,6 +1,5 @@
 package route;
 
-import mweb.http.*;
 import mweb.tools.*;
 
 typedef UserViewData = {
@@ -25,7 +24,7 @@ class User extends BaseRoute {
 		else if (loop.session.isAuthenticated())
 			user = loop.session.user.get(data.users.col);
 
-		var ret = new Response();
+		var ret = new HttpResponse();
 
 		if (user == null) {
 			ret.setStatus(NotFound);
@@ -48,7 +47,7 @@ class User extends BaseRoute {
 	{
 		var user = data.users.col.findOne({ _id : id });
 
-		var ret = new Response();
+		var ret = new HttpResponse();
 
 		if (user == null) {
 			ret.setStatus(NotFound);

@@ -31,7 +31,7 @@ class Context
 		}
 		trace('Session: ${loop.session._id} (user=${loop.session.user})');
 
-		var request = new mweb.http.webstd.Request();
+		var request = Web;
 		var response = loop.dispatch(request);
 
 		// setCookie updated _session, if necessary
@@ -40,7 +40,7 @@ class Context
 		else if (!loop.session.isValid())
 			response.setCookie("_session", "");
 
-		new mweb.http.webstd.Writer().writeResponse(response);
+		HttpWriter.fromWeb(request).writeResponse(response);
 	}
 
 	public function new(db)
