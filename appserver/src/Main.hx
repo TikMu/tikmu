@@ -16,9 +16,6 @@ class Main {
 		if (Web.isModNeko || Web.isTora)
 			Web.cacheModule(main);
 
-		trace('Request: ${Web.getMethod()} ${Web.getURI()}');
-		trace('SessionCache usage: ${ctx.data.sessions.used} (capacity ${ctx.data.sessions.size})');
-
 		ctx.respond();
 	}
 }

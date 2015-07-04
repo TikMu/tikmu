@@ -14,6 +14,9 @@ class Context
 	@:allow(Main)
 	function respond()  // TODO receice Web
 	{
+		trace('Request: ${Web.getMethod()} ${Web.getURI()}');
+		trace('SessionCache usage: ${data.sessions.used} (capacity ${data.sessions.size})');
+
 		var cookies = Web.getCookies();
 
 		loop = new IterationContext(routeMap);
@@ -33,6 +36,7 @@ class Context
 
 		var request = new mweb.http.webstd.Request();
 		var response = loop.dispatch(request);
+		trace('Response status: ${response.status != 0 ? Std.string(response.status) : "200 (implicit)"}');
 
 		// setCookie updated _session, if necessary
 		if (cookies.get("_session") != loop.session._id)
