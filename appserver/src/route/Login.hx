@@ -11,6 +11,8 @@ class Login extends BaseRoute {
 	@openRoute @login
 	public function get(?args:{ email:String, msg:String }):Response<{ msg:String }>
 	{
+		if (loop.session.isAuthenticated())
+			return new Response().redirect("/");
 		return Response.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView(_ctx)));
 	}
 
