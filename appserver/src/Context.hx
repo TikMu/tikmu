@@ -1,7 +1,7 @@
 import croxit.Web;
-import mweb.*;
-import mweb.tools.*;
 import db.*;
+import mweb.*;
+import mweb.http.*;
 
 class Context
 {
@@ -35,15 +35,27 @@ class Context
 		trace('Session: ${loop.session._id} (user=${loop.session.user})');
 
 		var request = new mweb.http.webstd.Request();
-		var response = loop.dispatch(request);
-		trace('Response status: ${response.status != 0 ? Std.string(response.status) : "200 (implicit)"}');
+		var response;
+		try {
+			response = loop.dispatch(request);
+			// setCookie updated _session, if necessary
+			if (cookies.get("_session") != loop.session._id)
+				response.setCookie("_session", loop.session._id);
+			else if (!loop.session.isValid())
+				response.setCookie("_session", "");
+		} catch (e:mweb.Errors.DispatcherError) {
+			response = new Response().setStatus(NotFound);
+		} catch (e:Dynamic) {
+			trace('Exception: $e');
+			trace(haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
+			response = new Response().setStatus(InternalServerError);
+		}
 
-		// setCookie updated _session, if necessary
-		if (cookies.get("_session") != loop.session._id)
-			response.setCookie("_session", loop.session._id);
-		else if (!loop.session.isValid())
-			response.setCookie("_session", "");
-
+		var summary = switch (response.response) {
+			case None, Content(_): 'status ' + (response.status != 0 ? '${response.status}' : '${Status.OK} (implicit)');
+			case Redirect(to): 'redirect to $to';
+		}
+		trace('Response: $summary');
 		new mweb.http.webstd.Writer().writeResponse(response);
 	}
 
