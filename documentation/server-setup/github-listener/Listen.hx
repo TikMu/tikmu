@@ -81,7 +81,7 @@ class Listen {
         baseDir : "/var/build/tikmu",
         baseBuildDir : "/var/build/tikmu-builds",
         baseOutputDir : "/var/www/tikmu",
-        haxeArgs : ["-D", "tikmu_require_login"]
+        haxeArgs : ["-D", "tikmu_require_login", "-D", "tikmu_cache_module"]
     }
 
     static function verifiedSig(data:String, sig:String)
