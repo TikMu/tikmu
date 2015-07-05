@@ -67,12 +67,6 @@ typedef PushEvent = {
     sender : Sender
 }
 
-enum EventType {
-    EPing;
-    EPush;
-    EOther;
-}
-
 class Listen {
     static var config = {
         secret : "not much of a secret, but will have to make due for now",
@@ -95,16 +89,6 @@ class Listen {
         return hmac.toHex() == sig[1];
     }
 
-    static function getEventType():EventType
-    {
-        return
-            switch (Web.getClientHeader("X-GitHub-Event")) {
-            case "ping": EPing;
-            case "push": EPush;
-            case _: EOther;
-            }
-    }
-
     static function rmrf(path:String)
     {
         // this is fucking dangerous, considering path errors and escaping
@@ -125,7 +109,6 @@ class Listen {
 
     static function respond()
     {
-        // TODO verify the signature
         var data = Web.getPostData();
         var sig = Web.getClientHeader("X-Hub-Signature");
         if (!verifiedSig(data, sig)) {
@@ -133,12 +116,16 @@ class Listen {
             return;
         }
 
-        var event = getEventType();
-        if (event.match(EPing)) {
+        var delivery = Web.getClientHeader("X-GitHub-Delivery");
+        println('Delivery: $delivery');
+
+        var event = Web.getClientHeader("X-GitHub-Event").toLowerCase();
+        println('Event: $event');
+        if (event == "ping") {
             Web.setReturnCode(200);
             return;
         }
-        if (event.match(EOther)) {
+        if (event != "push") {
             Web.setReturnCode(417);  // expectation failed
             println('ERROR: Expecting "push" or "ping" events');
             return;
