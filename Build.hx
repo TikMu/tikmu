@@ -91,6 +91,13 @@ class Build {
         LGit("erazor", "https://github.com/waneck/erazor.git"),
     ];
 
+    static function customTrace(msg:String, ?p:haxe.PosInfos) {
+        if (p.customParams != null)
+            msg = msg + ',' + p.customParams.join(',');
+        var s = '${p.fileName}:${p.lineNumber}:  $msg\n';
+        Sys.stderr().writeString(s);
+    }
+
     static function rmrf(path:String)
     {
         // this is fucking dangerous, considering path errors and escaping
@@ -103,25 +110,25 @@ class Build {
 
     static function build(haxeArgs:Array<String>)
     {
-        println("Fetching haxelibs and other dependencies");
+        trace("Fetching haxelibs and other dependencies");
         if (Haxelib.localSetup() != 0)
             throw "Haxelib error while setting up locally";
         for (lib in libs) {
             switch (lib) {
             case LOfficial(lib):
-                println('Installing official "$lib" haxelib');
+                trace('Installing official "$lib" haxelib');
             case LGit(lib, repo, ref, _):
-                println('Installing "$lib" from ' + (ref != null ? '"$repo@$ref"' : '"$repo"'));
+                trace('Installing "$lib" from ' + (ref != null ? '"$repo@$ref"' : '"$repo"'));
             }
             Haxelib.smartInstall(lib);
         }
 
-        println("Building the appserver");
-        println('Moving into "./appserver"');
+        trace("Building the appserver");
+        trace('Moving into "./appserver"');
         setCwd("appserver");
         if (Haxelib.linkLocalSetup("..") != 0)  // can't use local haxelib from a subdirectory
             throw "Error while linking to another local haxelib setup";
-        println("Running haxe");
+        trace("Running haxe");
         var args = haxeArgs.concat(["build.hxml"]);
         if (command("haxe", args) != 0)
             throw "Failed compilation";
@@ -134,25 +141,25 @@ class Build {
 
         setCwd(baseDir);  // make sure we start at someplace safe, otherwise git might fail
 
-        println('Cloning "$baseDir" into build dir "$buildDir"');
+        trace('Cloning "$baseDir" into build dir "$buildDir"');
         if (FileSystem.exists(buildDir) && FileSystem.isDirectory(buildDir)) {
-            println("Deleting previous build directory");
+            trace("Deleting previous build directory");
             if (rmrf(buildDir) != 0)
                 throw "Possibly dangerous rm error";
         }
         if (Git.clone(baseDir, buildDir) != 0)
             throw 'Git error while cloning';
-        println('Changing current working dir to "$buildDir"');
+        trace('Changing current working dir to "$buildDir"');
         setCwd(buildDir);
-        println('Checking out commit "$commit"');
+        trace('Checking out commit "$commit"');
         if (Git.checkout(commit) != 0)
             throw 'Git error while checking out';
 
-        println("Running the checkout build recipe");
+        trace("Running the checkout build recipe");
         if (command("haxe", ["--run", "Build"].concat(haxeArgs)) != 0)
             throw "Failed compilation";
 
-        println('Moving back to "$baseDir"');
+        trace('Moving back to "$baseDir"');
         setCwd(baseDir);
     }
 
@@ -161,7 +168,7 @@ class Build {
         try {
             build(Sys.args());
         } catch (e:Dynamic) {
-            println('ERROR: $e');
+            trace('ERROR: $e');
             exit(-1);
         }
     }
