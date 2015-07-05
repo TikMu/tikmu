@@ -13,8 +13,10 @@ class Main {
 	static function main()
 	{
 		haxe.Log.trace = customTrace;
+#if tikmu_cache_module
 		if (Web.isModNeko || Web.isTora)
 			Web.cacheModule(main);
+#end
 
 		ctx.respond();
 	}
