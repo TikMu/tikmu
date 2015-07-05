@@ -78,6 +78,13 @@ class Listen {
         haxeArgs : ["-D", "tikmu_require_login", "-D", "tikmu_cache_module"]
     }
 
+    static function customTrace(msg:String, ?p:haxe.PosInfos) {
+        if (p.customParams != null)
+            msg = msg + ',' + p.customParams.join(',');
+        var s = '[${Web.getClientIP()}] ${p.fileName}:${p.lineNumber}:  $msg\n';
+        Sys.stderr().writeString(s);
+    }
+
     static function verifiedSig(data:String, sig:String)
     {
         var sig = sig.toLowerCase().split("=");
@@ -117,78 +124,82 @@ class Listen {
         }
 
         var delivery = Web.getClientHeader("X-GitHub-Delivery");
-        println('Delivery: $delivery');
+        trace('Delivery: $delivery');
 
         var event = Web.getClientHeader("X-GitHub-Event").toLowerCase();
-        println('Event: $event');
+        trace('Event: $event');
         if (event == "ping") {
             Web.setReturnCode(200);
             return;
         }
         if (event != "push") {
             Web.setReturnCode(417);  // expectation failed
-            println('ERROR: Expecting "push" or "ping" events');
-            return;
-        }
-
-        var push = (haxe.Json.parse(data):PushEvent);
-
-        if (push.repository.full_name != config.repository) {
-            Web.setReturnCode(417);  // expectation failed
-            println('ERROR: Expecting repository to be "${config.repository}"');
-            return;
-        }
-
-        var branch = push.ref.replace("refs/heads/", "");
-        var buildDir = '${config.baseBuildDir}/$branch';
-        var outputDir = '${config.baseOutputDir}/$branch';
-
-        if (push.deleted) {
-            Web.setReturnCode(202);  // accepted
-            println('Accepted remove request for branch "$branch"');
-            rmrf(outputDir);
-            return;
-        }
-
-        var head = push.head_commit.id;
-        Web.setReturnCode(202);  // accepted
-        println('Accepted build request for branch "$branch" (head is "${head.substr(0,7)}")');
-
-        println('Fetching from ${config.remote}');
-        setCwd(config.baseDir);
-        command("git", ["fetch", config.remote]);
-
-        println("Building...");
-        Build.begin(config.baseDir, head, buildDir, config.haxeArgs);
-
-        println("Installing...");
-        rmrf(outputDir);
-        cpr('$buildDir/appserver/www', outputDir);
-
-        println("Adding infos.json");
-        var infos = {
-            built_at : Date.now(),
-            branch : branch,
-            commit : {
-                id : push.head_commit.id,
-                timestamp : push.head_commit.timestamp,
-                author : push.head_commit.author.name,
-                message : push.head_commit.message,
+                trace('ERROR: Expecting "push" or "ping" events');
+                return;
             }
-        }
-        sys.io.File.saveContent('$outputDir/infos.json', haxe.Json.stringify(infos));
-        println("Build successfull");
-    }
 
-    static function main()
-    {
-        try {
+            var push = (haxe.Json.parse(data):PushEvent);
+
+            if (push.repository.full_name != config.repository) {
+                Web.setReturnCode(417);  // expectation failed
+                trace('ERROR: Expecting repository to be "${config.repository}"');
+                return;
+            }
+
+            var branch = push.ref.replace("refs/heads/", "");
+            var buildDir = '${config.baseBuildDir}/$branch';
+            var outputDir = '${config.baseOutputDir}/$branch';
+
+            if (push.deleted) {
+                Web.setReturnCode(202);  // accepted
+                trace('Accepted remove request for branch "$branch"');
+                rmrf(outputDir);
+                return;
+            }
+
+            var head = push.head_commit.id;
+            trace('Accepted build request for branch "$branch" (head is "${head.substr(0,7)}")');
+
+            trace('Fetching from ${config.remote}');
+            setCwd(config.baseDir);
+            command("git", ["fetch", config.remote]);
+
+            trace('Calling a build to "$buildDir" with ${config.haxeArgs}');
+            Build.begin(config.baseDir, head, buildDir, config.haxeArgs);
+
+            trace('Installing to "$outputDir"');
+            rmrf(outputDir);
+            cpr('$buildDir/appserver/www', outputDir);
+
+            trace("Adding infos.json");
+            var infos = {
+                built_at : Date.now(),
+                branch : branch,
+                commit : {
+                    id : push.head_commit.id,
+                    timestamp : push.head_commit.timestamp,
+                    author : push.head_commit.author.name,
+                    message : push.head_commit.message,
+                }
+            }
+            sys.io.File.saveContent('$outputDir/infos.json', haxe.Json.stringify(infos));
+
+            Web.setReturnCode(200);  // OK
+            println("Build successfull");
+        }
+
+        static function main()
+        {
+            haxe.Log.trace = customTrace;
             Web.cacheModule(main);
-            respond();
-        } catch (e:Dynamic) {
-            println('Build aborted with error: $e');
-            var s = haxe.CallStack.exceptionStack();
-            println("Call stack: " + haxe.CallStack.toString(s));
+
+            try {
+                respond();
+            } catch (e:Dynamic) {
+                Web.setReturnCode(500);  // Internal Server Error
+                println('Build aborted with error: $e');
+                var s = haxe.CallStack.exceptionStack();
+                trace("Call stack: " + haxe.CallStack.toString(s));
         }
     }
 }
