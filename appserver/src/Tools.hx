@@ -14,7 +14,7 @@ class Tools
 			false;
 		} else if (email.indexOf("@") != email.lastIndexOf("@")) {
 			// don't handle quoted @ for now
-			trace('Possible incorrectly invalidated email: ${email}');  // TODO escape
+			trace('Possible incorrectly invalidated email: ${email}');
 			false;
 		} else {
 			var at = email.indexOf("@");
