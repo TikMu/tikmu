@@ -73,7 +73,7 @@ class Answer extends BaseRoute {
 			deleted : false
 		});
 		if (question == null)
-			return new Response().setStatus(NotFound);  // TODO handle mweb behavior
+			return new Response().setStatus(NotFound);
 
 		var answer = Lambda.find(question.answers, function (x) return x._id.equals(id));
 		return d.dispatch(new SomeAnswer(_ctx, question, answer));

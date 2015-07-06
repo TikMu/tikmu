@@ -12,9 +12,8 @@ class TestAll {
 		r.addCase(new TestSessionCache());
 
 		Report.create(r);
-		// TODO result handler
 
 		r.run();
-		// TODO exit code
 	}
 }
+

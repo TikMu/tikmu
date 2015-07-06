@@ -7,8 +7,6 @@ import mweb.tools.TemplateLink;
 import routes.ObjectId;
 import routes.question.QuestionRoute.QuestionView;
 
-//MASS TODO: Handle In-place array updates
-
 class MarkQuestionAsSolved extends BaseRoute
 {
 	public function any(id:ObjectId)

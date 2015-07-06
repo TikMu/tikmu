@@ -62,7 +62,7 @@ class Comment extends BaseRoute {
 			deleted : false
 		});
 		if (question == null)
-			return new Response().setStatus(NotFound);  // TODO handle mweb behavior
+			return new Response().setStatus(NotFound);
 
 		for (answer in question.answers) {
 			for (comment in answer.comments) {
