@@ -41,9 +41,8 @@ abstract Session(SessionData)
 		this.closedAt = Date.now();
 	}
 
-	private static function generateCsrf()
+	private static function generateCsrf()  // FIXME
 	{
-		//FIXME: NOT IMPLEMENTED
 		return "??";
 	}
 

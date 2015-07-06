@@ -49,7 +49,7 @@ abstract Password(String) from String to String {
 	public function matches(plain:String):Bool
 	{
 		var h = makeHash(plain, security);
-		return h == hash;  // FIXME constant time comparison
+		return h == hash;  // TODO use constant time comparison
 	}
 
 	public static function create(plain:String, ?security:PasswordSecurity):Password
@@ -62,8 +62,8 @@ abstract Password(String) from String to String {
 		//  - hypothesis: attacker will spend no more than 1 day per password (+16 bits)
 		//  - hypothesis: user passwords have very low entropy (protect at least those with 30+ bits)
 		//  - we would need 2**34 iterations, which is infeasible at the moment
-		//  - FIXME use harder key strengthening function
-		//  - FIXME use better/faster hash implementations (~500 hashes/s on a 3.6 GHz i7 is too little)
+		//  - TODO use harder key strengthening function
+		//  - TODO use better/faster hash implementations (~500 hashes/s on a 3.6 GHz i7 is too little)
 		// salt:
 		//  - 2**40 (~1T) variations for each password
 		if (security == null)

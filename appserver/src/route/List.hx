@@ -77,7 +77,7 @@ class Favorites extends BaseList {
 		var qs = data.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
 
 		var data = {
-			questions : cleanRawData(cast qs),  // FIXME
+			questions : cleanRawData(cast qs),  // TODO fix $in expects array in mongodb
 			title : "Favorites"
 		};
 		return Response.fromContent(new TemplateLink(data, view));
@@ -94,11 +94,11 @@ class Search extends BaseList {
 			qs = data.questions.col.find({ tags : { "$in" : qry }, deleted : false }).toArray();
 		} else {
 			var rs = [ for (s in qry) { contents : { "$regex" : s, "$options" : "ix" } } ];
-			qs = data.questions.col.find({ "$and" : rs, deleted : false }).toArray();
+			qs = data.questions.find({ "$and" : rs, deleted : false }).toArray();
 		}
 
 		var data = {
-			questions : cleanRawData(cast qs),  // FIXME
+			questions : cleanRawData(cast qs),  // TODO fix $in expects array in mongodb
 			title : "Search results"
 		}
 		return Response.fromContent(new TemplateLink(data, view));

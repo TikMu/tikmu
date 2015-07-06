@@ -24,7 +24,7 @@ class Login extends BaseRoute {
 			return get({ email : null, msg : "Invalid email" });
 
 		// don't check for too long passwords
-		if (args.pass.length > 256)  // FIXME no magic numbers
+		if (args.pass.length > 256)  // TODO no magic numbers
 			return get({ email : args.email, msg : "Invalid password" });
 
 		// authenticate
