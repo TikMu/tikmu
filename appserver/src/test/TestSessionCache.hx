@@ -1,7 +1,6 @@
 package test;
 
 import crypto.Password;
-import db.Context;
 import org.mongodb.Mongo;
 import utest.Assert;
 
