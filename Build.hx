@@ -84,10 +84,11 @@ class Build {
 		LOfficial("hscript"),  // for erazor
 
 		LOfficial("croxit-1"),
+		LOfficial("tink_core"), // for mweb
 		LGit("mongodb", "https://github.com/jonasmalacofilho/mongo-haxe-driver.git", "managers"),
 		LGit("mongodb-managers", "https://github.com/jonasmalacofilho/mongo-haxe-managers.git", "master", "lib"),
 		LGit("geotools", "https://github.com/waneck/geotools.git"),
-		LGit("mweb", "https://github.com/waneck/mweb.git", null, "src"),
+		LGit("mweb", "https://github.com/waneck/mweb.git"),
 		LGit("erazor", "https://github.com/waneck/erazor.git"),
 	];
 
