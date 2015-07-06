@@ -5,15 +5,9 @@ enum PasswordSecurity {
 	SSha256(it:Int, salt:String);
 }
 
-abstract Password(String) {
-
+abstract Password(String) from String to String {
 	public var security(get, never):PasswordSecurity;
 	public var hash(get, never):String;
-
-	inline function new(pwd)
-	{
-		this = pwd;
-	}
 
 	static function makePreffix(security)
 	{
@@ -58,7 +52,7 @@ abstract Password(String) {
 		return h == hash;  // FIXME constant time comparison
 	}
 
-	public static function create(plain:String, ?security:PasswordSecurity)
+	public static function create(plain:String, ?security:PasswordSecurity):Password
 	{
 		// current minimum accepted security:
 		//  - Sha256 + iterations + salt
@@ -76,13 +70,7 @@ abstract Password(String) {
 			security = SSha256(42, Random.salt(5));
 
 		var pwd = makePreffix(security) + makeHash(plain, security);
-		return new Password(pwd);
+		return pwd;
 	}
-
-	@:from public static function fromString(pwd:String)
-	{
-		return new Password(pwd);
-	}
-
 }
 
