@@ -43,46 +43,6 @@ class IterationContext {
 		return ret;
 	}
 
-	// commented out for now: needs updating
-	// @:access(mweb.tools.Request)
-	// function sub(url:String)
-	// {
-	// 	var method = "GET";
-	// 	var url = url.split("?");
-	// 	var uri = url[0];
-	// 	var params = new Map();
-	// 	HttpRequest.splitArgs(url[1], params);
-	// 	var request = HttpRequest.fromData(method, uri, params);
-	// 	return dispatch(request);
-	// }
-
-	// public function subHtml(url:String)
-	// {
-	// 	var res = sub(url);
-	// 	// FIXME reuse HttpWriter!
-	// 	return switch (res.response) {
-	// 	case Content(data):
-	// 		data.execute();
-	// 	case None:
-	// 		"";
-	// 	case Redirect(_):
-	// 		throw "Can't transform redirect into html";  // FIXME
-	// 	}
-	// }
-
-	// public function subValue(url:String)
-	// {
-	// 	var res = sub(url);
-	// 	return switch (res.response) {
-	// 	case Content(data):
-	// 		data.data;
-	// 	case None:
-	// 		null;
-	// 	case Redirect(_):
-	// 		throw "Can't transform redirect into value";  // FIXME
-	// 	}
-	// }
-
 	public function new(routeMap)
 	{
 		this.routeMap = routeMap;
