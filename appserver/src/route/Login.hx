@@ -19,6 +19,8 @@ class Login extends BaseRoute {
 	@openRoute @login
 	public function post(args:{ email:String, pass:String }):Response<Dynamic>
 	{
+		args.email = StringTools.trim(args.email);
+
 		// pre-validate args.email
 		if (!Tools.validEmail(args.email))
 			return get({ email : null, msg : "Invalid email" });
