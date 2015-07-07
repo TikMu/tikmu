@@ -6,35 +6,38 @@ import mweb.tools.*;
 import org.bsonspec.ObjectID;
 
 @:includeTemplate("register.html")
-class RegisterView extends BaseView<{ email:String, msg:String }> {
+class RegisterView extends BaseView<{ email:String, name:String, msg:String }> {
 }
 
 class Register extends BaseRoute {
+	function retry(args, msg)
+	{
+		return get({ email : args.email, name : args.name, msg : msg});
+	}
+
 	@openRoute @login
-	public function get(?args:{ email:String, msg:String }):Response<{ email:String, msg:String }>
+	public function get(?args:{ email:String, name:String, msg:String }):Response<{ email:String, msg:String }>
 	{
 		return Response.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(_ctx)));
 	}
 
 	@openRoute @login
-	public function post(args:{ email:String, pass:String }):Response<Dynamic>
+	public function post(args:{ email:String, name:String, pass:String }):Response<Dynamic>
 	{
-		// validate args.email
 		if (!Tools.validEmail(args.email))
-			return get({ email : null, msg : "Invalid email" });
-
-		// validate args.pass
+			return retry(args, "Invalid email");
 		if (args.pass.length < 6 || args.pass.length > 64)
-			return get({ email : args.email, msg : "Password length must be between 6 and 64" });
-		// pre-check if a user already exists
-		if (data.users.findOne({ email : args.email }) != null)
-			return get({ email : args.email, msg : 'Email ${args.email} already registred' });
+			return retry(args, "Password must have between 6 and 64 characters");
+		if (args.name.length == 0 || args.name.length > 32)
+			return retry(args, "Please use a name between 1 and 32 characters long");
 
-		// attempt to create the user
+		if (data.users.findOne({ email : args.email }) != null)
+			return retry(args, "Email already registred");
+
 		var p = Password.create(args.pass);
 		var u = {
 			_id : new ObjectID(),
-			name : 'User ${args.email}',
+			name : args.name,
 			email : args.email,
 			password : p,
 			avatar : null,
