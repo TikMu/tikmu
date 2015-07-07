@@ -38,7 +38,7 @@ class Login extends BaseRoute {
 		var s = new Session(null, user._id, 1e9, null);  // FIXME loc, device and real span
 		data.sessions.save(s);
 		loop.session = s;
-		trace('Logged in as ${user.email} (${user.name})');
+		trace('Logged in as ${user.email} (${user.name}) with session ${s._id}');
 		return Response.empty().redirect("/");
 	}
 }
