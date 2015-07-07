@@ -2,6 +2,7 @@ package route;
 
 import crypto.Password;
 import mweb.http.*;
+import mweb.http.Status;
 import mweb.tools.*;
 import org.bsonspec.ObjectID;
 
@@ -10,29 +11,39 @@ class RegisterView extends BaseView<{ email:String, name:String, msg:String }> {
 }
 
 class Register extends BaseRoute {
-	function retry(args, msg)
+	var view:RegisterView;
+
+	function respond(postArgs, status, msg)
 	{
-		return get({ email : args.email, name : args.name, msg : msg});
+		var data = { email : postArgs.email, name : postArgs.name, msg : msg };
+		return Response.fromContent(new TemplateLink(data, view)).setStatus(status);
 	}
 
 	@openRoute @login
-	public function get(?args:{ email:String, name:String, msg:String }):Response<{ email:String, msg:String }>
+	public function get():Response<{ email:String, msg:String }>
 	{
-		return Response.fromContent(new TemplateLink(args != null ? args : cast {}, new RegisterView(_ctx)));
+		return respond(cast {}, OK, null);
 	}
 
 	@openRoute @login
 	public function post(args:{ email:String, name:String, pass:String }):Response<Dynamic>
 	{
+		args.email = StringTools.trim(args.email);
+		args.name = StringTools.trim(args.name);
+
+		if (args.email.length == 0)
+			return respond(args, BadRequest, "Missing email");
 		if (!Tools.validEmail(args.email))
-			return retry(args, "Invalid email");
+			return respond(args, BadRequest, "Invalid email");
+
 		if (args.pass.length < 6 || args.pass.length > 64)
-			return retry(args, "Password must have between 6 and 64 characters");
+			return respond(args, BadRequest, "Password must have between 6 and 64 characters");
+
 		if (args.name.length == 0 || args.name.length > 32)
-			return retry(args, "Please use a name between 1 and 32 characters long");
+			return respond(args, BadRequest, "Please use a name between 1 and 32 characters long");
 
 		if (data.users.findOne({ email : args.email }) != null)
-			return retry(args, "Email already registred");
+			return respond(args, Conflict, "Email already registred");
 
 		var p = Password.create(args.pass);
 		var u = {
@@ -46,6 +57,12 @@ class Register extends BaseRoute {
 		data.users.insert(u);
 		trace('Created user for ${u.email} (${u.name})');
                 return new route.Login(_ctx).post(args);  // TODO fix
+	}
+
+	public function new(ctx)
+	{
+		super(ctx);
+		view = new RegisterView(ctx);
 	}
 }
 
