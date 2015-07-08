@@ -11,19 +11,34 @@ class Context
 	public var loop(default,null):IterationContext;
 	public var aux(default,null):AuxiliaryContext;
 
+	static function getCookies():Array<{key:String, val:String}>
+	{
+		var header = Web.getClientHeader("Cookie");
+		var clean = ~/[\t\n ]+/.replace(header, "");
+		var crumbs = clean.split(";").map(function (x) return x.split("="));
+		var cookies = [for (c in crumbs) {
+			key : StringTools.urlDecode(c[0]),
+			val : StringTools.urlDecode(c[1])
+		}];
+		return cookies;
+	}
+
 	@:allow(Main)
 	function respond()  // TODO receice Web
 	{
 		trace('Request: ${Web.getMethod()} ${Web.getURI()}');
 		trace('SessionCache usage: ${data.sessions.used} (capacity ${data.sessions.size})');
 
-		var cookies = Web.getCookies();
+		var cookies = getCookies();
 
 		loop = new IterationContext(routeMap);
 
 		// handle session
-		if (cookies.exists("_session")) {
-			var sid = cookies.get("_session");
+		var _sessions = Lambda.filter(cookies, function (x) return x.key == "_session");
+		if (_sessions.length > 1)
+			trace('WARNING: multiple _session cookies received ($_sessions)');
+		if (_sessions.length == 1) {
+			var sid = _sessions.first().val;
 			if (sid != "")
 				loop.session = data.sessions.get(sid);
 		}
@@ -38,8 +53,13 @@ class Context
 		var response;
 		try {
 			response = loop.dispatch(request);
+
+			// try to gracefully fix multiple _session cookies on the client
+			if (_sessions.length > 1)
+				response.setCookie("_session", "");  // TODO fix multiple Set-Cookie in Web impl
+
 			// set updated session cookie when necessary
-			if (cookies.get("_session") != loop.session._id)
+			if (_sessions.first() == null || _sessions.first().val != loop.session._id)
 				response.setCookie("_session", loop.session._id, ["path=/"]);
 			else if (!loop.session.isValid())
 				response.setCookie("_session", "", ["path=/"]);
