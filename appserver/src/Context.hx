@@ -38,11 +38,11 @@ class Context
 		var response;
 		try {
 			response = loop.dispatch(request);
-			// setCookie updated _session, if necessary
+			// set updated session cookie when necessary
 			if (cookies.get("_session") != loop.session._id)
-				response.setCookie("_session", loop.session._id);
+				response.setCookie("_session", loop.session._id, ["path=/"]);
 			else if (!loop.session.isValid())
-				response.setCookie("_session", "");
+				response.setCookie("_session", "", ["path=/"]);
 		} catch (e:mweb.Errors.DispatcherError) {
 			response = new Response().setStatus(NotFound);
 		} catch (e:Dynamic) {
