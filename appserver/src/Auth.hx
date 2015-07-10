@@ -105,7 +105,7 @@ class Auth {
 		}
 
 		var basic = Web.getAuthorization();
-		if (basic != null) {
+		if (ctx.loop.session == null && basic != null) {
 			trace("Trying HTTP basic auth");
 			try login(ctx, basic.user, basic.pass)
 			catch (err:AuthenticationError) trace(err);
