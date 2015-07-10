@@ -70,15 +70,21 @@ class Auth {
 	{
 		email = StringTools.trim(email);
 
-		if (!validEmail(email))
+		if (!validEmail(email)) {
+			trace("Invalid email");
 			throw EInvalidEmail;
+		}
 
-		if (!validPassword(pass))
+		if (!validPassword(pass)) {
+			trace("Invalid password");
 			throw EInvalidPass;
+		}
 
 		var user = ctx.data.users.findOne({ email : email });
-		if (user == null || !user.password.matches(pass))
+		if (user == null || !user.password.matches(pass)) {
+			trace("Failed login");
 			throw EFailedLogin;
+		}
 
 		var s = new Session(null, user._id, 1e9, null);  // FIXME loc, device and real span
 		ctx.data.sessions.save(s);
