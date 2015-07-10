@@ -20,7 +20,15 @@ class Main {
 			Web.cacheModule(main);
 #end
 
-		ctx.respond();
+		try {
+			ctx.respond();
+		} catch (e:mweb.Errors.DispatcherError) {
+			Web.setReturnCode(404);  // not found
+		} catch (e:Dynamic) {
+			trace('Exception: $e');
+			trace(haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
+			Web.setReturnCode(500);  // internal server error
+		}
 	}
 }
 

@@ -23,17 +23,8 @@ class Context
 		trace('Session: ${loop.session._id} (user=${loop.session.user})');
 
 		var request = new mweb.http.webstd.Request();
-		var response;
-		try {
-			response = loop.dispatch(request);
-			Auth.sendSession(this, response);
-		} catch (e:mweb.Errors.DispatcherError) {
-			response = new Response().setStatus(NotFound);
-		} catch (e:Dynamic) {
-			trace('Exception: $e');
-			trace(haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
-			response = new Response().setStatus(InternalServerError);
-		}
+		var response = loop.dispatch(request);
+		Auth.sendSession(this, response);
 
 		var summary = switch (response.response) {
 			case None, Content(_): 'status ' + (response.status != 0 ? '${response.status}' : '${Status.OK} (implicit)');
