@@ -87,7 +87,7 @@ class Auth {
 	}
 
 	/**
-		Authorize from session cookie or as guest
+		Authorize from session cookie, http basic auth or as guest
 	**/
 	public static function authorize(ctx:Context)  // TODO receive Request
 	{
@@ -98,7 +98,17 @@ class Auth {
 				ctx.loop.session = ctx.data.sessions.get(sid);
 		}
 
-		// TODO basic auth
+		var basic = Web.getAuthorization();
+		if (basic != null) {
+			trace("Trying HTTP basic auth");
+			try login(ctx, basic.user, basic.pass)
+			catch (err:AuthenticationError) trace(err);
+		}
+		
+		if (ctx.loop.session != null && !ctx.loop.session.isValid()) {
+			trace("Ignoring invalid session");
+			ctx.loop.session = null;
+		}
 
 		if (ctx.loop.session == null) {
 			var s = new Session(null, null, 1e9, null);  // FIXME loc, device and real span
