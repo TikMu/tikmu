@@ -15,6 +15,8 @@ class Context
 	function respond()  // TODO receive Request
 	{
 		trace('Request: ${Web.getMethod()} ${Web.getURI()}');
+		for (header in Web.getClientHeaders())
+			trace('Received header ${header.header}: ${header.value}');
 		trace('SessionCache usage: ${data.sessions.used} (capacity ${data.sessions.size})');
 
 		loop = new IterationContext(routeMap);
