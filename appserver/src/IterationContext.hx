@@ -9,7 +9,7 @@ class IterationContext {
 	var routeMap:Route<Dynamic>;
 
 	@:allow(Context)
-	@:allow(route.Login)
+	@:allow(Auth)
 	public var session(default,null):Session;
 
 	public var now(default,null):Date;

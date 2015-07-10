@@ -1,45 +1,50 @@
 package route;
 
-import db.*;
+import Error;
 import mweb.http.*;
+import mweb.http.Status;
 import mweb.tools.*;
 
 @:includeTemplate("login.html")
-class LoginView extends BaseView<{ msg:String }> {}
+class LoginView extends BaseView<{ email:String, msg:String }> {}
 
 class Login extends BaseRoute {
+	var view:LoginView;
+
+	function respond(postArgs, status, msg)
+	{
+		var data = { email : postArgs.email, msg : msg };
+		return Response.fromContent(new TemplateLink(data, view)).setStatus(status);
+	}
+
 	@openRoute @login
 	public function get(?args:{ email:String, msg:String }):Response<{ msg:String }>
 	{
 		if (loop.session.isAuthenticated())
 			return new Response().redirect("/");
-		return Response.fromContent(new TemplateLink(args == null ? { msg: null } : args, new LoginView(_ctx)));
+		return respond(cast {}, OK, null);
 	}
 
 	@openRoute @login
 	public function post(args:{ email:String, pass:String }):Response<Dynamic>
 	{
-		args.email = StringTools.trim(args.email);
+		try {
+			Auth.login(_ctx, args.email, args.pass);
+			return Response.empty().redirect("/");
+		} catch (err:AuthenticationError) {
+			return switch (err) {
+				case EInvalidEmail: respond(args, BadRequest, "Invalid email");
+				case EInvalidPass: respond(args, BadRequest, "Invalid password: must have between 6 and 64 characters");
+				case EFailedLogin: respond(args, Forbidden, "Wrong email or password");
+				case EInvalidName, EUserAlreadyExists: respond(args, InternalServerError, "");  // should not reach here
+			}
+		}
+	}
 
-		// pre-validate args.email
-		if (!Auth.validEmail(args.email))
-			return get({ email : null, msg : "Invalid email" });
-
-		// don't check for too long passwords
-		if (args.pass.length > 256)  // TODO no magic numbers
-			return get({ email : args.email, msg : "Invalid password" });
-
-		// authenticate
-		var user = data.users.findOne({ email : args.email });
-		if (user == null || !user.password.matches(args.pass))
-			return get({ email : args.email, msg : "Wrong email address or password" });
-
-		// set a session
-		var s = new Session(null, user._id, 1e9, null);  // FIXME loc, device and real span
-		data.sessions.save(s);
-		loop.session = s;
-		trace('Logged in as ${user.email} (${user.name}) with session ${s._id}');
-		return Response.empty().redirect("/");
+	public function new(ctx)
+	{
+		super(ctx);
+		view = new LoginView(ctx);
 	}
 }
 
