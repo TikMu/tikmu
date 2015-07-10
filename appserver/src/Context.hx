@@ -12,37 +12,21 @@ class Context
 	public var aux(default,null):AuxiliaryContext;
 
 	@:allow(Main)
-	function respond()  // TODO receice Web
+	function respond()  // TODO receive Request
 	{
 		trace('Request: ${Web.getMethod()} ${Web.getURI()}');
 		trace('SessionCache usage: ${data.sessions.used} (capacity ${data.sessions.size})');
 
-		var cookies = Web.getCookies();
-
 		loop = new IterationContext(routeMap);
 
-		// handle session
-		if (cookies.exists("_session")) {
-			var sid = cookies.get("_session");
-			if (sid != "")
-				loop.session = data.sessions.get(sid);
-		}
-		if (loop.session == null) {
-			var s = new Session(null, null, 1e9, null);  // FIXME loc, device and real span
-			data.sessions.save(s);
-			loop.session = s;
-		}
+		Auth.authorize(this);
 		trace('Session: ${loop.session._id} (user=${loop.session.user})');
 
 		var request = new mweb.http.webstd.Request();
 		var response;
 		try {
 			response = loop.dispatch(request);
-			// set updated session cookie when necessary
-			if (cookies.get("_session") != loop.session._id)
-				response.setCookie("_session", loop.session._id, ["path=/"]);
-			else if (!loop.session.isValid())
-				response.setCookie("_session", "", ["path=/"]);
+			Auth.sendSession(this, response);
 		} catch (e:mweb.Errors.DispatcherError) {
 			response = new Response().setStatus(NotFound);
 		} catch (e:Dynamic) {

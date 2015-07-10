@@ -1,6 +1,8 @@
 import Error;
+import croxit.Web;
 import crypto.Password;
 import db.Session;
+import mweb.http.Response;
 import org.bsonspec.ObjectID;
 
 class Auth {
@@ -82,6 +84,39 @@ class Auth {
 		ctx.data.sessions.save(s);
 		ctx.loop.session = s;
 		trace('Logged in as ${user.email} (${user.name}) with session ${s._id}');
+	}
+
+	/**
+		Authorize from session cookie or as guest
+	**/
+	public static function authorize(ctx:Context)  // TODO receive Request
+	{
+		var cookies = Web.getCookies();
+		if (cookies.exists("_session")) {
+			var sid = cookies.get("_session");
+			if (sid != "")
+				ctx.loop.session = ctx.data.sessions.get(sid);
+		}
+
+		// TODO basic auth
+
+		if (ctx.loop.session == null) {
+			var s = new Session(null, null, 1e9, null);  // FIXME loc, device and real span
+			ctx.data.sessions.save(s);
+			ctx.loop.session = s;
+		}
+	}
+
+	/**
+		Set updated session cookie when necessary
+	**/
+	public static function sendSession(ctx:Context, response:Response<Dynamic>)
+	{
+		var cookies = Web.getCookies();
+		if (cookies.get("_session") != ctx.loop.session._id)
+			response.setCookie("_session", ctx.loop.session._id, ["path=/"]);
+		else if (!ctx.loop.session.isValid())
+			response.setCookie("_session", "", ["path=/"]);
 	}
 }
 
