@@ -33,7 +33,7 @@ class Register extends BaseRoute {
 
 		if (args.email.length == 0)
 			return respond(args, BadRequest, "Missing email");
-		if (!Tools.validEmail(args.email))
+		if (!Auth.validEmail(args.email))
 			return respond(args, BadRequest, "Invalid email");
 
 		if (args.pass.length < 6 || args.pass.length > 64)

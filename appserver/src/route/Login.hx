@@ -22,7 +22,7 @@ class Login extends BaseRoute {
 		args.email = StringTools.trim(args.email);
 
 		// pre-validate args.email
-		if (!Tools.validEmail(args.email))
+		if (!Auth.validEmail(args.email))
 			return get({ email : null, msg : "Invalid email" });
 
 		// don't check for too long passwords
