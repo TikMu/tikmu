@@ -12,7 +12,7 @@ class Random {
 		return b.toHex();
 	}
 
-	public static function salt(bytes:Int):String
+	static function hex(bytes:Int):String
 	{
 #if tikmu_fake_random
 		return fake(bytes);
@@ -21,13 +21,8 @@ class Random {
 #end
 	}
 
-	public static function sid(bytes:Int):String
-	{
-#if tikmu_fake_random
-		return fake(bytes);
-#else
-		return LinuxRandom.urandom().read(bytes).toHex();
-#end
-	}
+	public static function salt(bytes:Int):String return hex(bytes);
+
+	public static function id(bytes:Int):String return hex(bytes);
 }
 

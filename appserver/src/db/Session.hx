@@ -77,7 +77,7 @@ abstract Session(SessionData)
 		var m = n*2;
 		var M = Math.ceil(m/8);
 		// trace('u=2**$u,f=2**$f,c=2**$c,t=2**$t,n=2**$n,m=2**$m,bytes=$M');
-		return Random.sid(M);
+		return Random.id(M);
 	}
 }
 
