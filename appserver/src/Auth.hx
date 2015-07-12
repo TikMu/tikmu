@@ -102,6 +102,13 @@ class Auth {
 		trace('logged in as "${user.email}" (${user.name}) with session ${s._id}');
 	}
 
+	public static function logOut(ctx:Context)
+	{
+		ctx.loop.session.close();
+		ctx.data.sessions.save(ctx.loop.session);
+		trace('logged out');
+	}
+
 	/**
 		Authorize from session cookie, http basic auth or as guest
 	**/
