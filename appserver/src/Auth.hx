@@ -148,10 +148,10 @@ class Auth {
 	public static function sendSession(ctx:Context, response:Response<Dynamic>)
 	{
 		var cookies = Web.getCookies();
-		if (cookies.get("_session") != ctx.loop.session._id)
-			response.setCookie("_session", ctx.loop.session._id, ["path=/"]);
-		else if (!ctx.loop.session.isValid())
+		if (!ctx.loop.session.isValid())
 			response.setCookie("_session", "", ["path=/"]);
+		else if (cookies.get("_session") != ctx.loop.session._id)
+			response.setCookie("_session", ctx.loop.session._id, ["path=/"]);
 	}
 }
 
