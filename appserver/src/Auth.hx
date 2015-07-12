@@ -13,7 +13,7 @@ class Auth {
 			false;
 		} else if (email.indexOf("@") != email.lastIndexOf("@")) {
 			// don't handle quoted @ for now
-			trace('Possible incorrectly invalidated email: "${email}"');
+			trace('possible incorrectly invalidated email: "${email}"');
 			false;
 		} else {
 			var at = email.indexOf("@");
@@ -42,22 +42,22 @@ class Auth {
 		name = StringTools.trim(name);
 
 		if (!validEmail(email)) {
-			trace('Invalid email: "$email"');
+			trace('invalid email: "$email"');
 			throw EInvalidEmail;
 		}
 
 		if (!validName(name)) {
-			trace('Invalid name: "$name"');
+			trace('invalid name: "$name"');
 			throw EInvalidName;
 		}
 
 		if (!validPassword(pass)) {
-			trace('Invalid password: len=${pass.length}');
+			trace('invalid password: len=${pass.length}');
 			throw EInvalidPass;
 		}
 
 		if (ctx.data.users.findOne({ email : email }) != null) {
-			trace('User already exists: "$email"');
+			trace('user already exists: "$email"');
 			throw EUserAlreadyExists;
 		}
 
@@ -71,7 +71,7 @@ class Auth {
 			points : 0,
 		};
 		ctx.data.users.insert(u);
-		trace('Created user for "${u.email}" (${u.name})');
+		trace('created user for "${u.email}" (${u.name})');
 	}
 
 	public static function login(ctx:Context, email:String, pass:String)
@@ -79,27 +79,27 @@ class Auth {
 		email = StringTools.trim(email);
 
 		if (!validEmail(email)) {
-			trace('Invalid email: "$email"');
+			trace('invalid email: "$email"');
 			throw EInvalidEmail;
 		}
 
 		if (!validPassword(pass)) {
-			trace('Invalid password: len=${pass.length}');
+			trace('invalid password: len=${pass.length}');
 			throw EInvalidPass;
 		}
 
 		var user = ctx.data.users.findOne({ email : email });
 		if (user == null || !user.password.matches(pass)) {
-			trace('Failed login for "$email": bad ${user == null ? "user" : "password" }');
+			trace('failed login for "$email": bad ${user == null ? "user" : "password" }');
 			if (pass.indexOf("'") > 0)
-				trace("Possible SQL injection attempt");
+				trace("possible SQL injection attempt");
 			throw EFailedLogin;
 		}
 
 		var s = new Session(null, user._id, 1e9, null);  // FIXME loc, device and real span
 		ctx.data.sessions.save(s);
 		ctx.loop.session = s;
-		trace('Logged in as "${user.email}" (${user.name}) with session ${s._id}');
+		trace('logged in as "${user.email}" (${user.name}) with session ${s._id}');
 	}
 
 	/**
@@ -116,15 +116,15 @@ class Auth {
 
 		var basic = Web.getAuthorization();
 		if (basic != null)
-			trace('Received basic http creds for "${basic.user}"');
+			trace('received basic http creds for "${basic.user}"');
 		if (ctx.loop.session == null && basic != null) {
-			trace("Trying HTTP basic auth");
+			trace("trying HTTP basic auth");
 			try login(ctx, basic.user, basic.pass)
-			catch (err:AuthenticationError) trace(err);
+			catch (err:AuthenticationError) null;  // since login already traces enough
 		}
 		
 		if (ctx.loop.session != null && !ctx.loop.session.isValid()) {
-			trace("Ignoring invalid session");
+			trace("ignoring invalid session");
 			ctx.loop.session = null;
 		}
 

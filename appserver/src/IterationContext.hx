@@ -3,6 +3,7 @@ import db.*;
 import mweb.*;
 import mweb.http.*;
 import mweb.tools.*;
+import crypto.Random;
 using Lambda;
 
 class IterationContext {
@@ -13,6 +14,7 @@ class IterationContext {
 	public var session(default,null):Session;
 
 	public var now(default,null):Date;
+	public var hash(default,null):String;
 
 	function handleLoggedMeta(metas:Array<String>)
 	{
@@ -36,7 +38,7 @@ class IterationContext {
 		try {
 			ret = d.dispatch(routeMap);
 		} catch (e:AuthorizationError) {
-			trace(e);
+			trace('authorization error: $e');
 			ret = Response.empty().redirect('/login');
 		}
 
@@ -49,6 +51,7 @@ class IterationContext {
 
 		session = null;
 		now = Date.now();
+		hash = Random.id(4);
 	}
 }
 

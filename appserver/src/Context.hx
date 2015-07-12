@@ -3,8 +3,8 @@ import db.*;
 import mweb.*;
 import mweb.http.*;
 
-class Context
-{
+class Context {
+	static var headerPxFilter = ["Authorization", "X-"];
 	var routeMap:Route<Dynamic>;
 
 	public var data(default,null):StorageContext;
@@ -14,15 +14,19 @@ class Context
 	@:allow(Main)
 	function respond()  // TODO receive Request
 	{
-		trace('Request: ${Web.getMethod()} ${Web.getURI()}');
-		for (header in Web.getClientHeaders())
-			trace('Received header ${header.header}: ${header.value}');
-		trace('SessionCache usage: ${data.sessions.used} (capacity ${data.sessions.size})');
-
 		loop = new IterationContext(routeMap);
 
+		trace('${Web.getMethod()} ${Web.getURI()}');
+		trace('from ${Web.getClientIP()} at ${loop.now}');
+		for (h in Web.getClientHeaders()) {
+			if (Lambda.exists(headerPxFilter, function (x) return StringTools.startsWith(h.header, x)))
+				trace('${h.header}: ${h.value}');
+		}
+
+		trace('session cache: ${data.sessions.used}/${data.sessions.size} slots in use');
+
 		Auth.authorize(this);
-		trace('Session: ${loop.session._id} (user=${loop.session.user})');
+		trace('session: ${loop.session._id} (user=${loop.session.user})');
 
 		var request = new mweb.http.webstd.Request();
 		var response = loop.dispatch(request);
@@ -32,7 +36,7 @@ class Context
 			case None, Content(_): 'status ' + (response.status != 0 ? '${response.status}' : '${Status.OK} (implicit)');
 			case Redirect(to): 'redirect to $to';
 		}
-		trace('Response: $summary');
+		trace('returning $summary');
 		new mweb.http.webstd.Writer().writeResponse(response);
 	}
 
