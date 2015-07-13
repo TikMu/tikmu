@@ -27,6 +27,22 @@ li {
 	list-style: none;
 }
 
+.icon {
+	background-repeat: no-repeat;
+	background-position: center;
+	border: none;
+	cursor: pointer;
+	display: inline-block;
+	text-indent: 1000%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-decoration: none;
+}
+
+.icon_pressed {
+	filter: invert(1) opacity(.3);
+}
+
 
 /* Header */
 
@@ -81,18 +97,6 @@ li {
 	background-size: 19px 17px;
 	width: 19px;
 	height: 17px;
-}
-
-a.icon {
-	background-repeat: no-repeat;
-	background-position: center;
-	border: none;
-	cursor: pointer;
-	display: inline-block;
-	text-indent: 1000%;
-	white-space: nowrap;
-	overflow: hidden;
-	text-decoration: none;
 }
 
 
