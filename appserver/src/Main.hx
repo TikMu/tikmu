@@ -10,10 +10,13 @@ class Main {
 	static function customTrace(msg:String, ?p:haxe.PosInfos) {
 		if (p.customParams != null)
 			msg = msg + ',' + p.customParams.join(',');
-		msg = '$msg  @${p.className}::${p.methodName}(${p.fileName}:${p.lineNumber})\n';
-		if (ctx.loop != null)
+		msg = '$msg  @${p.className}::${p.methodName}(${p.fileName}:${p.lineNumber})';
+		if (ctx.loop != null) {
 			msg = '[${ctx.loop.hash}] $msg';
-		Sys.stderr().writeString(msg);
+			// TODO only do the following when needed
+			msg = StringTools.replace(msg, "\n", "\n" + StringTools.rpad("", " ", ctx.loop.hash.length + 3));
+		}
+		Sys.stderr().writeString(msg + "\n");
 	}
 
 	static function main()
@@ -29,8 +32,7 @@ class Main {
 		} catch (e:mweb.Errors.DispatcherError) {
 			Web.setReturnCode(404);  // not found
 		} catch (e:Dynamic) {
-			trace('Exception: $e');
-			trace(haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
+			trace('Exception: $e' + haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
 			Web.setReturnCode(500);  // internal server error
 		}
 	}
