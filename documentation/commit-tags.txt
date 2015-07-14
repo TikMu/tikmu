@@ -1,0 +1,12 @@
+Commit and issue tags are used to roughly indicate the scope of a change.  The
+following tags are currently being used:
+
+API: application programming interface; includes routes, for now
+Auth: authorization and authentication system (register, login, session, ...)
+CI: self updating server, its build script and its GitHub listener
+Cleanup: clean or remove old/bad code
+Fix: fix of a bug or issue (official or not)
+Impl: implementation change that should not have visible side effects for users or the db
+Minor: changes that have little or no effect on the code execution
+UI: user interface
+
