@@ -2,7 +2,7 @@ package route;
 
 import mweb.http.*;
 import mweb.tools.*;
-using db.QuestionAccess;
+using db.QuestionTools;
 
 typedef QuestionSummaryData = {
 	> db.Question,
@@ -57,7 +57,7 @@ class BaseList extends BaseRoute {
 			}
 			q.answers = as;
 			qs.push(q);
-			q.state = loop.session.isAuthenticated() ? this.getQuestionMonitoringState(q._id) : cast {};
+			q.state = loop.session.isAuthenticated() ? q.getQuestionMonitoringState(_ctx) : cast {};
 		}
 		return qs;
 	}

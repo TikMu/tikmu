@@ -2,7 +2,7 @@ package route;
 
 import mweb.http.*;
 import mweb.tools.*;
-using db.QuestionAccess;
+using db.QuestionTools;
 
 typedef SomeQuestionViewData = {
 	question : db.Question
@@ -73,7 +73,7 @@ class SomeQuestion extends BaseRoute {
 
 	public function getState()
 	{
-		var state = this.getQuestionMonitoringState(question._id);
+		var state = question.getQuestionMonitoringState(_ctx);
 
 		var ret = new Response();
 		ret.setContent(new TemplateLink(state, haxe.Json.stringify.bind(_)));
