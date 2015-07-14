@@ -2,6 +2,7 @@ package route;
 
 import mweb.http.*;
 import mweb.tools.*;
+using db.QuestionAccess;
 
 typedef SomeQuestionViewData = {
 	question : db.Question
@@ -72,24 +73,10 @@ class SomeQuestion extends BaseRoute {
 
 	public function getState()
 	{
-		var uqq = null;
-
-		var uq = data.userQuestions.findOne({ _id : loop.session.user });
-		if (uq != null)
-			uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
-
-		var data = if (uqq != null) {
-			votes : uqq.votes,
-			favorite : uqq.favorite,
-			following : uqq.following
-		} else {
-			votes : [],
-			favorite : false,
-			following : false
-		}
+		var state = this.getQuestionMonitoringState(question._id);
 
 		var ret = new Response();
-		ret.setContent(new TemplateLink(data, haxe.Json.stringify.bind(_)));
+		ret.setContent(new TemplateLink(state, haxe.Json.stringify.bind(_)));
 		return ret;
 	}
 
