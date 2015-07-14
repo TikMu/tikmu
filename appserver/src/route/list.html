@@ -6,16 +6,16 @@
 		<div>
 			@for (q in questions)
 			{ @{var u = this.getUser(q.user);}
-			<article id="question_card">
-				<header id="question_card_header">
+			<article class="question_card" id="@q._id.valueOf()">
+				<header class="question_card_header">
 					<div id="user_avatar"></div>
 					<div id="user_description">
 						<div id="user_name">@u.name</div>
 						<div id="user_reputation">302</div><!-- TODO -->
 					</div>
 				</header>
-				<div id="question_card_question"><a href="/question/@q._id.valueOf()">@q.contents</a></div>
-				<footer id="question_card_footer">
+				<div class="question_card_question"><a href="/question/@q._id.valueOf()">@q.contents</a></div>
+				<footer class="question_card_footer">
 					<div id="location_date">@Std.random(10)km @Std.random(20)h</div><!-- TODO -->
 					<div id="footer_icons">
 						@if(ctx.loop.session.isAuthenticated()) {
@@ -24,7 +24,7 @@
 						}
 					</div>
 				</footer>	
-				<div id="question_card_answers">
+				<div class="question_card_answers">
 					@if (q.answers.length > 0)
 					{
 					<a href="/question/@q._id.valueOf()">@q.answers.length answers</a>
