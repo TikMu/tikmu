@@ -4,28 +4,42 @@ import js.Browser.*;
 import js.html.*;
 
 class AdvancedRequests {
-	static function favorite(e:Event)
+	static function toggleIconPressed(elem:Element)
 	{
-		var anchor = cast(e.target, AnchorElement);
-		var qid = anchor.getAttribute("question-id");
+		if (elem.classList.contains("icon_pressed"))
+			elem.classList.remove("icon_pressed");
+		else
+			elem.classList.add("icon_pressed");
+	}
+
+	static function questionAction(action:String, e:Event)
+	{
+		var elem = cast(e.target, Element);
+		var qid = elem.getAttribute("question-id");
 		trace(qid);
 		var r = new XMLHttpRequest();
-		r.open("POST", '/question/$qid/favorite');
+		r.onloadend = function (e) {
+			trace(r.status);
+			switch (r.status) {
+			case 204:  // no content
+				toggleIconPressed(elem);
+			case s:
+				throw 'Unexpected status $s';
+			}
+		}
+		r.open("POST", '/question/$qid/$action');
 		r.send();
-		trace(r.status);
 		return false;
+	}
+
+	static function favorite(e:Event)
+	{
+		return questionAction("favorite", e);
 	}
 
 	static function follow(e:Event)
 	{
-		var anchor = cast(e.target, AnchorElement);
-		var qid = anchor.getAttribute("question-id");
-		trace(qid);
-		var r = new XMLHttpRequest();
-		r.open("POST", '/question/$qid/follow');
-		r.send();
-		trace(r.status);
-		return false;
+		return questionAction("follow", e);
 	}
 
 	static function register(nodeList:NodeList, func:Event->Bool)
