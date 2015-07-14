@@ -62,6 +62,7 @@ class Context {
 			user : new route.User(this),
 
 			// aliases
+			head : @openRoute function (d:Dispatcher<Dynamic>) return d.getRoute(route.List).head(),
 			any : @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(route.List).any(),
 		});
 	}

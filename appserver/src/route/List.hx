@@ -65,6 +65,13 @@ class BaseList extends BaseRoute {
 
 class List extends BaseList {
 	@openRoute
+	public function head()
+	{
+		trace("headingggg");
+		return new Response().setStatus(OK);
+	}
+
+	@openRoute
 	public function any()
 	{
 		var qs = data.questions.find({ deleted : false }).toArray();
