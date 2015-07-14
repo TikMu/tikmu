@@ -43,6 +43,11 @@ class SomeQuestion extends BaseRoute {
 	var question:db.Question;
 	var view:SomeQuestionView;
 
+	function serialize(data:Dynamic)
+	{
+		return new TemplateLink(data, haxe.Json.stringify.bind(_));
+	}
+
 	@openRoute
 	public function any()
 	{
@@ -74,10 +79,7 @@ class SomeQuestion extends BaseRoute {
 	public function getState()
 	{
 		var state = question.getQuestionMonitoringState(_ctx);
-
-		var ret = new Response();
-		ret.setContent(new TemplateLink(state, haxe.Json.stringify.bind(_)));
-		return ret;
+		return Response.fromContent(serialize(state));
 	}
 
 	public function postFavorite()
@@ -116,7 +118,12 @@ class SomeQuestion extends BaseRoute {
 
 		data.userQuestions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
-		return new Response().setStatus(NoContent);
+		
+		var state = {
+			favorite : uqq.favorite,
+			following : uqq.following
+		};
+		return Response.fromContent(serialize(state));
 	}
 
 	public function postFollow()
@@ -153,7 +160,12 @@ class SomeQuestion extends BaseRoute {
 
 		data.userQuestions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
-		return new Response().setStatus(NoContent);
+
+		var state = {
+			favorite : uqq.favorite,
+			following : uqq.following
+		};
+		return Response.fromContent(serialize(state));
 	}
 
 	public function postEdit(args:{ updated:String })

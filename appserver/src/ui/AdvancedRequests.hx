@@ -3,26 +3,26 @@ package ui;
 import js.Browser.*;
 import js.html.*;
 
-class AdvancedRequests {
-	static function toggleIconPressed(elem:Element)
-	{
-		if (elem.classList.contains("icon_pressed"))
-			elem.classList.remove("icon_pressed");
-		else
-			elem.classList.add("icon_pressed");
-	}
+@:enum abstract QuestionAction(String) from String {
+	var QDoFavorite = "favorite";
+	var QDoFollow = "follow";
+}
 
-	static function questionAction(action:String, e:Event)
+class AdvancedRequests {
+	static function questionAction(action:QuestionAction, e:Event)
 	{
 		var elem = cast(e.target, Element);
 		var qid = elem.getAttribute("question-id");
-		trace(qid);
 		var r = new XMLHttpRequest();
 		r.onloadend = function (e) {
 			trace(r.status);
 			switch (r.status) {
-			case 204:  // no content
-				toggleIconPressed(elem);
+			// TODO 200
+			case 200, 204:  // no content
+				if (elem.classList.contains("icon_pressed"))
+					elem.classList.remove("icon_pressed");
+				else
+					elem.classList.add("icon_pressed");
 			case s:
 				throw 'Unexpected status $s';
 			}
@@ -34,12 +34,12 @@ class AdvancedRequests {
 
 	static function favorite(e:Event)
 	{
-		return questionAction("favorite", e);
+		return questionAction(QDoFavorite, e);
 	}
 
 	static function follow(e:Event)
 	{
-		return questionAction("follow", e);
+		return questionAction(QDoFollow, e);
 	}
 
 	static function register(nodeList:NodeList, func:Event->Bool)
