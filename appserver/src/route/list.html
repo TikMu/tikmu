@@ -19,8 +19,8 @@
 					<div id="location_date">@Std.random(10)km @Std.random(20)h</div><!-- TODO -->
 					<div id="footer_icons">
 						@if(ctx.loop.session.isAuthenticated()) {
-						<a id="favorite" class="icon" question-id="@q._id.valueOf()">Favorite/unfavorite</a>
-						<a id="follow" class="icon" question-id="@q._id.valueOf()">Follow/unfollow</a>
+						<a id="favorite" class=@if(q.state.favorite) { "icon icon_pressed" } else { "icon" } question-id="@q._id.valueOf()">Favorite/unfavorite</a>
+						<a id="follow" class=@if(q.state.following) { "icon icon_pressed" } else { "icon" } question-id="@q._id.valueOf()">Follow/unfollow</a>
 						}
 					</div>
 				</footer>	

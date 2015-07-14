@@ -2,9 +2,18 @@ package route;
 
 import mweb.http.*;
 import mweb.tools.*;
+using db.QuestionAccess;
+
+typedef QuestionSummaryData = {
+	> db.Question,
+	state : {
+		?favorite : Bool,
+		?following : Bool
+	}
+}
 
 typedef ListViewData = {
-	questions : Array<db.Question>,
+	questions : Array<QuestionSummaryData>,
 	title : String,
 }
 
@@ -31,11 +40,11 @@ class BaseList extends BaseRoute {
 		view = new ListView(_ctx);
 	}
 
-	function cleanRawData(questions:Array<db.Question>)
+	function postProcess(questions:Array<db.Question>):Array<QuestionSummaryData>
 	{
 		var qs = [];
 		for (q in questions) if (!q.deleted) {
-			q = Reflect.copy(q);
+			var q:QuestionSummaryData = cast Reflect.copy(q);
 			var as = [];
 			for (a in q.answers) if (!a.deleted) {
 				a = Reflect.copy(a);
@@ -48,6 +57,7 @@ class BaseList extends BaseRoute {
 			}
 			q.answers = as;
 			qs.push(q);
+			q.state = loop.session.isAuthenticated() ? this.getQuestionMonitoringState(q._id) : cast {};
 		}
 		return qs;
 	}
@@ -61,7 +71,7 @@ class List extends BaseList {
 		qs = [ for (q in qs) if (!q.deleted) q ];
 
 		var data = {
-			questions : cleanRawData(qs),
+			questions : postProcess(qs),
 			title : "Discover"
 		};
 		return Response.fromContent(new TemplateLink(data, view));
@@ -77,7 +87,7 @@ class Favorites extends BaseList {
 		var qs = data.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
 
 		var data = {
-			questions : cleanRawData(cast qs),  // TODO fix $in expects array in mongodb
+			questions : postProcess(cast qs),  // TODO fix $in expects array in mongodb
 			title : "Favorites"
 		};
 		return Response.fromContent(new TemplateLink(data, view));
@@ -98,7 +108,7 @@ class Search extends BaseList {
 		}
 
 		var data = {
-			questions : cleanRawData(cast qs),  // TODO fix $in expects array in mongodb
+			questions : postProcess(cast qs),  // TODO fix $in expects array in mongodb
 			title : "Search results"
 		}
 		return Response.fromContent(new TemplateLink(data, view));
