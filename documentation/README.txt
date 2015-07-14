@@ -2,6 +2,7 @@ Simplified directory of existing documentation:
 
 ./checklist.txt:  "are things working?" checklist
 ./commit-tags:  commit and issue tags in use
+./live-server.md:  live and self updating development server
 
 ./local-setup/pre-commit: shell script git hook to prevent broken commits
 
