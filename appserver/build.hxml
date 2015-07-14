@@ -1,7 +1,9 @@
+-cp src
+--each
+
 # app server
 -neko www/index.n
 -main Main
-
 -lib croxit-1
 -lib mongodb
 -lib mongodb-managers
@@ -9,5 +11,9 @@
 -lib mweb
 -lib erazor
 
--cp src
+# client ui js
+--next
+-js www/js/advreq.js
+-main ui.AdvancedRequests
+-dce full
 
