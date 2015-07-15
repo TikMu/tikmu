@@ -8,19 +8,27 @@
 			{ @{var u = this.getUser(q.user);}
 			<article class="question_card" id="@q._id.valueOf()">
 				<header class="question_card_header">
-					<div id="user_avatar"></div>
-					<div id="user_description">
-						<div id="user_name">@u.name</div>
-						<div id="user_reputation">302</div><!-- TODO -->
+					<div class="user_avatar"></div>
+					<div class="user_description">
+						<div class="user_name">@u.name</div>
+						<div class="user_reputation">302</div><!-- TODO -->
 					</div>
 				</header>
 				<div class="question_card_question"><a href="/question/@q._id.valueOf()">@q.contents</a></div>
 				<footer class="question_card_footer">
-					<div id="location_date">@Std.random(10)km @Std.random(20)h</div><!-- TODO -->
-					<div id="footer_icons">
+					<div class="location_date">@Std.random(10)km @Std.random(20)h</div><!-- TODO -->
+					<div class="footer_icons">
 						@if(ctx.loop.session.isAuthenticated()) {
-						<a id="favorite" class=@if(q.state.favorite) { "icon icon_pressed" } else { "icon" } question-id="@q._id.valueOf()">Favorite/unfavorite</a>
-						<a id="follow" class=@if(q.state.following) { "icon icon_pressed" } else { "icon" } question-id="@q._id.valueOf()">Follow/unfollow</a>
+						@{
+							var favclass = "favorite icon";
+							var folclass = "follow icon";
+							if (q.state.favorite)
+								favclass += " icon_pressed";
+							if (q.state.following)
+								folclass += " icon_pressed";
+						}
+						<a class="@favclass" question-id="@q._id.valueOf()">Favorite/unfavorite</a>
+						<a class="@folclass" question-id="@q._id.valueOf()">Follow/unfavorite</a>
 						}
 					</div>
 				</footer>	

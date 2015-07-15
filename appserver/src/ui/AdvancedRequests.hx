@@ -53,8 +53,8 @@ class AdvancedRequests {
 	static function main()
 	{
 		window.onload = function () {
-			var favBtns = document.querySelectorAll("a#favorite");
-			var flwBtns = document.querySelectorAll("a#follow");
+			var favBtns = document.querySelectorAll(".favorite.icon");
+			var flwBtns = document.querySelectorAll(".follow.icon");
 			register(favBtns, favorite);
 			register(flwBtns, follow);
 		}

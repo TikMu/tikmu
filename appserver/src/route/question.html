@@ -6,33 +6,33 @@
 	<main>
                 @{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
 		<article id="@qid" class="question_open">
-			<header id="question_header">
-				<div id="user_avatar"></div>
-				<div id="user_description">
-					<div id="user_name">@u.name</div>
-					<div id="user_reputation">302</div><!-- TODO -->
+			<header class="question_header">
+				<div class="user_avatar"></div>
+				<div class="user_description">
+					<div class="user_name">@u.name</div>
+					<div class="user_reputation">302</div><!-- TODO -->
 				</div>
 				<div><a href="#" onclick="r = new XMLHttpRequest(); r.open('POST', '/question/@qid/favorite', false); r.send();">F!</a></div>
 			</header>
-			<p id="question_card_question">@question.contents</p><!-- TODO toHtml -->
+			<p class="question_card_question">@question.contents</p><!-- TODO toHtml -->
 			<footer>
-				<div id="location_date">@Std.random(10)km @this.getPrettyDelta(question.created)</div>
-				<div id="footer_icons">
-					<a href="#answer_box" id="answer" class="icon">Answer</a>
-					<a href="#@qid" id="share" class="icon">Share</a><!-- TODO -->
-					<a href="#" id="favorite" class="icon">Favorite/unfavorite</a>
-					<a href="#" id="follow" class="icon">Follow/unfollow</a>
+				<div class="location_date">@Std.random(10)km @this.getPrettyDelta(question.created)</div>
+				<div class="footer_icons">
+					<a href="#answer_box" class="answer icon">Answer</a>
+					<a href="#@qid" class="share icon">Share</a><!-- TODO -->
+					<a href="#" class="favorite icon">Favorite/unfavorite</a>
+					<a href="#" class="follow icon">Follow/unfollow</a>
 				</div>
 			</footer>
-			<section id="answer_list">
+			<section class="answer_list">
 				@for (a in question.answers)
 				{ @{ var u = this.getUser(a.user); var aid = a._id.valueOf(); }
 				<article id="@aid">
 					<header>
-						<div id="answer_user_name">@u.name</div>
-						<div id="answer_user_date">@this.getPrettyDelta(a.created)</div>
+						<div class="answer_user_name">@u.name</div>
+						<div class="answer_user_date">@this.getPrettyDelta(a.created)</div>
 					</header>
-					<p id="answer_content">@a.contents</p><!-- TODO toHtml -->
+					<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
 					<footer>
 					<a href="">Share</a><!-- TODO -->
 					<a href="#" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>
@@ -47,10 +47,10 @@
 						{ @{var u = this.getUser(c.user); var cid = c._id.valueOf(); }
 						<article id="@cid" class="comment">
 							<header>
-								<div id="answer_user_name">@u.name</div>
-								<div id="answer_user_date">@this.getPrettyDelta(c.created)</div>
+								<div class="answer_user_name">@u.name</div>
+								<div class="answer_user_date">@this.getPrettyDelta(c.created)</div>
 							</header>
-							<p id="answer_content">@c.contents</p><!-- TODO toHtml -->
+							<p class="answer_content">@c.contents</p><!-- TODO toHtml -->
 						</article>
 						}
 
@@ -58,9 +58,9 @@
 				</article>
 				}
 			</section>
-			<form id="answer_box" action="/question/@qid/answer" method="post">
-				<input name="answer" type="text" placeholder="Answer" id="answer_textinput" />
-				<button type="submit" id="answer_submit_button">Send</button>
+			<form class="answer_box" action="/question/@qid/answer" method="post">
+				<input name="answer" type="text" placeholder="Answer" class="answer_textinput" />
+				<button type="submit" class="answer_submit_button">Send</button>
 			</form>
 		</article>
 	</main>

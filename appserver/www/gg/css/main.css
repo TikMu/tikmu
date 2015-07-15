@@ -116,7 +116,7 @@ li {
 
 }
 
-#user_avatar {
+.user_avatar {
 	background-image: url('../img/icon-user-avatar.png');
 	background-repeat: no-repeat;
 	background-size: 30px 30px;
@@ -127,20 +127,20 @@ li {
 	display: inline-block;
 }
 
-#user_description {
+.user_description {
 	display: inline-block;
 }
 
-#question_header {
+.question_header {
 	padding-left: 20px;
 	margin: 0;
 }
 
-#user_name {
+.user_name {
 	padding: 20px 0 0 0;
 }
 
-#user_reputation {
+.user_reputation {
 	padding: 0;
 	color: rgba(255,255,255,0.6);
 }
@@ -160,7 +160,7 @@ li {
 	display: block;
 }
 
-#location_date {
+.location_date {
 	display: inline;
 	padding: 0 20px;
 }
@@ -179,7 +179,7 @@ li {
 
 /* Icons */
 
-#answer {
+.answer {
 	background-image: url('../img/icon-answer.png');
 	background-size: 24px 18px;
 	width: 24px;
@@ -187,7 +187,7 @@ li {
 	margin: 0 10px 0 0;
 }
 
-#share {
+.share {
 	background-image: url('../img/icon-share.png');
 	background-size: 18px 24px;
 	width: 18px;
@@ -195,7 +195,7 @@ li {
 	margin: 0 10px 0 0;
 }
 
-#favorite {
+.favorite {
 	background-image: url('../img/icon-favorite.png');
 	background-size: 20px 20px;
 	width: 20px;
@@ -203,7 +203,7 @@ li {
 	margin: 0 10px 0 0;
 }
 
-#follow {
+.follow {
 	background-image: url('../img/icon-follow.png');
 	background-size: 20px 20px;
 	width: 20px;
@@ -220,31 +220,31 @@ li {
 	color: #FFF;
 }
 
-#answer_list {
+.answer_list {
 	background-color: #FFF;
 	color: #333;
 	margin-top: 20px;
 	padding: 20px;
 }
 
-#answer_user_name {
+.answer_user_name {
 	color: #8763DD;
 }
 
-#answer_user_date {
+.answer_user_date {
 	color: #AAA;
 }
 
-#answer_content {
+.answer_content {
 	font-size: 16px;
 }
 
-#answer_box {
+.answer_box {
 	background-color: #EEE;
 	padding: 15px 20px;
 }
 
-#answer_textinput {
+.answer_textinput {
 	padding: 10px;
 	border: 1px solid #CCC;
 	border-radius: 5px;
@@ -252,7 +252,7 @@ li {
 	width: 77%;
 }
 
-#answer_submit_button {
+.answer_submit_button {
 	padding: 11px 15px 8px 15px;
 	background-color: #ABCD00;
 	border-radius: 5px;
@@ -268,7 +268,7 @@ li {
 
 }
 
-#footer_icons {
+.footer_icons {
 	text-align: right;
 	margin-top: -20px;
 }
