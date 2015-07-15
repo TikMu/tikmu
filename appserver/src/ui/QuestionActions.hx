@@ -1,6 +1,5 @@
 package ui;
 
-import js.Browser.*;
 import js.html.*;
 
 @:enum abstract QuestionAction(String) from String {
@@ -8,7 +7,7 @@ import js.html.*;
 	var QDoFollow = "follow";
 }
 
-class AdvancedRequests {
+class QuestionActions {
 	static function questionAction(action:QuestionAction, e:Event)
 	{
 		var elem = cast(e.target, Element);
@@ -32,32 +31,14 @@ class AdvancedRequests {
 		return false;
 	}
 
-	static function favorite(e:Event)
+	public static function favorite(e:Event)
 	{
 		return questionAction(QDoFavorite, e);
 	}
 
-	static function follow(e:Event)
+	public static function follow(e:Event)
 	{
 		return questionAction(QDoFollow, e);
-	}
-
-	static function register(nodeList:NodeList, func:Event->Bool)
-	{
-		for (i in 0...nodeList.length) {
-			var anchor = cast(nodeList[i], AnchorElement);
-			anchor.onclick = func;
-		}
-	}
-
-	static function main()
-	{
-		window.onload = function () {
-			var favBtns = document.querySelectorAll(".favorite.icon");
-			var flwBtns = document.querySelectorAll(".follow.icon");
-			register(favBtns, favorite);
-			register(flwBtns, follow);
-		}
 	}
 }
 

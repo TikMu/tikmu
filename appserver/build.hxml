@@ -13,7 +13,8 @@
 
 # client ui js
 --next
--js www/js/advreq.js
--main ui.AdvancedRequests
+-js www/js/tikmu_ui.js
+-main ui.UiCode
 -dce full
+-D analyzer
 
