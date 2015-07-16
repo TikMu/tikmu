@@ -13,8 +13,16 @@ class QuestionActions {
 	{
 		var elem = J(e.target);
 		var qid = elem.attr("question-id");
-		var r = JQuery.post('/question/$qid/$action');
-		r.done(elem.toggleClass.bind("icon_pressed"));
+		function setIcons(state:{ favorite:Bool, following:Bool }) {
+			var icons = elem.siblings().add(elem);
+			var favorite = icons.filter(".favorite");
+			var follow = icons.filter(".follow");
+			if (state.favorite != favorite.hasClass("icon_pressed"))
+				favorite.toggleClass("icon_pressed");
+			if (state.following != follow.hasClass("icon_pressed"))
+				follow.toggleClass("icon_pressed");
+		}
+		JQuery.post('/question/$qid/$action', setIcons, "text json");
 		e.preventDefault();
 	}
 
