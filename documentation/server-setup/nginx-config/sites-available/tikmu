@@ -25,6 +25,9 @@ server {
 
 	index index.html index.htm index.n;
 
+	gzip on;
+	gzip_types *;
+
 	# try as file, then as directory, and finally fallback to tora
 	location / {
 		try_files $uri $uri/ /index.n$uri?$args;
