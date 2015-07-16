@@ -1,6 +1,7 @@
 package ui;
 
-import js.html.*;
+import js.jquery.Helper.*;
+import js.jquery.*;
 
 @:enum abstract QuestionAction(String) from String {
 	var QDoFavorite = "favorite";
@@ -10,25 +11,11 @@ import js.html.*;
 class QuestionActions {
 	static function questionAction(action:QuestionAction, e:Event)
 	{
-		var elem = cast(e.target, Element);
-		var qid = elem.getAttribute("question-id");
-		var r = new XMLHttpRequest();
-		r.onloadend = function (e) {
-			trace(r.status);
-			switch (r.status) {
-			// TODO 200
-			case 200, 204:  // no content
-				if (elem.classList.contains("icon_pressed"))
-					elem.classList.remove("icon_pressed");
-				else
-					elem.classList.add("icon_pressed");
-			case s:
-				throw 'Unexpected status $s';
-			}
-		}
-		r.open("POST", '/question/$qid/$action');
-		r.send();
-		return false;
+		var elem = J(e.target);
+		var qid = elem.attr("question-id");
+		var r = JQuery.post('/question/$qid/$action');
+		r.done(elem.toggleClass.bind("icon_pressed"));
+		e.preventDefault();
 	}
 
 	public static function favorite(e:Event)
