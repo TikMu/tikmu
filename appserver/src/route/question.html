@@ -21,8 +21,18 @@
 				<div class="footer_icons">
 					<a href="#answer_box" class="answer icon">Answer</a>
 					<a href="#@qid" class="share icon">Share</a><!-- TODO -->
-					<a href="#" class="favorite icon">Favorite/unfavorite</a>
-					<a href="#" class="follow icon">Follow/unfollow</a>
+					@if(ctx.loop.session.isAuthenticated()) {
+					@{
+						var favclass = "favorite icon";
+						var folclass = "follow icon";
+						if (state.favorite)
+							favclass += " icon_pressed";
+						if (state.following)
+							folclass += " icon_pressed";
+					}
+					<a class="@favclass" question-id="@qid">Favorite/unfavorite</a>
+					<a class="@folclass" question-id="@qid">Follow/unfavorite</a>
+					}
 				</div>
 			</footer>
 			<section class="answer_list">

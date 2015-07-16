@@ -5,7 +5,11 @@ import mweb.tools.*;
 using db.QuestionTools;
 
 typedef SomeQuestionViewData = {
-	question : db.Question
+	question : db.Question,
+	state : {
+		?favorite:Bool,
+		?following:Bool
+	}
 }
 
 @:includeTemplate("question.html")
@@ -48,10 +52,28 @@ class SomeQuestion extends BaseRoute {
 		return new TemplateLink(data, haxe.Json.stringify.bind(_));
 	}
 
+	function postProcess(question:db.Question):SomeQuestionViewData
+	{
+		var d:SomeQuestionViewData = { question : Reflect.copy(question), state : {} };
+		var as = [];
+		for (a in d.question.answers) if (!a.deleted) {
+			a = Reflect.copy(a);
+			var cs = [];
+			for (c in a.comments) if (!c.deleted) {
+				cs.push(c);
+			}
+			a.comments = cs;
+			as.push(a);
+		}
+		d.question.answers = as;
+		d.state = loop.session.isAuthenticated() ? question.getQuestionMonitoringState(_ctx) : cast {};
+		return d;
+	}
+
 	@openRoute
 	public function any()
 	{
-		var data = { question : question };
+		var data = postProcess(question);
 		return Response.fromContent(new TemplateLink(data, view));
 	}
 
