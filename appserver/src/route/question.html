@@ -5,7 +5,7 @@
 <body>
 	@ctx.aux.menu.execute()
 	<main>
-                @{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
+		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
 		<article id="@qid" class="question_open">
 			<header class="question_header">
 				<div class="user_avatar"></div>
@@ -34,14 +34,14 @@
 						<div class="answer_user_date">@this.getPrettyDelta(a.created)</div>
 					</header>
 					<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
-					<footer>
-					<a href="">Share</a><!-- TODO -->
-					<a href="#" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>
-					<form id="@aid/comment" action="/answer/@aid/comment" method="post" hidden="true">
-						<input name="comment" type="text" placeholder="Comment" />
-						<button type="submit">&gt</button>
-						<button type="button" onclick="document.getElementById('@aid/comment').hidden = true">^</button>
-					</form>
+					<footer class="temp">
+						<a href="">Share</a><!-- TODO -->
+						<a href="#" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>
+						<form id="@aid/comment" action="/answer/@aid/comment" method="post" hidden="true">
+							<input name="comment" type="text" placeholder="Comment" />
+							<button type="submit">&gt</button>
+							<button type="button" onclick="document.getElementById('@aid/comment').hidden = true">^</button>
+						</form>
 					</footer>
 					<section>
 						@for (c in a.comments)
