@@ -44,18 +44,7 @@ class BaseList extends BaseRoute {
 	{
 		var qs = [];
 		for (q in questions) if (!q.deleted) {
-			var q:QuestionSummaryData = cast Reflect.copy(q);
-			var as = [];
-			for (a in q.answers) if (!a.deleted) {
-				a = Reflect.copy(a);
-				var cs = [];
-				for (c in a.comments) if (!c.deleted) {
-					cs.push(c);
-				}
-				a.comments = cs;
-				as.push(a);
-			}
-			q.answers = as;
+			var q:QuestionSummaryData = cast q.clean();
 			qs.push(q);
 			q.state = loop.session.isAuthenticated() ? q.getQuestionMonitoringState(_ctx) : cast {};
 		}

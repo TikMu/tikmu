@@ -54,18 +54,7 @@ class SomeQuestion extends BaseRoute {
 
 	function postProcess(question:db.Question):SomeQuestionViewData
 	{
-		var d:SomeQuestionViewData = { question : Reflect.copy(question), state : {} };
-		var as = [];
-		for (a in d.question.answers) if (!a.deleted) {
-			a = Reflect.copy(a);
-			var cs = [];
-			for (c in a.comments) if (!c.deleted) {
-				cs.push(c);
-			}
-			a.comments = cs;
-			as.push(a);
-		}
-		d.question.answers = as;
+		var d:SomeQuestionViewData = { question : question.clean(), state : {} };
 		d.state = loop.session.isAuthenticated() ? question.getQuestionMonitoringState(_ctx) : cast {};
 		return d;
 	}

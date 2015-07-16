@@ -21,5 +21,24 @@ class QuestionTools {
 
 		return state;
 	}
+
+	// copies the question removing deleted answers and comments
+	// TODO rename to something clearer
+	public static function clean(question:Question)
+	{
+		var q = Reflect.copy(question);
+		var as = [];
+		for (a in q.answers) if (!a.deleted) {
+			a = Reflect.copy(a);
+			var cs = [];
+			for (c in a.comments) if (!c.deleted) {
+				cs.push(c);
+			}
+			a.comments = cs;
+			as.push(a);
+		}
+		q.answers = as;
+		return q;
+	}
 }
 
