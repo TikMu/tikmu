@@ -43,7 +43,7 @@
 							<button type="button" onclick="document.getElementById('@aid/comment').hidden = true">^</button>
 						</form>
 					</footer>
-					<section>
+					<section class="comment_list">
 						@for (c in a.comments)
 						{ @{var u = this.getUser(c.user); var cid = c._id.valueOf(); }
 						<article id="@cid" class="comment">
@@ -54,7 +54,6 @@
 							<p class="answer_content">@c.contents</p><!-- TODO toHtml -->
 						</article>
 						}
-
 					</section>
 				</article>
 				}
