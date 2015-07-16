@@ -3,7 +3,7 @@
 	@ctx.aux.head.setData({ title : title }).execute()
 	<body>
 		@ctx.aux.menu.execute()
-		<div>
+		<main>
 			@for (q in questions)
 			{ @{var u = this.getUser(q.user);}
 			<article class="question_card" id="@q._id.valueOf()">
@@ -44,7 +44,7 @@
 				</div>
 			</article>
 			}
-		</div>
+		</main>
 	</body>
 </html>
 
