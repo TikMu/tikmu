@@ -14,14 +14,18 @@ server {
 
 	server_name _;
 
-	# get desired branch from X-Dev-Branch header or assume 'master'
-	set $dev_branch master;
+	set $dev_ref heads/master;
+	# get desired branch from X-Dev-Branch header
 	if ($http_x_dev_branch != "") {
-		set $dev_branch $http_x_dev_branch;
+		set $dev_ref "heads/$http_x_dev_branch";
+	}
+	# (or overrule by) get desired ref from X-Dev-Ref header
+	if ($http_x_dev_ref != "") {
+		set $dev_ref $http_x_dev_ref;
 	}
 
 	# set the root to the correct branch
-	root /var/www/tikmu/$dev_branch;
+	root /var/www/tikmu/$dev_ref;
 
 	index index.html index.htm index.n;
 

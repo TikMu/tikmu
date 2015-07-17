@@ -146,19 +146,19 @@ class Listen {
 			return;
 		}
 
-		var branch = push.ref.replace("refs/heads/", "");
-		var buildDir = '${config.baseBuildDir}/$branch';
-		var outputDir = '${config.baseOutputDir}/$branch';
+		var ref = push.ref.replace("refs/", "");
+		var buildDir = '${config.baseBuildDir}/$ref';
+		var outputDir = '${config.baseOutputDir}/$ref';
 
 		if (push.deleted) {
 			Web.setReturnCode(202);  // accepted
-			trace('Accepted remove request for branch "$branch"');
+			trace('Accepted remove request for ref "$ref"');
 			rmrf(outputDir);
 			return;
 		}
 
 		var head = push.head_commit.id;
-		trace('Accepted build request for branch "$branch" (head is "${head.substr(0,7)}")');
+		trace('Accepted build request for ref "$ref" (head is "${head.substr(0,7)}")');
 
 		trace('Fetching from ${config.remote}');
 		setCwd(config.baseDir);
@@ -174,7 +174,7 @@ class Listen {
 		trace("Adding infos.json");
 		var infos = {
 			built_at : Date.now(),
-			branch : branch,
+			ref : ref,
 			commit : {
 				id : push.head_commit.id,
 				timestamp : push.head_commit.timestamp,

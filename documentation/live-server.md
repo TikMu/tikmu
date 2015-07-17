@@ -18,6 +18,11 @@ When viewing http://104.236.51.222 on a web browser, the default ('master')
 branch is showed.  To request branches other than 'master', it is necessary to
 send with all requests a `X-Dev-Branch` header set to the desired branch name.
 
+It's also possible to request tags (instead of branches) and to avoid ambiguity
+by supplying the `X-Dev-Ref` header with a `$refType/$refName` string (example:
+`heads/master` or `tags/alpha`).  Note: specifying a ref supersedes specifying
+a branch.
+
 To manipulate the request headers in your browser it's probably more convenient
 to use a specialized extension; on Firefox we have been using [Modify Headers].
 
