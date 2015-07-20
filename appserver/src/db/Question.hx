@@ -10,9 +10,9 @@ typedef Question = {
 	contents : String,
 	tags : Array<String>,
 	loc : Location,
-	voteSum : Int,  // indirect
-	favorites : Int,
-	watchers : Int,
+	voteSum : Int,  // indirect  // TODO rename and change to Float
+	favorites : Int, // TODO remove
+	watchers : Int,  // TODO remove
 
 	deleted : Bool,
 	created : Date,
