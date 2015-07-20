@@ -40,5 +40,10 @@ class QuestionTools {
 		q.answers = as;
 		return q;
 	}
+
+	public static function update(question:Question, data:StorageContext)
+	{
+		data.questions.update({ _id : question._id }, question);
+	}
 }
 
