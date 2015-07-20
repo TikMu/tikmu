@@ -13,8 +13,8 @@ class Main {
 		msg = '$msg  @${p.className}::${p.methodName}(${p.fileName}:${p.lineNumber})';
 		if (ctx.loop != null) {
 			msg = '[${ctx.loop.hash}] $msg';
-			// TODO only do the following when needed
-			msg = StringTools.replace(msg, "\n", "\n" + StringTools.rpad("", " ", ctx.loop.hash.length + 3));
+			if (msg.indexOf("\n") >= 0)
+				msg = StringTools.replace(msg, "\n", "\n" + StringTools.rpad("", " ", ctx.loop.hash.length + 3));
 		}
 		Sys.stderr().writeString(msg + "\n");
 	}
