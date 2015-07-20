@@ -142,6 +142,8 @@ class Auth {
 		}
 	}
 
+	static var _sessionAttributes = Web.isTora ? ["Path=/", "Secure"] : ["Path=/"];  // TODO better handle dev builds
+
 	/**
 		Set updated session cookie when necessary
 	**/
@@ -149,9 +151,9 @@ class Auth {
 	{
 		var cookies = Web.getCookies();
 		if (!ctx.loop.session.isValid())
-			response.setCookie("_session", "", ["path=/"]);
+			response.setCookie("_session", "", _sessionAttributes);
 		else if (cookies.get("_session") != ctx.loop.session._id)
-			response.setCookie("_session", ctx.loop.session._id, ["path=/"]);
+			response.setCookie("_session", ctx.loop.session._id, _sessionAttributes);
 	}
 }
 
