@@ -10,7 +10,7 @@ typedef Question = {
 	contents : String,
 	tags : Array<String>,
 	loc : Location,
-	voteSum : Int,
+	voteSum : Int,  // indirect
 	favorites : Int,
 	watchers : Int,
 
