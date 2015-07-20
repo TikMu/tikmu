@@ -11,6 +11,8 @@ class Context {
 	public var loop(default,null):IterationContext;
 	public var aux(default,null):AuxiliaryContext;
 
+	public var reputation(default,null):reputation.Handler;
+
 	@:allow(Main)
 	function respond()  // TODO receive Request
 	{
@@ -44,6 +46,8 @@ class Context {
 	{
 		data = new StorageContext(db);
 		aux = new AuxiliaryContext(this);
+
+		reputation = new reputation.Handler(this);
 
 		routeMap = Route.anon({
 			// keep each group sorted and keep the trailing commas
