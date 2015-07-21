@@ -1,5 +1,6 @@
 package db;
 
+import croxit.Web;
 import crypto.Random;
 import db.helper.*;
 import geo.*;
@@ -20,7 +21,7 @@ abstract Session(SessionData)
 			closedAt : null,
 
 			deviceType : device,
-			ip : Tools.getIp()
+			ip : Web.getClientIP()
 		};
 	}
 
