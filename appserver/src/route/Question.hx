@@ -85,6 +85,7 @@ class SomeQuestion extends BaseRoute {
 		};
 		question.answers.push(ans);
 		data.questions.update({ _id : question._id }, question);
+		_ctx.reputation.update({ value : RPostAnswer, target : RAnswer(ans, question) });
 		return new Response().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
 	}
 
@@ -136,7 +137,7 @@ class SomeQuestion extends BaseRoute {
 		data.questions.update({ _id : question._id }, question);
 
 		for (e in events)
-			_ctx.reputation.handle({ value : e, target : RQuestion(question) });
+			_ctx.reputation.update({ value : e, target : RQuestion(question) });
 
 		var state = {
 			favorite : uqq.favorite,
@@ -187,7 +188,7 @@ class SomeQuestion extends BaseRoute {
 		data.questions.update({ _id : question._id }, question);
 
 		for (e in events)
-			_ctx.reputation.handle({ value : e, target : RQuestion(question) });
+			_ctx.reputation.update({ value : e, target : RQuestion(question) });
 
 		var state = {
 			favorite : uqq.favorite,

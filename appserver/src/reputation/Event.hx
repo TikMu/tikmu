@@ -5,25 +5,25 @@ import db.User;
 
 enum EventValue {
 	RPostQuestion;
+
 	// RViewQuestion;
-	RFavoriteQuestion;    // TODO use
-	RUnfavoriteQuestion;  // TODO use
-	RFollowQuestion;      // TODO use
-	RUnfollowQuestion;    // TODO use
+	RFavoriteQuestion;
+	RUnfavoriteQuestion;
+	RFollowQuestion;
+	RUnfollowQuestion;
 	// RUpvoteQuestion(amount:Float);
 	// RDownvoteQuestion(amount:Float);
+	RPostAnswer;
 
-	// TODO answers
-
-	// TODO comments
-
-	// TODO users (??)
+	// RUpvoteAnswer;
+	// RDownvoteAnswer;
+	RPostComment;
 }
 
 enum EventTarget {
 	RQuestion(q:Question);
-	// RAnswer(a:Answer, q:Question);
-	// RComment(c:Comment, a:Answer, q:Question);
+	RAnswer(a:Answer, q:Question);
+	RComment(c:Comment, a:Answer, q:Question);
 	ROwner(u:User);  // the user that owner the target of the event
 }
 

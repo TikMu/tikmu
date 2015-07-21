@@ -27,6 +27,7 @@ class SomeAnswer extends BaseRoute {
 		};
 		answer.comments.push(cmt);
 		data.questions.update({ _id : question._id }, question);
+		_ctx.reputation.update({ value : RPostComment, target : RComment(cmt, answer, question) });
 		return new Response().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
 	}
 

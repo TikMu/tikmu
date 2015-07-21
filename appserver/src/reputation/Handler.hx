@@ -19,18 +19,25 @@ class Handler {
 		return { value : event.value, target : newTarget };
 	}
 
-	function handleOwner(u:User, e:Event)
+	function scoreQuestion(q:Question, v:Float)
 	{
-		switch (e.value) {
-		case RPostQuestion, RFavoriteQuestion:
-			u.points++;
-		case RUnfavoriteQuestion:
-			u.points--;
-		case RFollowQuestion, RUnfollowQuestion:  // NOOP
-			return;
-		}
+		q.voteSum += Math.round(v);  // TODO voteSum:Float
+		q.update(data);
+		trace('rep: updated question ${q._id.valueOf()} score: ${q.voteSum}');
+	}
+
+	function scoreAnswer(a:Answer, v:Int)
+	{
+		a.voteSum += v;
+		// a.update(data);  // TODO
+		trace('rep: updated answer ${a._id.valueOf()} score: ${a.voteSum}');
+	}
+
+	function scoreUser(u:User, v:Int)
+	{
+		u.points += v;
 		u.update(data);
-		trace('updated user reputation: ${u.points}');
+		trace('rep: updated user ${u.email} score: ${u.points}');
 	}
 
 	function handleQuestion(q:Question, e:Event)
@@ -38,38 +45,84 @@ class Handler {
 		switch (e.value) {
 		case RPostQuestion:  // could be NOOP, but assert
 			if (q.voteSum != 0)
-				throw 'Question score should start at 0 (${q._id})';
-			return;
+				throw 'Question score should start at 0 (${q._id.valueOf()})';
 		case RFavoriteQuestion:
-			q.voteSum++;
+			scoreQuestion(q, 1);
 		case RUnfavoriteQuestion:
-			q.voteSum--;
+			scoreQuestion(q, -1);
 		case RFollowQuestion, RUnfollowQuestion:  // NOOP
-			return;
+
+		case RPostAnswer:
+			scoreQuestion(q, 1);
+
+		case RPostComment:
+			scoreQuestion(q, .25);
 		}
-		q.update(data);
-		trace('updated question score: ${q.voteSum}');
 		handle(derive(e, ROwner(q.user.get(data.users.col))));
+	}
+
+	function handleAnswer(a:Answer, q:Question, e:Event)
+	{
+		switch (e.value) {
+		case RPostQuestion, RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // ERROR
+			throw "Can't handle event for answer: " + e.value;
+
+		case RPostAnswer:  // could be NOOP, but assert
+			if (a.voteSum != 0)
+				throw 'Answer score should start at 0 (${a._id.valueOf()})';
+
+		case RPostComment:  // NOOP
+		}
+		handle(derive(e, ROwner(a.user.get(data.users.col))));
+		handle(derive(e, RQuestion(q)));
+	}
+
+	function handleComment(c:Comment, a:Answer, q:Question, e:Event)
+	{
+		if (!e.value.match(RPostComment))
+			throw "Can't handle event for comment: " + e.value;
+		handle(derive(e, RAnswer(a, q)));
+	}
+
+	function handleOwner(u:User, e:Event)
+	{
+		switch (e.value) {
+		case RPostQuestion, RFavoriteQuestion:
+			scoreUser(u, 1);
+		case RUnfavoriteQuestion:
+			scoreUser(u, -1);
+		case RPostAnswer, RPostComment:
+			scoreUser(u, 1);
+		case RFollowQuestion, RUnfollowQuestion:  // NOOP
+		}
 	}
 
 	function handleUser(u:User, e:Event)
 	{
 		switch (e.value) {
-		case RPostQuestion:
-			u.points++;
+		case RPostQuestion, RPostComment:
+			scoreUser(u, 1);
+		case RPostAnswer:
+			scoreUser(u, 2);
 		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // NOOP
-			return;
 		}
-		u.update(data);
-		trace('updated user reputation: ${u.points}');
 	}
 
-	public function handle(event:Event)
+	function handle(event:Event)
 	{
+		trace('rep: handling ${event.value} for ${Type.enumConstructor(event.target)}');
 		switch (event.target) {
 		case RQuestion(q): handleQuestion(q, event);
+		case RAnswer(a, q): handleAnswer(a, q, event);
+		case RComment(c, a, q): handleComment(c, a, q, event);
 		case ROwner(u): handleOwner(u, event);
 		}
+	}
+
+	public function update(event:Event)
+	{
+		handle(event);
+		trace('rep: handling ${event.value} for the author user');
 		if (loop.session.isAuthenticated())
 			handleUser(loop.session.user.get(data.users.col), event);
 	}
