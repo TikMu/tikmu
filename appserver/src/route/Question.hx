@@ -2,6 +2,7 @@ package route;
 
 import mweb.http.*;
 import mweb.tools.*;
+import reputation.Event;
 using db.QuestionTools;
 
 typedef SomeQuestionViewData = {
@@ -113,23 +114,30 @@ class SomeQuestion extends BaseRoute {
 			uq.data.push(uqq);
 		}
 
+		var events;
 		if (uqq.favorite) {
 			trace('favorite=off (implies following=off)');
 			uqq.favorite = false;
 			question.favorites--;
+			events = [RUnfavoriteQuestion];
 			if (uqq.following) {
 				uqq.following = false;
 				question.watchers--;
+				events[1] = RUnfollowQuestion;
 			}
 		} else {
 			trace('favorite=on');
 			uqq.favorite = true;
 			question.favorites++;
+			events = [RFavoriteQuestion];
 		}
 
 		data.userQuestions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
-		
+
+		for (e in events)
+			_ctx.reputation.handle({ value : e, target : RQuestion(question) });
+
 		var state = {
 			favorite : uqq.favorite,
 			following : uqq.following
@@ -157,20 +165,29 @@ class SomeQuestion extends BaseRoute {
 			uq.data.push(uqq);
 		}
 
+		var events;
 		if (uqq.following) {
 			trace('following=off');
 			uqq.following = false;
 			question.watchers--;
+			events = [RUnfollowQuestion];
 		} else {
 			trace('following=on (implies favorite=on)');
 			uqq.following = true;
 			question.watchers++;
-			uqq.favorite = true;
-			question.favorites++;
+			events = [RFollowQuestion];
+			if (!uqq.favorite) {
+				uqq.favorite = true;
+				question.favorites++;
+				events[1] = RFavoriteQuestion;
+			}
 		}
 
 		data.userQuestions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
+
+		for (e in events)
+			_ctx.reputation.handle({ value : e, target : RQuestion(question) });
 
 		var state = {
 			favorite : uqq.favorite,

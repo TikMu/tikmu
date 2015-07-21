@@ -45,6 +45,7 @@ class Handler {
 		case RUnfavoriteQuestion:
 			q.voteSum--;
 		case RFollowQuestion, RUnfollowQuestion:  // NOOP
+			return;
 		}
 		q.update(data);
 		trace('updated question score: ${q.voteSum}');
