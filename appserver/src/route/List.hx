@@ -18,19 +18,7 @@ typedef ListViewData = {
 }
 
 @:includeTemplate("list.html")
-class ListView extends BaseView<ListViewData> {
-	function getUser(id)
-	{
-		var u = ctx.data.users.col.findOne({ _id : id });
-		if (u == null)
-			return null;
-		return {
-			email : u.email,
-			name : u.name,
-			points : u.points
-		}
-	}
-}
+class ListView extends BaseView<ListViewData> {}
 
 class BaseList extends BaseRoute {
 	var view:ListView;

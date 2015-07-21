@@ -16,7 +16,7 @@
 				</header>
 				<div class="question_card_question"><a href="/question/@q._id.valueOf()">@q.contents</a></div>
 				<footer class="question_card_footer">
-					<div class="location_date">@Std.random(10)km @Std.random(20)h</div><!-- TODO -->
+					<div class="location_date">@Std.random(10)km @this.getPrettyDelta(q.created)</div>
 					<div class="footer_icons">
 						@if(ctx.loop.session.isAuthenticated()) {
 						@{
