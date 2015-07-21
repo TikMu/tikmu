@@ -1,0 +1,11 @@
+-neko rescore.n
+-main ReScore
+-cp .
+-cp ../../appserver/src
+-lib croxit-1
+-lib mongodb
+-lib mongodb-managers
+-lib geotools
+-lib mweb
+-lib erazor
+
