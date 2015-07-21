@@ -41,6 +41,20 @@ class BaseList extends BaseRoute {
 		view = new ListView(_ctx);
 	}
 
+	function balancedOrder(a:db.Question, b:db.Question)
+	{
+		var days = (b.created.getTime() - a.created.getTime())/1000/3600/24;
+		var points = (b.voteSum - a.voteSum)/100;
+		var score = days + points;
+		return score >= 0 ? 1 : -1;
+	}
+
+	function recenticityOrder(a:db.Question, b:db.Question)
+	{
+		var score = b.created.getTime() - a.created.getTime();
+		return score >= 0 ? 1 : -1;
+	}
+
 	function postProcess(questions:Array<db.Question>):Array<QuestionSummaryData>
 	{
 		var qs = [];
@@ -58,7 +72,7 @@ class List extends BaseList {
 	public function any()
 	{
 		var qs = data.questions.find({ deleted : false }).toArray();
-		qs = [ for (q in qs) if (!q.deleted) q ];
+		qs.sort(balancedOrder);
 
 		var data = {
 			questions : postProcess(qs),
@@ -75,6 +89,7 @@ class Favorites extends BaseList {
 		var qds = uq != null ? [ for (qd in uq.data) if (qd.favorite) qd.question.asId() ] : [];
 
 		var qs = data.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
+		qs.sort(recenticityOrder);
 
 		var data = {
 			questions : postProcess(cast qs),  // TODO fix $in expects array in mongodb
@@ -96,6 +111,7 @@ class Search extends BaseList {
 			var rs = [ for (s in qry) { contents : { "$regex" : s, "$options" : "ix" } } ];
 			qs = data.questions.find({ "$and" : rs, deleted : false }).toArray();
 		}
+		qs.sort(balancedOrder);
 
 		var data = {
 			questions : postProcess(cast qs),  // TODO fix $in expects array in mongodb
