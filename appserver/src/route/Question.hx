@@ -22,7 +22,8 @@ class SomeQuestionView extends BaseView<SomeQuestionViewData> {
 			return null;
 		return {
 			email : u.email,
-			name : u.name
+			name : u.name,
+			points : u.points
 		}
 	}
 
