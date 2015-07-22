@@ -31,6 +31,38 @@ class SomeAnswer extends BaseRoute {
 		return new Response().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
 	}
 
+	public function postUpvote()
+	{
+		var uq = data.userActions.findOne({ _id : loop.session.user });
+		if (uq == null)
+			uq = {
+				_id : loop.session.user,
+				onQuestion : [],
+				onAnswer : []
+			}
+
+		var uqa = Lambda.find(uq.onAnswer, function (x) return x.answer.equals(answer._id));
+		if (uqa == null) {
+			uqa = {
+				answer : answer._id,
+				vote : 0
+			};
+			uq.onAnswer.push(uqa);
+		}
+
+		if (uqa.vote < 1) {
+			uqa.vote++;
+			data.userActions.update({ _id : loop.session.user }, uq, true);
+			data.questions.update({ _id : question._id }, question);
+			_ctx.reputation.update({ value : RUpvoteAnswer, target : RAnswer(answer, question) });
+		}
+
+		var state = {
+			vote : uqa.vote
+		};
+		return Response.fromContent(serialize(state));
+	}
+
 	public function postEdit(args:{ updated:String })
 	{
 		if (!answer.user.equals(loop.session.user))

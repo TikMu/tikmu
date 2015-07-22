@@ -3,6 +3,7 @@ package reputation;
 import db.Question;
 import db.User;
 import reputation.Event;
+using db.AnswerTools;
 using db.QuestionTools;
 using db.UserTools;
 
@@ -26,10 +27,10 @@ class Handler {
 		trace('rep: updated question ${q._id.valueOf()} score: ${q.voteSum}');
 	}
 
-	function scoreAnswer(a:Answer, v:Int)
+	function scoreAnswer(a:Answer, q:Question, v:Int)
 	{
 		a.voteSum += v;
-		// a.update(data);  // TODO
+		a.update(q, data);
 		trace('rep: updated answer ${a._id.valueOf()} score: ${a.voteSum}');
 	}
 
@@ -52,7 +53,7 @@ class Handler {
 			scoreQuestion(q, -1);
 		case RFollowQuestion, RUnfollowQuestion:  // NOOP
 
-		case RPostAnswer:
+		case RPostAnswer, RUpvoteAnswer:
 			scoreQuestion(q, 1);
 
 		case RPostComment:
@@ -71,6 +72,8 @@ class Handler {
 			if (a.voteSum != 0)
 				throw 'Answer score should start at 0 (${a._id.valueOf()})';
 
+		case RUpvoteAnswer:
+			scoreAnswer(a, q, 1);
 		case RPostComment:  // NOOP
 		}
 		handle(derive(e, ROwner(a.user.get(data.users.col))));
@@ -79,7 +82,7 @@ class Handler {
 
 	function handleComment(c:Comment, a:Answer, q:Question, e:Event)
 	{
-		if (!e.value.match(RPostComment))
+		if (!e.value.match(RPostComment))  // TODO make it a switch, safer that way
 			throw "Can't handle event for comment: " + e.value;
 		handle(derive(e, RAnswer(a, q)));
 	}
@@ -93,6 +96,8 @@ class Handler {
 			scoreUser(u, -1);
 		case RPostAnswer, RPostComment:
 			scoreUser(u, 1);
+		case RUpvoteAnswer:
+			scoreUser(u, 2);
 		case RFollowQuestion, RUnfollowQuestion:  // NOOP
 		}
 	}
@@ -104,6 +109,8 @@ class Handler {
 			scoreUser(u, 1);
 		case RPostAnswer:
 			scoreUser(u, 2);
+		case RUpvoteAnswer:
+			scoreUser(u, 10);
 		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // NOOP
 		}
 	}
