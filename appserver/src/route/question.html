@@ -45,22 +45,24 @@
 						<div class="answer_user_date">@this.getPrettyDelta(a.created)</div>
 					</header>
 					<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
-					@if(ctx.loop.session.isAuthenticated()) {
 					<p class="temp"><!-- TODO move and style-->
-						Current votes: <span class="vote_count">@a.voteSum</span> ...
-						@{
-							var vote = votes[Lambda.indexOf(question.answers, a)];
-							var upclass = "upvote";
-							var dnclass = "downvote";
-							if (vote > 0)
-								upclass += " pressed";
-							else if (vote < 0)
-								dnclass += " pressed";
+						Current votes: <span class="vote_count">@a.voteSum</span>
+						@if(ctx.loop.session.isAuthenticated()) {
+							@if(!ctx.loop.session.user.equals(a.user)) {
+							@{
+								var vote = votes[Lambda.indexOf(question.answers, a)];
+								var upclass = "upvote";
+								var dnclass = "downvote";
+								if (vote > 0)
+									upclass += " pressed";
+								else if (vote < 0)
+									dnclass += " pressed";
+							}
+							<a class="@upclass">upvote</a>
+							<a class="@dnclass">downvote</a>
+							}
 						}
-						<a class="@upclass">upvote</a>
-						<a class="@dnclass">downvote</a>
 					</p>
-					}
 					<footer class="temp">
 						<a href="">Share</a><!-- TODO -->
 						<a href="#" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>

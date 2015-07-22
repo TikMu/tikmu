@@ -106,7 +106,7 @@ class SomeQuestion extends BaseRoute {
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		if (!loop.session.user.equals(question._id)) {
+		if (!loop.session.user.equals(question.user)) {
 			for (e in events)
 				_ctx.reputation.update({ value : e, target : RQuestion(question) });
 		}
@@ -155,7 +155,7 @@ class SomeQuestion extends BaseRoute {
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		if (!loop.session.user.equals(question._id)) {
+		if (!loop.session.user.equals(question.user)) {
 			for (e in events)
 				_ctx.reputation.update({ value : e, target : RQuestion(question) });
 		}
