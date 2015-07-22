@@ -3,6 +3,7 @@ package route;
 import mweb.http.*;
 import mweb.tools.*;
 using db.QuestionTools;
+using db.UserActionsTools;
 
 typedef QuestionSummaryData = {
 	> db.Question,
@@ -45,11 +46,13 @@ class BaseList extends BaseRoute {
 
 	function postProcess(questions:Array<db.Question>):Array<QuestionSummaryData>
 	{
+		var ua = loop.session.user.getUserActions(data);
+
 		var qs = [];
 		for (q in questions) if (!q.deleted) {
 			var q:QuestionSummaryData = cast q.clean();
 			qs.push(q);
-			q.state = loop.session.isAuthenticated() ? q.getQuestionMonitoringState(_ctx) : cast {};
+			q.state = loop.session.isAuthenticated() ? ua.questionSummary(q._id) : cast {};
 		}
 		return qs;
 	}

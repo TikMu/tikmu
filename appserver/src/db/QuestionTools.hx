@@ -3,25 +3,6 @@ package db;
 import db.Question;
 
 class QuestionTools {
-	public static function getQuestionMonitoringState(question:Question, ctx:Context)
-	{
-		var uqq = null;
-
-		var uq = ctx.data.userActions.findOne({ _id : ctx.loop.session.user });  // TODO cache this??
-		if (uq != null)
-			uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));
-
-		var state = if (uqq != null) {
-			favorite : uqq.favorite,
-			following : uqq.following
-		} else {
-			favorite : false,
-			following : false
-		}
-
-		return state;
-	}
-
 	// copies the question removing deleted answers and comments
 	// TODO rename to something clearer
 	public static function clean(question:Question)

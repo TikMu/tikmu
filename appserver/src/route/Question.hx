@@ -4,6 +4,7 @@ import mweb.http.*;
 import mweb.tools.*;
 import reputation.Event;
 using db.QuestionTools;
+using db.UserActionsTools;
 
 typedef SomeQuestionViewData = {
 	question : db.Question,
@@ -22,8 +23,9 @@ class SomeQuestion extends BaseRoute {
 
 	function postProcess(question:db.Question):SomeQuestionViewData
 	{
+		var ua = loop.session.user.getUserActions(data);
 		var d:SomeQuestionViewData = { question : question.clean(), state : {} };
-		d.state = loop.session.isAuthenticated() ? question.getQuestionMonitoringState(_ctx) : cast {};
+		d.state = loop.session.isAuthenticated() ? ua.questionSummary(question._id) : cast {};
 		return d;
 	}
 
@@ -54,12 +56,6 @@ class SomeQuestion extends BaseRoute {
 		data.questions.update({ _id : question._id }, question);
 		_ctx.reputation.update({ value : RPostAnswer, target : RAnswer(ans, question) });
 		return new Response().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
-	}
-
-	public function getState()
-	{
-		var state = question.getQuestionMonitoringState(_ctx);
-		return Response.fromContent(serialize(state));
 	}
 
 	public function postFavorite()
