@@ -12,6 +12,9 @@ class AnswerActions {
 	static function answerAction(action:AnswerAction, e:Event)
 	{
 		var elem = J(e.target);
+		if (elem.hasClass("pressed"))
+			action = action != QDoUpvote ? QDoUpvote : QDoDownvote;
+
 		var aid = elem.parents("article.answer").attr("id");
 		function style(state : { vote : Int }) {
 			var spans = elem.siblings().add(elem);
