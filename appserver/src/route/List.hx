@@ -47,7 +47,7 @@ class BaseList extends BaseRoute {
 
 	function postProcess(questions:Array<db.Question>):Array<QuestionSummaryData>
 	{
-		var ua = loop.session.user.getUserActions(data);
+		var ua = loop.session.isAuthenticated() ? loop.session.user.getUserActions(data) : null;
 
 		var qs = [];
 		for (q in questions) if (!q.deleted) {

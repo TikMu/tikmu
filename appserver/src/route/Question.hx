@@ -25,7 +25,7 @@ class SomeQuestion extends BaseRoute {
 
 	function postProcess(question:db.Question):SomeQuestionViewData
 	{
-		var ua = loop.session.user.getUserActions(data);
+		var ua = loop.session.isAuthenticated() ? loop.session.user.getUserActions(data) : null;
 		var d:SomeQuestionViewData = { question : question.clean() };
 		if (loop.session.isAuthenticated()) {
 			d.state = ua.questionSummary(question._id);
