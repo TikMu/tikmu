@@ -121,8 +121,8 @@ class SomeQuestion extends BaseRoute {
 		if (uqq == null) {
 			uqq = {
 				question : question._id,
-				favorite : true,  // spec (p. 14)
-				following : true
+				favorite : false,
+				following : false
 			};
 			uq.onQuestion.push(uqq);
 		}
