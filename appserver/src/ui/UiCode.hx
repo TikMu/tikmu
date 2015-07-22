@@ -9,6 +9,8 @@ class UiCode {
 		JTHIS.ready(function () {
 			J(".favorite.icon").click(QuestionActions.favorite);
 			J(".follow.icon").click(QuestionActions.follow);
+			J(".upvote").click(AnswerActions.upvote);
+			J(".downvote").click(AnswerActions.downvote);
 		});
 	}
 }

@@ -26,14 +26,7 @@ class QuestionActions {
 		e.preventDefault();
 	}
 
-	public static function favorite(e:Event)
-	{
-		return questionAction(QDoFavorite, e);
-	}
-
-	public static function follow(e:Event)
-	{
-		return questionAction(QDoFollow, e);
-	}
+	public static var favorite = questionAction.bind(QDoFavorite);
+	public static var follow = questionAction.bind(QDoFollow);
 }
 
