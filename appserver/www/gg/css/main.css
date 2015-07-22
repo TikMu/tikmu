@@ -27,22 +27,6 @@ li {
 	list-style: none;
 }
 
-.icon {
-	background-repeat: no-repeat;
-	background-position: center;
-	border: none;
-	cursor: pointer;
-	display: inline-block;
-	text-indent: 1000%;
-	white-space: nowrap;
-	overflow: hidden;
-	text-decoration: none;
-}
-
-.icon_pressed {
-	filter: invert(1) opacity(.3);
-}
-
 
 /* Header */
 
@@ -179,7 +163,23 @@ li {
 
 /* Icons */
 
-.answer {
+.icon {
+	background-repeat: no-repeat;
+	background-position: center;
+	border: none;
+	cursor: pointer;
+	display: inline-block;
+	text-indent: 1000%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-decoration: none;
+}
+
+.icon_pressed {
+	filter: invert(1) opacity(.3);
+}
+
+.icon.answer {
 	background-image: url('../img/icon-answer.png');
 	background-size: 24px 18px;
 	width: 24px;
@@ -187,7 +187,7 @@ li {
 	margin: 0 10px 0 0;
 }
 
-.share {
+.icon.share {
 	background-image: url('../img/icon-share.png');
 	background-size: 18px 24px;
 	width: 18px;
@@ -195,7 +195,7 @@ li {
 	margin: 0 10px 0 0;
 }
 
-.favorite {
+.icon.favorite {
 	background-image: url('../img/icon-favorite.png');
 	background-size: 20px 20px;
 	width: 20px;
@@ -203,12 +203,16 @@ li {
 	margin: 0 10px 0 0;
 }
 
-.follow {
+.icon.follow {
 	background-image: url('../img/icon-follow.png');
 	background-size: 20px 20px;
 	width: 20px;
 	height: 20px;
 	margin: 0 20px 0 0;
+}
+
+.temp .upvote, .temp .downvote {
+	cursor: pointer;
 }
 
 
