@@ -17,10 +17,10 @@ class QuestionActions {
 			var icons = elem.siblings().add(elem);
 			var favorite = icons.filter(".favorite");
 			var follow = icons.filter(".follow");
-			if (state.favorite != favorite.hasClass("icon_pressed"))
-				favorite.toggleClass("icon_pressed");
-			if (state.following != follow.hasClass("icon_pressed"))
-				follow.toggleClass("icon_pressed");
+			if (state.favorite != favorite.hasClass("pressed"))
+				favorite.toggleClass("pressed");
+			if (state.following != follow.hasClass("pressed"))
+				follow.toggleClass("pressed");
 		}
 		JQuery.post('/question/$qid/$action', setIcons, "text json");
 		e.preventDefault();

@@ -23,6 +23,8 @@ a {
 	color: gray;
 }
 
+
+
 li {
 	list-style: none;
 }
@@ -175,10 +177,6 @@ li {
 	text-decoration: none;
 }
 
-.icon_pressed {
-	filter: invert(1) opacity(.3);
-}
-
 .icon.answer {
 	background-image: url('../img/icon-answer.png');
 	background-size: 24px 18px;
@@ -213,6 +211,14 @@ li {
 
 .temp .upvote, .temp .downvote {
 	cursor: pointer;
+}
+
+.icon.pressed {
+	filter: invert(1) opacity(.3);
+}
+
+.temp .pressed {
+	text-decoration: line-through;
 }
 
 

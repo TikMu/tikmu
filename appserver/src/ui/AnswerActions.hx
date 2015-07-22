@@ -18,9 +18,9 @@ class AnswerActions {
 			var upvote = spans.filter(".upvote");
 			var downvote = spans.filter(".downvote");
 			switch (state.vote) {
-			case  1: upvote.hide(); downvote.show();
-			case  0: upvote.show(); downvote.show();
-			case -1: upvote.show(); downvote.hide();
+			case  1: upvote.addClass("pressed"); downvote.removeClass("pressed");
+			case  0: upvote.removeClass("pressed"); downvote.removeClass("pressed");
+			case -1: upvote.removeClass("pressed"); downvote.addClass("pressed");
 			}
 
 			var count = spans.filter(".vote_count");

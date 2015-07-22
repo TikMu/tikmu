@@ -12,7 +12,8 @@ typedef SomeQuestionViewData = {
 	?state : {
 		favorite:Bool,
 		following:Bool
-	}
+	},
+	?votes : Array<Int>
 }
 
 @:includeTemplate("question.html")
@@ -26,8 +27,16 @@ class SomeQuestion extends BaseRoute {
 	{
 		var ua = loop.session.user.getUserActions(data);
 		var d:SomeQuestionViewData = { question : question.clean() };
-		if (loop.session.isAuthenticated())
+		if (loop.session.isAuthenticated()) {
 			d.state = ua.questionSummary(question._id);
+			d.votes = [for (a in question.answers) {
+				var s = ua.answerSummary(a);
+				if (s != null)
+					s.vote;
+				else
+					0;
+			}];
+		}
 		return d;
 	}
 
