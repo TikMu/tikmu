@@ -10,7 +10,41 @@ class SomeAnswer extends BaseRoute {
 	var question:db.Question;
 	var answer:db.Answer;
 
+	function vote(vote:Int)
+	{
+		var uq = data.userActions.findOne({ _id : loop.session.user });
+		if (uq == null)
+			uq = {
+				_id : loop.session.user,
+				onQuestion : [],
+				onAnswer : []
+			}
+
+		var uqa = Lambda.find(uq.onAnswer, function (x) return x.answer.equals(answer._id));
+		if (uqa == null) {
+			uqa = {
+				answer : answer._id,
+				vote : 0
+			};
+			uq.onAnswer.push(uqa);
+		}
+
+		if (vote != 0 && vote*uqa.vote <= 0) {
+			uqa.vote += vote;
+			data.userActions.update({ _id : loop.session.user }, uq, true);
+			_ctx.reputation.update({
+				value : (vote>0?RUpvoteAnswer:RDownvoteAnswer),
+				target : RAnswer(answer, question)
+			});
+		}
+
+		var state = {
+			vote : uqa.vote
+		};
+		return Response.fromContent(serialize(state));
+	}
 	@openRoute
+
 	public function any()
 	{
 		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
@@ -34,34 +68,12 @@ class SomeAnswer extends BaseRoute {
 
 	public function postUpvote()
 	{
-		var uq = data.userActions.findOne({ _id : loop.session.user });
-		if (uq == null)
-			uq = {
-				_id : loop.session.user,
-				onQuestion : [],
-				onAnswer : []
-			}
+		return vote(1);
+	}
 
-		var uqa = Lambda.find(uq.onAnswer, function (x) return x.answer.equals(answer._id));
-		if (uqa == null) {
-			uqa = {
-				answer : answer._id,
-				vote : 0
-			};
-			uq.onAnswer.push(uqa);
-		}
-
-		if (uqa.vote < 1) {
-			uqa.vote++;
-			data.userActions.update({ _id : loop.session.user }, uq, true);
-			data.questions.update({ _id : question._id }, question);
-			_ctx.reputation.update({ value : RUpvoteAnswer, target : RAnswer(answer, question) });
-		}
-
-		var state = {
-			vote : uqa.vote
-		};
-		return Response.fromContent(serialize(state));
+	public function postDownvote()
+	{
+		return vote(-1);
 	}
 
 	public function postEdit(args:{ updated:String })

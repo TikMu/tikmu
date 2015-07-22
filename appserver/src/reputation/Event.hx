@@ -16,7 +16,7 @@ enum EventValue {
 	RPostAnswer;
 
 	RUpvoteAnswer;
-	// RDownvoteAnswer;
+	RDownvoteAnswer;
 	RPostComment;
 }
 

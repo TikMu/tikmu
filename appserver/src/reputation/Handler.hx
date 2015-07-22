@@ -50,10 +50,13 @@ class Handler {
 			scoreQuestion(q, 1);
 		case RUnfavoriteQuestion:
 			scoreQuestion(q, -1);
-		case RFollowQuestion, RUnfollowQuestion:  // NOOP
+		case RFollowQuestion, RUnfollowQuestion:
+			// NOOP
 
 		case RPostAnswer, RUpvoteAnswer:
 			scoreQuestion(q, 1);
+		case RDownvoteAnswer:
+			//NOOP
 
 		case RPostComment:
 			scoreQuestion(q, .25);
@@ -73,6 +76,8 @@ class Handler {
 
 		case RUpvoteAnswer:
 			scoreAnswer(a, q, 1);
+		case RDownvoteAnswer:
+			scoreAnswer(a, q, -1);
 		case RPostComment:  // NOOP
 		}
 		handle(derive(e, ROwner(a.user.get(data.users.col))));
@@ -97,6 +102,8 @@ class Handler {
 			scoreUser(u, 1);
 		case RUpvoteAnswer:
 			scoreUser(u, 2);
+		case RDownvoteAnswer:
+			scoreUser(u, -2);
 		case RFollowQuestion, RUnfollowQuestion:  // NOOP
 		}
 	}
@@ -110,6 +117,8 @@ class Handler {
 			scoreUser(u, 2);
 		case RUpvoteAnswer:
 			scoreUser(u, 10);
+		case RDownvoteAnswer:
+			scoreUser(u, -10);
 		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // NOOP
 		}
 	}
