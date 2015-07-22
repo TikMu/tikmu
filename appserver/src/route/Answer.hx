@@ -12,6 +12,11 @@ class SomeAnswer extends BaseRoute {
 
 	function vote(vote:Int)
 	{
+		var ret = new Response();
+
+		if (loop.session.user.equals(answer.user))
+			return ret.setStatus(Forbidden);
+
 		var uq = data.userActions.findOne({ _id : loop.session.user });
 		if (uq == null)
 			uq = {
@@ -41,7 +46,7 @@ class SomeAnswer extends BaseRoute {
 		var state = {
 			vote : uqa.vote
 		};
-		return Response.fromContent(serialize(state));
+		return ret.setContent(serialize(state));
 	}
 	@openRoute
 
