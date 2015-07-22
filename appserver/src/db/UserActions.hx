@@ -4,20 +4,20 @@ import db.Question;
 import db.helper.Ref;
 import org.bsonspec.ObjectID;
 
-typedef QuestionAction = {
+typedef QuestionActions = {
 	question : Ref<Question>,
 	favorite : Bool,
 	following : Bool,
 }
 
-typedef AnswerAction = {
+typedef AnswerActions = {
 	answer : Ref<Answer>,
 	vote : Int
 }
 
 typedef UserActions = {
 	_id : Ref<User>,
-	onQuestion : Array<QuestionAction>,
-	onAnswer : Array<AnswerAction>
+	onQuestion : Array<QuestionActions>,
+	onAnswer : Array<AnswerActions>
 }
 

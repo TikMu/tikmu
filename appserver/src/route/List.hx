@@ -4,12 +4,13 @@ import mweb.http.*;
 import mweb.tools.*;
 using db.QuestionTools;
 using db.UserActionsTools;
+using db.UserTools;
 
 typedef QuestionSummaryData = {
 	> db.Question,
-	state : {
-		?favorite : Bool,
-		?following : Bool
+	?state : {
+		favorite : Bool,
+		following : Bool
 	}
 }
 
@@ -51,8 +52,9 @@ class BaseList extends BaseRoute {
 		var qs = [];
 		for (q in questions) if (!q.deleted) {
 			var q:QuestionSummaryData = cast q.clean();
+			if (loop.session.isAuthenticated() )
+				q.state = ua.questionSummary(q._id);
 			qs.push(q);
-			q.state = loop.session.isAuthenticated() ? ua.questionSummary(q._id) : cast {};
 		}
 		return qs;
 	}

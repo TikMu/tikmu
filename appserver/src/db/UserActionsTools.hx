@@ -1,35 +1,22 @@
 package db;
 
+import db.Question;
+import db.UserActions;
 import db.helper.Ref;
 
 class UserActionsTools {
-	public static function getUserActions(uid:Ref<User>, data:StorageContext, ?create=false)
+	public static function questionSummary(actions:Null<UserActions>, question:Ref<Question>):Null<QuestionActions>
 	{
-		var ret = data.userActions.findOne({ _id : uid });
-		if (!create)
-			return ret;
-
-		if (ret == null)
-			ret = {
-				_id : uid,
-				onQuestion : [],
-				onAnswer : []
-			}
-		return ret;
+		if (actions == null)
+			return null;
+		return Lambda.find(actions.onQuestion, function (x) return x.question.equals(question));
 	}
 
-	public static function questionSummary(actions:UserActions, qid:Ref<Question>)
+	public static function answerSummary(actions:Null<UserActions>, answer:Ref<Answer>):Null<AnswerActions>
 	{
-		var sum = null;
-		if (actions != null)
-			sum = Lambda.find(actions.onQuestion, function (x) return x.question.equals(qid));
-		return if (sum != null) {
-			favorite : sum.favorite,
-			following : sum.following
-		} else {
-			favorite : false,
-			following : false
-		}
+		if (actions == null)
+			return null;
+		return Lambda.find(actions.onAnswer, function (x) return x.answer.equals(answer));
 	}
 }
 

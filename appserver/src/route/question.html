@@ -24,10 +24,12 @@
 					@{
 						var favclass = "favorite icon";
 						var folclass = "follow icon";
-						if (state.favorite)
-							favclass += " icon_pressed";
-						if (state.following)
-							folclass += " icon_pressed";
+						if (state != null) {
+							if (state.favorite)
+								favclass += " icon_pressed";
+							if (state.following)
+								folclass += " icon_pressed";
+						}
 					}
 					<a class="@favclass">Favorite/unfavorite</a>
 					<a class="@folclass">Follow/unfavorite</a>

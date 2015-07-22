@@ -22,16 +22,18 @@
 						@{
 							var favclass = "favorite icon";
 							var folclass = "follow icon";
-							if (q.state.favorite)
-								favclass += " icon_pressed";
-							if (q.state.following)
-								folclass += " icon_pressed";
+							if (q.state != null) {
+								if (q.state.favorite)
+									favclass += " icon_pressed";
+								if (q.state.following)
+									folclass += " icon_pressed";
+							}
 						}
 						<a class="@favclass">Favorite/unfavorite</a>
 						<a class="@folclass">Follow/unfavorite</a>
 						}
 					</div>
-				</footer>	
+				</footer>
 				<div class="question_card_answers">
 					@if (q.answers.length > 0)
 					{

@@ -5,12 +5,13 @@ import mweb.tools.*;
 import reputation.Event;
 using db.QuestionTools;
 using db.UserActionsTools;
+using db.UserTools;
 
 typedef SomeQuestionViewData = {
 	question : db.Question,
-	state : {
-		?favorite:Bool,
-		?following:Bool
+	?state : {
+		favorite:Bool,
+		following:Bool
 	}
 }
 
@@ -24,8 +25,9 @@ class SomeQuestion extends BaseRoute {
 	function postProcess(question:db.Question):SomeQuestionViewData
 	{
 		var ua = loop.session.user.getUserActions(data);
-		var d:SomeQuestionViewData = { question : question.clean(), state : {} };
-		d.state = loop.session.isAuthenticated() ? ua.questionSummary(question._id) : cast {};
+		var d:SomeQuestionViewData = { question : question.clean() };
+		if (loop.session.isAuthenticated())
+			d.state = ua.questionSummary(question._id);
 		return d;
 	}
 
