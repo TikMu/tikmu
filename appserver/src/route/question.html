@@ -6,7 +6,7 @@
 	@ctx.aux.menu.execute()
 	<main>
 		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
-		<article id="@qid" class="question_open">
+		<article id="@qid" class="question question_open">
 			<header class="question_header">
 				<div class="user_avatar"></div>
 				<div class="user_description">
@@ -37,7 +37,7 @@
 			<section class="answer_list">
 				@for (a in question.answers)
 				{ @{ var u = this.getUser(a.user); var aid = a._id.valueOf(); }
-				<article id="@aid">
+				<article id="@aid" class="answer">
 					<header>
 						<div class="answer_user_name">@u.name</div>
 						<div class="answer_user_date">@this.getPrettyDelta(a.created)</div>

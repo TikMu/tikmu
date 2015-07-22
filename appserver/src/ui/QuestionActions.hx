@@ -12,7 +12,7 @@ class QuestionActions {
 	static function questionAction(action:QuestionAction, e:Event)
 	{
 		var elem = J(e.target);
-		var qid = elem.parents("article").attr("id");
+		var qid = elem.parents("article.question").attr("id");
 		function setIcons(state:{ favorite:Bool, following:Bool }) {
 			var icons = elem.siblings().add(elem);
 			var favorite = icons.filter(".favorite");
