@@ -68,7 +68,8 @@ class SomeQuestion extends BaseRoute {
 		if (uq == null)
 			uq = {
 				_id : loop.session.user,
-				onQuestion : []
+				onQuestion : [],
+				onAnswer : []
 			}
 
 		var uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));
@@ -118,7 +119,8 @@ class SomeQuestion extends BaseRoute {
 		if (uq == null)
 			uq = {
 				_id : loop.session.user,
-				onQuestion : []
+				onQuestion : [],
+				onAnswer : []
 			}
 
 		var uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));

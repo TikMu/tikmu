@@ -18,6 +18,6 @@ typedef AnswerAction = {
 typedef UserActions = {
 	_id : Ref<User>,
 	onQuestion : Array<QuestionAction>,
-	// onAnswer : Array<AnswerAction>
+	onAnswer : Array<AnswerAction>
 }
 
