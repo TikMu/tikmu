@@ -20,11 +20,6 @@ class SomeQuestion extends BaseRoute {
 	var question:db.Question;
 	var view:SomeQuestionView;
 
-	function serialize(data:Dynamic)
-	{
-		return new TemplateLink(data, haxe.Json.stringify.bind(_));
-	}
-
 	function postProcess(question:db.Question):SomeQuestionViewData
 	{
 		var d:SomeQuestionViewData = { question : question.clean(), state : {} };
@@ -80,7 +75,6 @@ class SomeQuestion extends BaseRoute {
 		if (uqq == null) {
 			uqq = {
 				question : question._id,
-				votes : [],
 				favorite : false,
 				following : false
 			};
@@ -131,7 +125,6 @@ class SomeQuestion extends BaseRoute {
 		if (uqq == null) {
 			uqq = {
 				question : question._id,
-				votes : [],
 				favorite : true,  // spec (p. 14)
 				following : true
 			};
