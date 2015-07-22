@@ -73,8 +73,8 @@ class List extends BaseList {
 class Favorites extends BaseList {
 	public function any()
 	{
-		var uq = data.userQuestions.findOne({ _id : loop.session.user });
-		var qds = uq != null ? [ for (qd in uq.data) if (qd.favorite) qd.question.asId() ] : [];
+		var uq = data.userActions.findOne({ _id : loop.session.user });
+		var qds = uq != null ? [ for (qd in uq.onQuestion) if (qd.favorite) qd.question.asId() ] : [];
 
 		var qs = data.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
 		qs.sort(recenticityOrder);

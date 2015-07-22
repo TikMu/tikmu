@@ -5,9 +5,9 @@ class QuestionTools {
 	{
 		var uqq = null;
 
-		var uq = ctx.data.userQuestions.findOne({ _id : ctx.loop.session.user });  // TODO cache this??
+		var uq = ctx.data.userActions.findOne({ _id : ctx.loop.session.user });  // TODO cache this??
 		if (uq != null)
-			uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
+			uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));
 
 		var state = if (uqq != null) {
 			favorite : uqq.favorite,

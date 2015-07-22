@@ -64,21 +64,21 @@ class SomeQuestion extends BaseRoute {
 
 	public function postFavorite()
 	{
-		var uq = data.userQuestions.findOne({ _id : loop.session.user });
+		var uq = data.userActions.findOne({ _id : loop.session.user });
 		if (uq == null)
 			uq = {
 				_id : loop.session.user,
-				data : []
+				onQuestion : []
 			}
 
-		var uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
+		var uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));
 		if (uqq == null) {
 			uqq = {
 				question : question._id,
 				favorite : false,
 				following : false
 			};
-			uq.data.push(uqq);
+			uq.onQuestion.push(uqq);
 		}
 
 		var events;
@@ -99,7 +99,7 @@ class SomeQuestion extends BaseRoute {
 			events = [RFavoriteQuestion];
 		}
 
-		data.userQuestions.update({ _id : loop.session.user }, uq, true);
+		data.userActions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
 
 		for (e in events)
@@ -114,21 +114,21 @@ class SomeQuestion extends BaseRoute {
 
 	public function postFollow()
 	{
-		var uq = data.userQuestions.findOne({ _id : loop.session.user });
+		var uq = data.userActions.findOne({ _id : loop.session.user });
 		if (uq == null)
 			uq = {
 				_id : loop.session.user,
-				data : []
+				onQuestion : []
 			}
 
-		var uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
+		var uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));
 		if (uqq == null) {
 			uqq = {
 				question : question._id,
 				favorite : true,  // spec (p. 14)
 				following : true
 			};
-			uq.data.push(uqq);
+			uq.onQuestion.push(uqq);
 		}
 
 		var events;
@@ -149,7 +149,7 @@ class SomeQuestion extends BaseRoute {
 			}
 		}
 
-		data.userQuestions.update({ _id : loop.session.user }, uq, true);
+		data.userActions.update({ _id : loop.session.user }, uq, true);
 		data.questions.update({ _id : question._id }, question);
 
 		for (e in events)
