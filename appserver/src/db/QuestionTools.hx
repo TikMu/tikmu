@@ -1,5 +1,7 @@
 package db;
 
+import db.Question;
+
 class QuestionTools {
 	public static function getQuestionMonitoringState(question:Question, ctx:Context)
 	{
@@ -42,6 +44,14 @@ class QuestionTools {
 	public static function update(question:Question, data:StorageContext)
 	{
 		data.questions.update({ _id : question._id }, question);
+	}
+
+	public static function updateAnswer(question:Question, answer:Answer, data:StorageContext) {
+#if debug
+		if (!Lambda.has(question.answers, answer))
+			throw "Assert failed: answer object in question.answers";
+#end
+		update(question, data);
 	}
 }
 

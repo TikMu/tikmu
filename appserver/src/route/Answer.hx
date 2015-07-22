@@ -4,6 +4,7 @@ import db.Question;
 import mweb.tools.*;
 import mweb.http.*;
 import route.Question;
+using db.QuestionTools;
 
 class SomeAnswer extends BaseRoute {
 	var question:db.Question;
@@ -26,7 +27,7 @@ class SomeAnswer extends BaseRoute {
 			deleted : false
 		};
 		answer.comments.push(cmt);
-		data.questions.update({ _id : question._id }, question);
+		question.updateAnswer(answer, data);
 		_ctx.reputation.update({ value : RPostComment, target : RComment(cmt, answer, question) });
 		return new Response().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
 	}
@@ -70,7 +71,7 @@ class SomeAnswer extends BaseRoute {
 
 		answer.contents = args.updated;
 		answer.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		question.updateAnswer(answer, data);
 		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
 	}
 
@@ -81,7 +82,7 @@ class SomeAnswer extends BaseRoute {
 
 		answer.deleted = true;
 		answer.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		question.updateAnswer(answer, data);
 		return new Response().redirect('/question/${question._id.valueOf()}');
 	}
 

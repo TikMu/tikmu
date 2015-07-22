@@ -3,7 +3,6 @@ package reputation;
 import db.Question;
 import db.User;
 import reputation.Event;
-using db.AnswerTools;
 using db.QuestionTools;
 using db.UserTools;
 
@@ -30,7 +29,7 @@ class Handler {
 	function scoreAnswer(a:Answer, q:Question, v:Int)
 	{
 		a.voteSum += v;
-		a.update(q, data);
+		q.updateAnswer(a, data);
 		trace('rep: updated answer ${a._id.valueOf()} score: ${a.voteSum}');
 	}
 
