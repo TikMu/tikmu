@@ -106,8 +106,10 @@ class SomeQuestion extends BaseRoute {
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		for (e in events)
-			_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		if (!loop.session.user.equals(question._id)) {
+			for (e in events)
+				_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		}
 
 		var state = {
 			favorite : uqq.favorite,
@@ -153,8 +155,10 @@ class SomeQuestion extends BaseRoute {
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		for (e in events)
-			_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		if (!loop.session.user.equals(question._id)) {
+			for (e in events)
+				_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		}
 
 		var state = {
 			favorite : uqq.favorite,
