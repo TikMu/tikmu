@@ -86,22 +86,18 @@ class SomeQuestion extends BaseRoute {
 		if (uqq.favorite) {
 			trace('favorite=off (implies following=off)');
 			uqq.favorite = false;
-			question.favorites--;
 			events = [RUnfavoriteQuestion];
 			if (uqq.following) {
 				uqq.following = false;
-				question.watchers--;
 				events[1] = RUnfollowQuestion;
 			}
 		} else {
 			trace('favorite=on');
 			uqq.favorite = true;
-			question.favorites++;
 			events = [RFavoriteQuestion];
 		}
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
-		data.questions.update({ _id : question._id }, question);
 
 		for (e in events)
 			_ctx.reputation.update({ value : e, target : RQuestion(question) });
@@ -137,22 +133,18 @@ class SomeQuestion extends BaseRoute {
 		if (uqq.following) {
 			trace('following=off');
 			uqq.following = false;
-			question.watchers--;
 			events = [RUnfollowQuestion];
 		} else {
 			trace('following=on (implies favorite=on)');
 			uqq.following = true;
-			question.watchers++;
 			events = [RFollowQuestion];
 			if (!uqq.favorite) {
 				uqq.favorite = true;
-				question.favorites++;
 				events[1] = RFavoriteQuestion;
 			}
 		}
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
-		data.questions.update({ _id : question._id }, question);
 
 		for (e in events)
 			_ctx.reputation.update({ value : e, target : RQuestion(question) });
