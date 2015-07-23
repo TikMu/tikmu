@@ -59,9 +59,10 @@ class Handler {
 			//NOOP
 
 		case RPostComment:
-			scoreQuestion(q, .25);
+			scoreQuestion(q, 1);
 		}
-		handle(derive(e, ROwner(q.user.get(data.users.col))));
+		if (!e.value.match(RPostComment))
+			handle(derive(e, ROwner(q.user.get(data.users.col))));
 	}
 
 	function handleAnswer(a:Answer, q:Question, e:Event)
@@ -94,17 +95,16 @@ class Handler {
 	function handleOwner(u:User, e:Event)
 	{
 		switch (e.value) {
-		case RPostQuestion, RFavoriteQuestion:
+		case RPostAnswer, RPostComment, RFavoriteQuestion:
 			scoreUser(u, 1);
 		case RUnfavoriteQuestion:
 			scoreUser(u, -1);
-		case RPostAnswer, RPostComment:
-			scoreUser(u, 1);
 		case RUpvoteAnswer:
 			scoreUser(u, 2);
 		case RDownvoteAnswer:
 			scoreUser(u, -2);
-		case RFollowQuestion, RUnfollowQuestion:  // NOOP
+		case RPostQuestion, RFollowQuestion, RUnfollowQuestion:
+			// NOOP
 		}
 	}
 
@@ -115,11 +115,9 @@ class Handler {
 			scoreUser(u, 1);
 		case RPostAnswer:
 			scoreUser(u, 2);
-		case RUpvoteAnswer:
-			scoreUser(u, 10);
-		case RDownvoteAnswer:
-			scoreUser(u, -10);
-		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // NOOP
+		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion,
+			RUpvoteAnswer, RDownvoteAnswer:
+			// NOOP
 		}
 	}
 
