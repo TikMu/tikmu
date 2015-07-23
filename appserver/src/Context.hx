@@ -1,5 +1,6 @@
 import croxit.Web;
 import db.*;
+import haxe.Timer;
 import mweb.*;
 import mweb.http.*;
 
@@ -16,6 +17,8 @@ class Context {
 	@:allow(Main)
 	function respond()  // TODO receive Request
 	{
+		var t0 = Timer.stamp();
+
 		loop = new IterationContext(routeMap);
 
 		trace('${Web.getMethod()} ${Web.getURI()}');
@@ -31,15 +34,22 @@ class Context {
 		trace('session: ${loop.session._id} (user=${loop.session.user})');
 
 		var request = new mweb.http.webstd.Request();
+		var tinit = Timer.stamp();
+
 		var response = loop.dispatch(request);
 		Auth.sendSession(this, response);
+		var tresponse = Timer.stamp();
 
 		var summary = switch (response.response) {
 			case None, Content(_): 'status ' + (response.status != 0 ? '${response.status}' : '${Status.OK} (implicit)');
 			case Redirect(to): 'redirect to $to';
 		}
 		trace('returning $summary');
+
 		new mweb.http.webstd.Writer().writeResponse(response);
+		var ttotal = Timer.stamp();
+
+		trace('timings (ms): init=${Std.int((tinit-t0)*1000)} response=${Std.int((tresponse-tinit)*1000)} total=${Std.int((ttotal-t0)*1000)}');
 	}
 
 	public function new(db)
