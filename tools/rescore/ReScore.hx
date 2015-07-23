@@ -47,16 +47,18 @@ class ReScore {
 		}
 
 		trace('computing: adding favorites, followers and (TODO) votes');
-		for (uq in data.userQuestions.find({})) {
+		for (uq in data.userActions.find({})) {
 			fakeLoop.session = fakeSession(uq._id);
-			for (uqq in uq.data) {
+			for (uqq in uq.onQuestion) {
 				var q = uqq.question.get(data.questions.col);
-				if (uqq.favorite)
-					rep.update({ value : RFavoriteQuestion, target : RQuestion(q) });
-				if (uqq.following)
-					rep.update({ value : RFavoriteQuestion, target : RQuestion(q) });
-				// TODO votes
+				if (!uq._id.equals(q.user)) {
+				    if (uqq.favorite)
+					    rep.update({ value : RFavoriteQuestion, target : RQuestion(q) });
+				    if (uqq.following)
+					    rep.update({ value : RFavoriteQuestion, target : RQuestion(q) });
+				}
 			}
+			// TODO votes
 		}
 	}
 }
