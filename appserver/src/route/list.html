@@ -6,7 +6,7 @@
 		<main>
 			@for (q in questions)
 			{ @{var u = this.getUser(q.user);}
-			<article class="question_card" id="@q._id.valueOf()">
+			<article class="question question_card" id="@q._id.valueOf()">
 				<header class="question_card_header">
 					<div class="user_avatar"></div>
 					<div class="user_description">
@@ -22,16 +22,18 @@
 						@{
 							var favclass = "favorite icon";
 							var folclass = "follow icon";
-							if (q.state.favorite)
-								favclass += " icon_pressed";
-							if (q.state.following)
-								folclass += " icon_pressed";
+							if (q.state != null) {
+								if (q.state.favorite)
+									favclass += " pressed";
+								if (q.state.following)
+									folclass += " pressed";
+							}
 						}
-						<a class="@favclass" question-id="@q._id.valueOf()">Favorite/unfavorite</a>
-						<a class="@folclass" question-id="@q._id.valueOf()">Follow/unfavorite</a>
+						<a class="@favclass">Favorite/unfavorite</a>
+						<a class="@folclass">Follow/unfavorite</a>
 						}
 					</div>
-				</footer>	
+				</footer>
 				<div class="question_card_answers">
 					@if (q.answers.length > 0)
 					{

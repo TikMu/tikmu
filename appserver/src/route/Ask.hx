@@ -28,8 +28,6 @@ class Ask extends BaseRoute {
 				lon : 180.*(1 - 2*Math.random())  // FIXME
 			},
 			voteSum : 0,
-			favorites : 0,
-			watchers : 0,
 
 			deleted : false,
 			created : loop.now,

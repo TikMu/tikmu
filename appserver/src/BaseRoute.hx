@@ -11,5 +11,10 @@ class BaseRoute extends mweb.Route<mweb.http.Response<Dynamic>> {
 		super();
 		_ctx = ctx;
 	}
+
+	function serialize(data:Dynamic)
+	{
+		return new mweb.tools.TemplateLink(data, haxe.Json.stringify.bind(_));
+	}
 }
 

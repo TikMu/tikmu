@@ -4,12 +4,52 @@ import db.Question;
 import mweb.tools.*;
 import mweb.http.*;
 import route.Question;
+using db.QuestionTools;
 
 class SomeAnswer extends BaseRoute {
 	var question:db.Question;
 	var answer:db.Answer;
 
+	function vote(vote:Int)
+	{
+		var ret = new Response();
+
+		if (loop.session.user.equals(answer.user))
+			return ret.setStatus(Forbidden);
+
+		var uq = data.userActions.findOne({ _id : loop.session.user });
+		if (uq == null)
+			uq = {
+				_id : loop.session.user,
+				onQuestion : [],
+				onAnswer : []
+			}
+
+		var uqa = Lambda.find(uq.onAnswer, function (x) return x.answer.equals(answer._id));
+		if (uqa == null) {
+			uqa = {
+				answer : answer._id,
+				vote : 0
+			};
+			uq.onAnswer.push(uqa);
+		}
+
+		if (vote != 0 && vote*uqa.vote <= 0) {
+			uqa.vote += vote;
+			data.userActions.update({ _id : loop.session.user }, uq, true);
+			_ctx.reputation.update({
+				value : (vote>0?RUpvoteAnswer:RDownvoteAnswer),
+				target : RAnswer(answer, question)
+			});
+		}
+
+		var state = {
+			vote : uqa.vote
+		};
+		return ret.setContent(serialize(state));
+	}
 	@openRoute
+
 	public function any()
 	{
 		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
@@ -26,9 +66,19 @@ class SomeAnswer extends BaseRoute {
 			deleted : false
 		};
 		answer.comments.push(cmt);
-		data.questions.update({ _id : question._id }, question);
+		question.updateAnswer(answer, data);
 		_ctx.reputation.update({ value : RPostComment, target : RComment(cmt, answer, question) });
 		return new Response().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
+	}
+
+	public function postUpvote()
+	{
+		return vote(1);
+	}
+
+	public function postDownvote()
+	{
+		return vote(-1);
 	}
 
 	public function postEdit(args:{ updated:String })
@@ -38,7 +88,7 @@ class SomeAnswer extends BaseRoute {
 
 		answer.contents = args.updated;
 		answer.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		question.updateAnswer(answer, data);
 		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
 	}
 
@@ -49,7 +99,7 @@ class SomeAnswer extends BaseRoute {
 
 		answer.deleted = true;
 		answer.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		question.updateAnswer(answer, data);
 		return new Response().redirect('/question/${question._id.valueOf()}');
 	}
 

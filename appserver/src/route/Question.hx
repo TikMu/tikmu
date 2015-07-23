@@ -4,13 +4,16 @@ import mweb.http.*;
 import mweb.tools.*;
 import reputation.Event;
 using db.QuestionTools;
+using db.UserActionsTools;
+using db.UserTools;
 
 typedef SomeQuestionViewData = {
 	question : db.Question,
-	state : {
-		?favorite:Bool,
-		?following:Bool
-	}
+	?state : {
+		favorite:Bool,
+		following:Bool
+	},
+	?votes : Array<Int>
 }
 
 @:includeTemplate("question.html")
@@ -20,15 +23,20 @@ class SomeQuestion extends BaseRoute {
 	var question:db.Question;
 	var view:SomeQuestionView;
 
-	function serialize(data:Dynamic)
-	{
-		return new TemplateLink(data, haxe.Json.stringify.bind(_));
-	}
-
 	function postProcess(question:db.Question):SomeQuestionViewData
 	{
-		var d:SomeQuestionViewData = { question : question.clean(), state : {} };
-		d.state = loop.session.isAuthenticated() ? question.getQuestionMonitoringState(_ctx) : cast {};
+		var ua = loop.session.isAuthenticated() ? loop.session.user.getUserActions(data) : null;
+		var d:SomeQuestionViewData = { question : question.clean() };
+		if (loop.session.isAuthenticated()) {
+			d.state = ua.questionSummary(question._id);
+			d.votes = [for (a in question.answers) {
+				var s = ua.answerSummary(a);
+				if (s != null)
+					s.vote;
+				else
+					0;
+			}];
+		}
 		return d;
 	}
 
@@ -61,55 +69,47 @@ class SomeQuestion extends BaseRoute {
 		return new Response().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
 	}
 
-	public function getState()
-	{
-		var state = question.getQuestionMonitoringState(_ctx);
-		return Response.fromContent(serialize(state));
-	}
-
 	public function postFavorite()
 	{
-		var uq = data.userQuestions.findOne({ _id : loop.session.user });
+		var uq = data.userActions.findOne({ _id : loop.session.user });
 		if (uq == null)
 			uq = {
 				_id : loop.session.user,
-				data : []
+				onQuestion : [],
+				onAnswer : []
 			}
 
-		var uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
+		var uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));
 		if (uqq == null) {
 			uqq = {
 				question : question._id,
-				votes : [],
 				favorite : false,
 				following : false
 			};
-			uq.data.push(uqq);
+			uq.onQuestion.push(uqq);
 		}
 
 		var events;
 		if (uqq.favorite) {
 			trace('favorite=off (implies following=off)');
 			uqq.favorite = false;
-			question.favorites--;
 			events = [RUnfavoriteQuestion];
 			if (uqq.following) {
 				uqq.following = false;
-				question.watchers--;
 				events[1] = RUnfollowQuestion;
 			}
 		} else {
 			trace('favorite=on');
 			uqq.favorite = true;
-			question.favorites++;
 			events = [RFavoriteQuestion];
 		}
 
-		data.userQuestions.update({ _id : loop.session.user }, uq, true);
-		data.questions.update({ _id : question._id }, question);
+		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		for (e in events)
-			_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		if (!loop.session.user.equals(question.user)) {
+			for (e in events)
+				_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		}
 
 		var state = {
 			favorite : uqq.favorite,
@@ -120,47 +120,45 @@ class SomeQuestion extends BaseRoute {
 
 	public function postFollow()
 	{
-		var uq = data.userQuestions.findOne({ _id : loop.session.user });
+		var uq = data.userActions.findOne({ _id : loop.session.user });
 		if (uq == null)
 			uq = {
 				_id : loop.session.user,
-				data : []
+				onQuestion : [],
+				onAnswer : []
 			}
 
-		var uqq = Lambda.find(uq.data, function (x) return x.question.equals(question._id));
+		var uqq = Lambda.find(uq.onQuestion, function (x) return x.question.equals(question._id));
 		if (uqq == null) {
 			uqq = {
 				question : question._id,
-				votes : [],
-				favorite : true,  // spec (p. 14)
-				following : true
+				favorite : false,
+				following : false
 			};
-			uq.data.push(uqq);
+			uq.onQuestion.push(uqq);
 		}
 
 		var events;
 		if (uqq.following) {
 			trace('following=off');
 			uqq.following = false;
-			question.watchers--;
 			events = [RUnfollowQuestion];
 		} else {
 			trace('following=on (implies favorite=on)');
 			uqq.following = true;
-			question.watchers++;
 			events = [RFollowQuestion];
 			if (!uqq.favorite) {
 				uqq.favorite = true;
-				question.favorites++;
 				events[1] = RFavoriteQuestion;
 			}
 		}
 
-		data.userQuestions.update({ _id : loop.session.user }, uq, true);
-		data.questions.update({ _id : question._id }, question);
+		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		for (e in events)
-			_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		if (!loop.session.user.equals(question.user)) {
+			for (e in events)
+				_ctx.reputation.update({ value : e, target : RQuestion(question) });
+		}
 
 		var state = {
 			favorite : uqq.favorite,

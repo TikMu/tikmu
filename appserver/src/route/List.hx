@@ -3,12 +3,14 @@ package route;
 import mweb.http.*;
 import mweb.tools.*;
 using db.QuestionTools;
+using db.UserActionsTools;
+using db.UserTools;
 
 typedef QuestionSummaryData = {
 	> db.Question,
-	state : {
-		?favorite : Bool,
-		?following : Bool
+	?state : {
+		favorite : Bool,
+		following : Bool
 	}
 }
 
@@ -45,11 +47,14 @@ class BaseList extends BaseRoute {
 
 	function postProcess(questions:Array<db.Question>):Array<QuestionSummaryData>
 	{
+		var ua = loop.session.isAuthenticated() ? loop.session.user.getUserActions(data) : null;
+
 		var qs = [];
 		for (q in questions) if (!q.deleted) {
 			var q:QuestionSummaryData = cast q.clean();
+			if (loop.session.isAuthenticated() )
+				q.state = ua.questionSummary(q._id);
 			qs.push(q);
-			q.state = loop.session.isAuthenticated() ? q.getQuestionMonitoringState(_ctx) : cast {};
 		}
 		return qs;
 	}
@@ -73,8 +78,8 @@ class List extends BaseList {
 class Favorites extends BaseList {
 	public function any()
 	{
-		var uq = data.userQuestions.findOne({ _id : loop.session.user });
-		var qds = uq != null ? [ for (qd in uq.data) if (qd.favorite) qd.question.asId() ] : [];
+		var uq = data.userActions.findOne({ _id : loop.session.user });
+		var qds = uq != null ? [ for (qd in uq.onQuestion) if (qd.favorite) qd.question.asId() ] : [];
 
 		var qs = data.questions.col.find({ _id : { "$in" : qds }, deleted : false }).toArray();
 		qs.sort(recenticityOrder);

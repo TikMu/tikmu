@@ -6,7 +6,7 @@
 	@ctx.aux.menu.execute()
 	<main>
 		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
-		<article id="@qid" class="question_open">
+		<article id="@qid" class="question question_open">
 			<header class="question_header">
 				<div class="user_avatar"></div>
 				<div class="user_description">
@@ -24,25 +24,45 @@
 					@{
 						var favclass = "favorite icon";
 						var folclass = "follow icon";
-						if (state.favorite)
-							favclass += " icon_pressed";
-						if (state.following)
-							folclass += " icon_pressed";
+						if (state != null) {
+							if (state.favorite)
+								favclass += " pressed";
+							if (state.following)
+								folclass += " pressed";
+						}
 					}
-					<a class="@favclass" question-id="@qid">Favorite/unfavorite</a>
-					<a class="@folclass" question-id="@qid">Follow/unfavorite</a>
+					<a class="@favclass">Favorite/unfavorite</a>
+					<a class="@folclass">Follow/unfavorite</a>
 					}
 				</div>
 			</footer>
 			<section class="answer_list">
 				@for (a in question.answers)
 				{ @{ var u = this.getUser(a.user); var aid = a._id.valueOf(); }
-				<article id="@aid">
+				<article id="@aid" class="answer">
 					<header>
 						<div class="answer_user_name">@u.name</div>
 						<div class="answer_user_date">@this.getPrettyDelta(a.created)</div>
 					</header>
 					<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
+					<p class="temp"><!-- TODO move and style-->
+						Current votes: <span class="vote_count">@a.voteSum</span>
+						@if(ctx.loop.session.isAuthenticated()) {
+							@if(!ctx.loop.session.user.equals(a.user)) {
+							@{
+								var vote = votes[Lambda.indexOf(question.answers, a)];
+								var upclass = "upvote";
+								var dnclass = "downvote";
+								if (vote > 0)
+									upclass += " pressed";
+								else if (vote < 0)
+									dnclass += " pressed";
+							}
+							<a class="@upclass">upvote</a>
+							<a class="@dnclass">downvote</a>
+							}
+						}
+					</p>
 					<footer class="temp">
 						<a href="">Share</a><!-- TODO -->
 						<a href="#" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>

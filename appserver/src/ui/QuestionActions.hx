@@ -12,28 +12,21 @@ class QuestionActions {
 	static function questionAction(action:QuestionAction, e:Event)
 	{
 		var elem = J(e.target);
-		var qid = elem.attr("question-id");
+		var qid = elem.parents("article.question").attr("id");
 		function setIcons(state:{ favorite:Bool, following:Bool }) {
 			var icons = elem.siblings().add(elem);
 			var favorite = icons.filter(".favorite");
 			var follow = icons.filter(".follow");
-			if (state.favorite != favorite.hasClass("icon_pressed"))
-				favorite.toggleClass("icon_pressed");
-			if (state.following != follow.hasClass("icon_pressed"))
-				follow.toggleClass("icon_pressed");
+			if (state.favorite != favorite.hasClass("pressed"))
+				favorite.toggleClass("pressed");
+			if (state.following != follow.hasClass("pressed"))
+				follow.toggleClass("pressed");
 		}
 		JQuery.post('/question/$qid/$action', setIcons, "text json");
 		e.preventDefault();
 	}
 
-	public static function favorite(e:Event)
-	{
-		return questionAction(QDoFavorite, e);
-	}
-
-	public static function follow(e:Event)
-	{
-		return questionAction(QDoFollow, e);
-	}
+	public static var favorite = questionAction.bind(QDoFavorite);
+	public static var follow = questionAction.bind(QDoFollow);
 }
 

@@ -26,10 +26,10 @@ class Handler {
 		trace('rep: updated question ${q._id.valueOf()} score: ${q.voteSum}');
 	}
 
-	function scoreAnswer(a:Answer, v:Int)
+	function scoreAnswer(a:Answer, q:Question, v:Int)
 	{
 		a.voteSum += v;
-		// a.update(data);  // TODO
+		q.updateAnswer(a, data);
 		trace('rep: updated answer ${a._id.valueOf()} score: ${a.voteSum}');
 	}
 
@@ -50,15 +50,19 @@ class Handler {
 			scoreQuestion(q, 1);
 		case RUnfavoriteQuestion:
 			scoreQuestion(q, -1);
-		case RFollowQuestion, RUnfollowQuestion:  // NOOP
+		case RFollowQuestion, RUnfollowQuestion:
+			// NOOP
 
-		case RPostAnswer:
+		case RPostAnswer, RUpvoteAnswer:
 			scoreQuestion(q, 1);
+		case RDownvoteAnswer:
+			//NOOP
 
 		case RPostComment:
-			scoreQuestion(q, .25);
+			scoreQuestion(q, 1);
 		}
-		handle(derive(e, ROwner(q.user.get(data.users.col))));
+		if (!e.value.match(RPostComment))
+			handle(derive(e, ROwner(q.user.get(data.users.col))));
 	}
 
 	function handleAnswer(a:Answer, q:Question, e:Event)
@@ -71,6 +75,10 @@ class Handler {
 			if (a.voteSum != 0)
 				throw 'Answer score should start at 0 (${a._id.valueOf()})';
 
+		case RUpvoteAnswer:
+			scoreAnswer(a, q, 1);
+		case RDownvoteAnswer:
+			scoreAnswer(a, q, -1);
 		case RPostComment:  // NOOP
 		}
 		handle(derive(e, ROwner(a.user.get(data.users.col))));
@@ -79,7 +87,7 @@ class Handler {
 
 	function handleComment(c:Comment, a:Answer, q:Question, e:Event)
 	{
-		if (!e.value.match(RPostComment))
+		if (!e.value.match(RPostComment))  // TODO make it a switch, safer that way
 			throw "Can't handle event for comment: " + e.value;
 		handle(derive(e, RAnswer(a, q)));
 	}
@@ -87,13 +95,16 @@ class Handler {
 	function handleOwner(u:User, e:Event)
 	{
 		switch (e.value) {
-		case RPostQuestion, RFavoriteQuestion:
+		case RPostAnswer, RPostComment, RFavoriteQuestion:
 			scoreUser(u, 1);
 		case RUnfavoriteQuestion:
 			scoreUser(u, -1);
-		case RPostAnswer, RPostComment:
-			scoreUser(u, 1);
-		case RFollowQuestion, RUnfollowQuestion:  // NOOP
+		case RUpvoteAnswer:
+			scoreUser(u, 2);
+		case RDownvoteAnswer:
+			scoreUser(u, -2);
+		case RPostQuestion, RFollowQuestion, RUnfollowQuestion:
+			// NOOP
 		}
 	}
 
@@ -104,7 +115,9 @@ class Handler {
 			scoreUser(u, 1);
 		case RPostAnswer:
 			scoreUser(u, 2);
-		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // NOOP
+		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion,
+			RUpvoteAnswer, RDownvoteAnswer:
+			// NOOP
 		}
 	}
 
