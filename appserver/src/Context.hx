@@ -14,6 +14,11 @@ class Context {
 
 	public var reputation(default,null):reputation.Handler;
 
+	static function ms(s:Float)
+	{
+		return Std.int(s*1000);
+	}
+
 	@:allow(Main)
 	function respond()  // TODO receive Request
 	{
@@ -47,9 +52,9 @@ class Context {
 		trace('returning $summary');
 
 		new mweb.http.webstd.Writer().writeResponse(response);
-		var ttotal = Timer.stamp();
+		var tfinal = Timer.stamp();
 
-		trace('timings (ms): init=${Std.int((tinit-t0)*1000)} response=${Std.int((tresponse-tinit)*1000)} total=${Std.int((ttotal-t0)*1000)}');
+		trace('spent ${ms(tfinal-t0)} ms in total: init=${ms(tinit-t0)} response=${ms(tresponse-tinit)} writing=${ms(tfinal-t0)}');
 	}
 
 	public function new(db)
