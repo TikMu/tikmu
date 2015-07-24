@@ -35,6 +35,15 @@ class Main {
 			trace('Exception: $e' + haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
 			Web.setReturnCode(500);  // internal server error
 		}
+
+		Sys.stdout().close();
+		try {
+			var ti = haxe.Timer.stamp();
+			var tf = haxe.Timer.stamp();
+			trace('spent additional ${Std.int((tf-ti)*1000)} ms executing deferred tasks');
+		} catch (e:Dynamic) {
+			trace('Exception during deferred tash execution: $e' + haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
+		}
 	}
 }
 
