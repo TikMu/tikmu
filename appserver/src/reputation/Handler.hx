@@ -11,6 +11,12 @@ class Handler {
 	var data(get,never):StorageContext;
 	var loop(get,never):IterationContext;
 
+	var question:Null<Question>;
+	var answer:Null<Answer>;
+	var comment:Null<Comment>;
+	var users:Array<User>;
+	var value:EventValue;
+
 	inline function get_data() return ctx.data;
 	inline function get_loop() return ctx.loop;
 
@@ -19,125 +25,169 @@ class Handler {
 		return { value : event.value, target : newTarget };
 	}
 
+	function reset(v:EventValue)
+	{
+		value = v;
+		question = null;
+		answer = null;
+		comment = null;
+		users = [];
+	}
+
+	function getUser(uid:db.helper.Ref<User>)
+	{
+		var u = Lambda.find(users, function (x) return x._id.equals(uid));
+		if (u == null) {
+			u = uid.get(data.users.col);
+			users.push(u);
+		}
+		return u;
+	}
+
 	function scoreQuestion(q:Question, v:Float)
 	{
 		q.voteSum += Math.round(v);  // TODO voteSum:Float
-		q.update(data);
 		trace('rep: updated question ${q._id.valueOf()} score: ${q.voteSum}');
 	}
 
-	function scoreAnswer(a:Answer, q:Question, v:Int)
+	function scoreAnswer(a:Answer, v:Int)
 	{
 		a.voteSum += v;
-		q.updateAnswer(a, data);
 		trace('rep: updated answer ${a._id.valueOf()} score: ${a.voteSum}');
 	}
 
 	function scoreUser(u:User, v:Int)
 	{
 		u.points += v;
-		u.update(data);
 		trace('rep: updated user ${u.email} score: ${u.points}');
 	}
 
-	function handleQuestion(q:Question, e:Event)
+	function questionHandler()
 	{
-		switch (e.value) {
+		if (question == null)
+			throw "Assert failed: broken rep handler state";
+
+		trace('rep: handling ${value} for Question');
+		switch (value) {
 		case RPostQuestion:  // could be NOOP, but assert
-			if (q.voteSum != 0)
-				throw 'Question score should start at 0 (${q._id.valueOf()})';
+			if (question.voteSum != 0)
+				throw 'Question score should start at 0 (${question._id.valueOf()})';
 		case RFavoriteQuestion:
-			scoreQuestion(q, 1);
+			scoreQuestion(question, 1);
 		case RUnfavoriteQuestion:
-			scoreQuestion(q, -1);
+			scoreQuestion(question, -1);
 		case RFollowQuestion, RUnfollowQuestion:
 			// NOOP
 
 		case RPostAnswer, RUpvoteAnswer:
-			scoreQuestion(q, 1);
+			scoreQuestion(question, 1);
 		case RDownvoteAnswer:
 			//NOOP
 
 		case RPostComment:
-			scoreQuestion(q, 1);
+			scoreQuestion(question, 1);
 		}
-		if (!e.value.match(RPostComment))
-			handle(derive(e, ROwner(q.user.get(data.users.col))));
+		if (!value.match(RPostComment))
+			ownerHandler(getUser(question.user));
 	}
 
-	function handleAnswer(a:Answer, q:Question, e:Event)
+	function answerHandler()
 	{
-		switch (e.value) {
+		if (answer == null)
+			throw "Assert failed: broken rep handler state";
+
+		trace('rep: handling ${value} for Answer');
+		switch (value) {
 		case RPostQuestion, RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // ERROR
-			throw "Can't handle event for answer: " + e.value;
+			throw "Can't handle event for answer: " + value;
 
 		case RPostAnswer:  // could be NOOP, but assert
-			if (a.voteSum != 0)
-				throw 'Answer score should start at 0 (${a._id.valueOf()})';
+			if (answer.voteSum != 0)
+				throw 'Answer score should start at 0 (${answer._id.valueOf()})';
 
 		case RUpvoteAnswer:
-			scoreAnswer(a, q, 1);
+			scoreAnswer(answer, 1);
 		case RDownvoteAnswer:
-			scoreAnswer(a, q, -1);
+			scoreAnswer(answer, -1);
 		case RPostComment:  // NOOP
 		}
-		handle(derive(e, ROwner(a.user.get(data.users.col))));
-		handle(derive(e, RQuestion(q)));
+		ownerHandler(getUser(answer.user));
+		questionHandler();
 	}
 
-	function handleComment(c:Comment, a:Answer, q:Question, e:Event)
+	function commentHandler()
 	{
-		if (!e.value.match(RPostComment))  // TODO make it a switch, safer that way
-			throw "Can't handle event for comment: " + e.value;
-		handle(derive(e, RAnswer(a, q)));
+		if (comment == null)
+			throw "Assert failed: broken rep handler state";
+
+		trace('rep: handling ${value} for Comment');
+		if (!value.match(RPostComment))  // TODO make it a switch, safer that way
+			throw "Can't handle event for comment: " + value;
+		answerHandler();
 	}
 
-	function handleOwner(u:User, e:Event)
+	function ownerHandler(user:User)
 	{
-		switch (e.value) {
+		if (user == null || !Lambda.has(users, user))
+			throw "Assert failed: broken rep handler state";
+
+		trace('rep: handling ${value} for User (owner)');
+		switch (value) {
 		case RPostAnswer, RPostComment, RFavoriteQuestion:
-			scoreUser(u, 1);
+			scoreUser(user, 1);
 		case RUnfavoriteQuestion:
-			scoreUser(u, -1);
+			scoreUser(user, -1);
 		case RUpvoteAnswer:
-			scoreUser(u, 2);
+			scoreUser(user, 2);
 		case RDownvoteAnswer:
-			scoreUser(u, -2);
+			scoreUser(user, -2);
 		case RPostQuestion, RFollowQuestion, RUnfollowQuestion:
 			// NOOP
 		}
 	}
 
-	function handleUser(u:User, e:Event)
+	function authorHandler(user:User)
 	{
-		switch (e.value) {
+		if (user == null || !Lambda.has(users, user))
+			throw "Assert failed: broken rep handler state";
+
+		trace('rep: handling ${value} for User (action author)');
+		switch (value) {
 		case RPostQuestion, RPostComment:
-			scoreUser(u, 1);
+			scoreUser(user, 1);
 		case RPostAnswer:
-			scoreUser(u, 2);
+			scoreUser(user, 2);
 		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion,
 			RUpvoteAnswer, RDownvoteAnswer:
 			// NOOP
 		}
 	}
 
-	function handle(event:Event)
-	{
-		trace('rep: handling ${event.value} for ${Type.enumConstructor(event.target)}');
-		switch (event.target) {
-		case RQuestion(q): handleQuestion(q, event);
-		case RAnswer(a, q): handleAnswer(a, q, event);
-		case RComment(c, a, q): handleComment(c, a, q, event);
-		case ROwner(u): handleOwner(u, event);
-		}
-	}
-
 	public function update(event:Event)
 	{
-		handle(event);
-		trace('rep: handling ${event.value} for the author user');
+		reset(event.value);
+
+		switch (event.target) {
+		case RQuestion(q):
+			question = q;
+			questionHandler();
+		case RAnswer(a, q):
+			answer = a;
+			question = q;
+			answerHandler();
+		case RComment(c, a, q):
+			comment = c;
+			answer = a;
+			question = q;
+			commentHandler();
+		}
+
 		if (loop.session.isAuthenticated())
-			handleUser(loop.session.user.get(data.users.col), event);
+			authorHandler(getUser(loop.session.user));
+
+		question.update(data);
+		for (user in users)
+			user.update(data);
 	}
 
 	public function new(context:Context)
