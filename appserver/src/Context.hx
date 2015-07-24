@@ -42,13 +42,16 @@ class Context {
 		var tinit = Timer.stamp();
 
 		var response = loop.dispatch(request);
+
 		if (!Lambda.exists(response.headers, function (x) return x.key == "Content-Type"))
 			response.setHeader("Content-Type", "text/html");
 		Auth.sendSession(this, response);
+		if (response.status == 0)
+			response.setStatus(OK);
 		var tresponse = Timer.stamp();
 
 		var summary = switch (response.response) {
-			case None, Content(_): 'status ' + (response.status != 0 ? '${response.status}' : '${Status.OK} (implicit)');
+			case None, Content(_): 'status ${response.status}';
 			case Redirect(to): 'redirect to $to';
 		}
 		trace('returning $summary');
