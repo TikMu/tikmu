@@ -53,7 +53,6 @@ class Context {
 		trace('returning $summary');
 
 		new mweb.http.webstd.Writer().writeResponse(response);
-		Web.flush();
 		var tfinal = Timer.stamp();
 
 		trace('spent ${ms(tfinal-t0)} ms in total: init=${ms(tinit-t0)} response=${ms(tresponse-tinit)} writing=${ms(tfinal-tresponse)}');

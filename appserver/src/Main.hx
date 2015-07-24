@@ -36,7 +36,7 @@ class Main {
 			Web.setReturnCode(500);  // internal server error
 		}
 
-		Sys.stdout().close();
+		Web.flush();
 		try {
 			var ti = haxe.Timer.stamp();
 			ctx.executeDeferred();
