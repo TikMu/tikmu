@@ -7,7 +7,7 @@ import mweb.http.*;
 class Context {
 	static var headerPxFilter = ["Authorization", "X-"];
 	var routeMap:Route<Dynamic>;
-	var deferred:Array<Void->Void>;
+	var deferred:List<Void->Void>;
 
 	public var data(default,null):StorageContext;
 	public var loop(default,null):IterationContext;
@@ -61,13 +61,13 @@ class Context {
 
 	public function scheduleDeferred(f:Void->Void)
 	{
-		deferred.push(f);
+		deferred.add(f);
 	}
 
 	public function executeDeferred()
 	{
-		for (f in deferred)
-			f();
+		while (!deferred.isEmpty())
+			deferred.pop()();
 	}
 
 	public function new(db)
@@ -96,6 +96,6 @@ class Context {
 			// aliases
 			any : @openRoute function(d:Dispatcher<Dynamic>) return d.getRoute(route.List).any(),
 		});
-		deferred = [];
+		deferred = new List();
 	}
 }
