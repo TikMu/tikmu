@@ -37,10 +37,10 @@ class SomeAnswer extends BaseRoute {
 		if (vote != 0 && vote*uqa.vote <= 0) {
 			uqa.vote += vote;
 			data.userActions.update({ _id : loop.session.user }, uq, true);
-			_ctx.reputation.update({
+			_ctx.scheduleDeferred(_ctx.reputation.update.bind({
 				value : (vote>0?RUpvoteAnswer:RDownvoteAnswer),
 				target : RAnswer(answer, question)
-			});
+			}));
 		}
 
 		var state = {
@@ -67,7 +67,7 @@ class SomeAnswer extends BaseRoute {
 		};
 		answer.comments.push(cmt);
 		question.updateAnswer(answer, data);
-		_ctx.reputation.update({ value : RPostComment, target : RComment(cmt, answer, question) });
+		_ctx.scheduleDeferred(_ctx.reputation.update.bind({ value : RPostComment, target : RComment(cmt, answer, question) }));
 		return new Response().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
 	}
 

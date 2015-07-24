@@ -37,7 +37,7 @@ class Ask extends BaseRoute {
 			answers : []
 		};
 		data.questions.insert(q);
-		_ctx.reputation.update({ value : RPostQuestion, target : RQuestion(q) });
+		_ctx.scheduleDeferred(_ctx.reputation.update.bind({ value : RPostQuestion, target : RQuestion(q) }));
 		return new Response().redirect('/question/${q._id.valueOf()}/');
 	}
 

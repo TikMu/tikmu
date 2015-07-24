@@ -39,6 +39,7 @@ class Main {
 		Sys.stdout().close();
 		try {
 			var ti = haxe.Timer.stamp();
+			ctx.executeDeferred();
 			var tf = haxe.Timer.stamp();
 			trace('spent additional ${Std.int((tf-ti)*1000)} ms executing deferred tasks');
 		} catch (e:Dynamic) {
