@@ -34,6 +34,7 @@ class Main {
 		} catch (e:Dynamic) {
 			trace('Exception: $e' + haxe.CallStack.toString(haxe.CallStack.exceptionStack()));
 			Web.setReturnCode(500);  // internal server error
+			Web.cacheModule(null);  // just to be sure, reload the module after an exception
 		}
 	}
 }
