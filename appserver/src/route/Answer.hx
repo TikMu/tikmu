@@ -46,7 +46,7 @@ class SomeAnswer extends BaseRoute {
 		var state = {
 			vote : uqa.vote
 		};
-		return ret.setContent(serialize(state));
+		return serialize(state);
 	}
 	@openRoute
 

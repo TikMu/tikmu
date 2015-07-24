@@ -115,7 +115,7 @@ class SomeQuestion extends BaseRoute {
 			favorite : uqq.favorite,
 			following : uqq.following
 		};
-		return Response.fromContent(serialize(state));
+		return serialize(state);
 	}
 
 	public function postFollow()
@@ -164,7 +164,7 @@ class SomeQuestion extends BaseRoute {
 			favorite : uqq.favorite,
 			following : uqq.following
 		};
-		return Response.fromContent(serialize(state));
+		return serialize(state);
 	}
 
 	public function postEdit(args:{ updated:String })

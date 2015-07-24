@@ -1,4 +1,7 @@
-class BaseRoute extends mweb.Route<mweb.http.Response<Dynamic>> {
+import mweb.http.Response;
+import mweb.tools.TemplateLink;
+
+class BaseRoute extends mweb.Route<Response<Dynamic>> {
 	@:skip public var _ctx:Context;
 	@:skip public var data(get,never):StorageContext;
 	@:skip public var loop(get,never):IterationContext;
@@ -12,9 +15,14 @@ class BaseRoute extends mweb.Route<mweb.http.Response<Dynamic>> {
 		_ctx = ctx;
 	}
 
+	function json(data:Dynamic)
+	{
+		return haxe.Json.stringify(data);
+	}
+
 	function serialize(data:Dynamic)
 	{
-		return new mweb.tools.TemplateLink(data, haxe.Json.stringify.bind(_));
+		return new Response().setHeader("Content-Type", "application/json").setContent(new TemplateLink(data, json));
 	}
 }
 

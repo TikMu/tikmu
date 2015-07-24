@@ -42,6 +42,8 @@ class Context {
 		var tinit = Timer.stamp();
 
 		var response = loop.dispatch(request);
+		if (!Lambda.exists(response.headers, function (x) return x.key == "Content-Type"))
+			response.setHeader("Content-Type", "text/html");
 		Auth.sendSession(this, response);
 		var tresponse = Timer.stamp();
 
