@@ -215,6 +215,7 @@ li {
 
 .icon.pressed {
 	filter: invert(1) opacity(.3);
+	-webkit-filter: invert(1) opacity(.3);
 }
 
 .temp .pressed {
