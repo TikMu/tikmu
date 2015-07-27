@@ -72,22 +72,17 @@ class Handler {
 		case RPostQuestion:  // could be NOOP, but assert
 			if (question.voteSum != 0)
 				throw 'Question score should start at 0 (${question._id.valueOf()})';
-		case RFavoriteQuestion:
+			return;  // owner is author
+
+		case RFavoriteQuestion, RPostAnswer, RUpvoteAnswer, RPostComment:
 			scoreQuestion(question, 1);
 		case RUnfavoriteQuestion:
 			scoreQuestion(question, -1);
-		case RFollowQuestion, RUnfollowQuestion:
+		case RFollowQuestion, RUnfollowQuestion, RDownvoteAnswer:
 			// NOOP
-
-		case RPostAnswer, RUpvoteAnswer:
-			scoreQuestion(question, 1);
-		case RDownvoteAnswer:
-			//NOOP
-
-		case RPostComment:
-			scoreQuestion(question, 1);
 		}
-		if (!value.match(RPostComment))
+
+		if (!value.match(RPostComment))  // not immediate parent of comment
 			ownerHandler(getUser(question.user));
 	}
 
@@ -111,7 +106,9 @@ class Handler {
 			scoreAnswer(answer, -1);
 		case RPostComment:  // NOOP
 		}
-		ownerHandler(getUser(answer.user));
+
+		if (!value.match(RPostAnswer))  // RPostAnswer => owner is author
+			ownerHandler(getUser(answer.user));
 		questionHandler();
 	}
 
@@ -123,6 +120,7 @@ class Handler {
 		trace('rep: handling ${value} for Comment');
 		if (!value.match(RPostComment))  // TODO make it a switch, safer that way
 			throw "Can't handle event for comment: " + value;
+
 		answerHandler();
 	}
 
