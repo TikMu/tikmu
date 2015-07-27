@@ -1,16 +1,17 @@
 import croxit.Web;
 import haxe.Timer;
 import mweb.*;
+import tikmu.Event;
 
 class Context {
 	static var headerPxFilter = ["Authorization", "X-"];
 	var routeMap:Route<Dynamic>;
+	var reputation:tikmu.Reputation;
+	var notification:tikmu.Notification;
 
 	public var data(default,null):StorageContext;
 	public var loop(default,null):IterationContext;
 	public var aux(default,null):AuxiliaryContext;
-
-	public var reputation(default,null):tikmu.Reputation;
 
 	static function ms(s:Float)
 	{
@@ -60,12 +61,19 @@ class Context {
 		trace('spent ${ms(tfinal-t0)} ms in total: init=${ms(tinit-t0)} response=${ms(tresponse-tinit)} writing=${ms(tfinal-tresponse)}');
 	}
 
+	public function dispatchEvent(event:Event)
+	{
+		reputation.dispatch(event);
+		notification.dispatch(event);
+	}
+
 	public function new(db)
 	{
 		data = new StorageContext(db);
 		aux = new AuxiliaryContext(this);
 
 		reputation = new tikmu.Reputation(this);
+		notification = new tikmu.Notification(this);
 
 		routeMap = Route.anon({
 			// keep each group sorted and keep the trailing commas

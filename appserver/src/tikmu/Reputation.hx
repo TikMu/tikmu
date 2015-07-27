@@ -161,7 +161,7 @@ class Reputation {
 		}
 	}
 
-	public function update(event:Event)
+	public function dispatch(event:Event)
 	{
 		reset(event.value);
 

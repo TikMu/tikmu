@@ -65,7 +65,7 @@ class SomeQuestion extends BaseRoute {
 		};
 		question.answers.push(ans);
 		data.questions.update({ _id : question._id }, question);
-		_ctx.reputation.update({ value : RPostAnswer, target : RAnswer(ans, question) });
+		_ctx.dispatchEvent({ value : RPostAnswer, target : RAnswer(ans, question) });
 		return new Response().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
 	}
 
@@ -108,7 +108,7 @@ class SomeQuestion extends BaseRoute {
 
 		if (!loop.session.user.equals(question.user)) {
 			for (e in events)
-				_ctx.reputation.update({ value : e, target : RQuestion(question) });
+				_ctx.dispatchEvent({ value : e, target : RQuestion(question) });
 		}
 
 		var state = {
@@ -157,7 +157,7 @@ class SomeQuestion extends BaseRoute {
 
 		if (!loop.session.user.equals(question.user)) {
 			for (e in events)
-				_ctx.reputation.update({ value : e, target : RQuestion(question) });
+				_ctx.dispatchEvent({ value : e, target : RQuestion(question) });
 		}
 
 		var state = {
