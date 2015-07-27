@@ -1,4 +1,4 @@
-package reputation;
+package tikmu;
 
 import db.Question;
 import db.User;

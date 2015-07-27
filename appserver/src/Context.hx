@@ -12,7 +12,7 @@ class Context {
 	public var loop(default,null):IterationContext;
 	public var aux(default,null):AuxiliaryContext;
 
-	public var reputation(default,null):reputation.Handler;
+	public var reputation(default,null):tikmu.Reputation;
 
 	static function ms(s:Float)
 	{
@@ -67,7 +67,7 @@ class Context {
 		data = new StorageContext(db);
 		aux = new AuxiliaryContext(this);
 
-		reputation = new reputation.Handler(this);
+		reputation = new tikmu.Reputation(this);
 
 		routeMap = Route.anon({
 			// keep each group sorted and keep the trailing commas

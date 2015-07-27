@@ -2,7 +2,7 @@ package route;
 
 import mweb.http.*;
 import mweb.tools.*;
-import reputation.Event;
+import tikmu.Event;
 using db.QuestionTools;
 using db.UserActionsTools;
 using db.UserTools;

@@ -1,12 +1,12 @@
-package reputation;
+package tikmu;
 
 import db.Question;
 import db.User;
-import reputation.Event;
+import tikmu.Event;
 using db.QuestionTools;
 using db.UserTools;
 
-class Handler {
+class Reputation {
 	var ctx:Context;
 	var data(get,never):StorageContext;
 	var loop(get,never):IterationContext;
