@@ -22,7 +22,9 @@ class BaseRoute extends mweb.Route<Response<Dynamic>> {
 
 	function serialize(data:Dynamic)
 	{
-		return new Response().setHeader("Content-Type", "application/json").setContent(new TemplateLink(data, json));
+		return new Response()
+			.setHeader("Content-Type", "application/json")
+			.setContent(new TemplateLink(data, json));
 	}
 }
 

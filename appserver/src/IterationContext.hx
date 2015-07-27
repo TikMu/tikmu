@@ -3,8 +3,6 @@ import db.*;
 import mweb.*;
 import mweb.http.*;
 import mweb.tools.*;
-import crypto.Random;
-using Lambda;
 
 class IterationContext {
 	var routeMap:Route<Dynamic>;
@@ -19,7 +17,7 @@ class IterationContext {
 	function handleLoggedMeta(metas:Array<String>)
 	{
 		var noAuth = #if tikmu_require_login "login" #else "openRoute" #end;
-		if (metas.has(noAuth))
+		if (Lambda.has(metas, noAuth))
 			return;
 
 		var s = session;
@@ -51,7 +49,7 @@ class IterationContext {
 
 		session = null;
 		now = Date.now();
-		hash = Random.id(4);
+		hash = crypto.Random.id(4);
 	}
 }
 

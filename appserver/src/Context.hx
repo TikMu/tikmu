@@ -1,8 +1,6 @@
 import croxit.Web;
-import db.*;
 import haxe.Timer;
 import mweb.*;
-import mweb.http.*;
 
 class Context {
 	static var headerPxFilter = ["Authorization", "X-"];
