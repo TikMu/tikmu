@@ -1,4 +1,4 @@
-package tikmu;
+package effect;
 
 import db.Question;
 import db.User;

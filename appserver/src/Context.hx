@@ -1,13 +1,13 @@
 import croxit.Web;
 import haxe.Timer;
 import mweb.*;
-import tikmu.Event;
+import effect.*;
 
 class Context {
 	static var headerPxFilter = ["Authorization", "X-"];
 	var routeMap:Route<Dynamic>;
-	var reputation:tikmu.Reputation;
-	var notification:tikmu.Notification;
+	var reputation:Reputation;
+	var notification:Notification;
 
 	public var data(default,null):StorageContext;
 	public var loop(default,null):IterationContext;
@@ -72,8 +72,8 @@ class Context {
 		data = new StorageContext(db);
 		aux = new AuxiliaryContext(this);
 
-		reputation = new tikmu.Reputation(this);
-		notification = new tikmu.Notification(this);
+		reputation = new Reputation(this);
+		notification = new Notification(this);
 
 		routeMap = Route.anon({
 			// keep each group sorted and keep the trailing commas

@@ -1,6 +1,6 @@
-package tikmu;
+package effect;
 
-import tikmu.Event;
+import effect.Event;
 
 class Notification {
 	var ctx:Context;

@@ -1,8 +1,8 @@
-package tikmu;
+package effect;
 
 import db.Question;
 import db.User;
-import tikmu.Event;
+import effect.Event;
 using db.QuestionTools;
 using db.UserTools;
 
