@@ -8,6 +8,7 @@ runhaxe() {
 }
 
 echo "Pre-commit: testing"
-runhaxe "appserver" "build.hxml"
-runhaxe "appserver" "test.hxml"
+runhaxe  "appserver"      "build.hxml"
+runhaxe  "appserver"      "test.hxml"
+runhaxe  "tools/rescore"  "build.hxml"
 
