@@ -12,16 +12,16 @@ class Notification {
 	public function dispatch(event:Event)
 	{
 		switch (event) {
-		case { value : RPostAnswer, target : RAnswer(a, q) }:
-			if (q.user == loop.session.user)
+		case EvAnsPost(ans,qst):
+			if (qst.user == loop.session.user)
 				return;
 			trace("notify: question owner of posted answer");
 			data.userNotifications.update(
-				{ _id : q.user },
+				{ _id : qst.user },
 				{ "$push" : { msg : "New answer" } },
 				true
 			);
-		case { value : RPostComment, target : RComment(c, a, q) }:
+		case EvCmtPost(cmt,ans,qst):
 			trace("notify: TODO notify question owner of posted answer");
 			trace("notify: notify answer owner of posted comment");
 		case _:

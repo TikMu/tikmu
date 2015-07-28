@@ -65,7 +65,7 @@ class SomeQuestion extends BaseRoute {
 		};
 		question.answers.push(ans);
 		data.questions.update({ _id : question._id }, question);
-		_ctx.dispatchEvent({ value : RPostAnswer, target : RAnswer(ans, question) });
+		_ctx.dispatchEvent(EvAnsPost(ans, question));
 		return new Response().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
 	}
 
@@ -93,22 +93,22 @@ class SomeQuestion extends BaseRoute {
 		if (uqq.favorite) {
 			trace('favorite=off (implies following=off)');
 			uqq.favorite = false;
-			events = [RUnfavoriteQuestion];
+			events = [EvQstUnfavorite(question)];
 			if (uqq.following) {
 				uqq.following = false;
-				events[1] = RUnfollowQuestion;
+				events[1] = EvQstUnfollow(question);
 			}
 		} else {
 			trace('favorite=on');
 			uqq.favorite = true;
-			events = [RFavoriteQuestion];
+			events = [EvQstFavorite(question)];
 		}
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
 
 		if (!loop.session.user.equals(question.user)) {
 			for (e in events)
-				_ctx.dispatchEvent({ value : e, target : RQuestion(question) });
+				_ctx.dispatchEvent(e);
 		}
 
 		var state = {
@@ -142,14 +142,14 @@ class SomeQuestion extends BaseRoute {
 		if (uqq.following) {
 			trace('following=off');
 			uqq.following = false;
-			events = [RUnfollowQuestion];
+			events = [EvQstUnfollow(question)];
 		} else {
 			trace('following=on (implies favorite=on)');
 			uqq.following = true;
-			events = [RFollowQuestion];
+			events = [EvQstFollow(question)];
 			if (!uqq.favorite) {
 				uqq.favorite = true;
-				events[1] = RFavoriteQuestion;
+				events[1] = EvQstFavorite(question);
 			}
 		}
 
@@ -157,7 +157,7 @@ class SomeQuestion extends BaseRoute {
 
 		if (!loop.session.user.equals(question.user)) {
 			for (e in events)
-				_ctx.dispatchEvent({ value : e, target : RQuestion(question) });
+				_ctx.dispatchEvent(e);
 		}
 
 		var state = {

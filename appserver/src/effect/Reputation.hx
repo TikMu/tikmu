@@ -2,186 +2,146 @@ package effect;
 
 import db.Question;
 import db.User;
-import effect.Event;
 using db.QuestionTools;
 using db.UserTools;
 
 class Reputation {
 	var ctx:Context;
 	var data(get,never):StorageContext;
+		inline function get_data() return ctx.data;
 	var loop(get,never):IterationContext;
-
-	var question:Null<Question>;
-	var answer:Null<Answer>;
-	var comment:Null<Comment>;
+		inline function get_loop() return ctx.loop;
 	var users:Array<User>;
-	var value:EventValue;
-
-	inline function get_data() return ctx.data;
-	inline function get_loop() return ctx.loop;
-
-	static function derive(event:Event, newTarget:EventTarget)
-	{
-		return { value : event.value, target : newTarget };
-	}
-
-	function reset(v:EventValue)
-	{
-		value = v;
-		question = null;
-		answer = null;
-		comment = null;
-		users = [];
-	}
 
 	function getUser(uid:db.helper.Ref<User>)
 	{
 		var u = Lambda.find(users, function (x) return x._id.equals(uid));
 		if (u == null) {
 			u = uid.get(data.users.col);
+			if (u == null)
+				throw 'Assert fail: missing user ${uid.valueOf()}';
 			users.push(u);
 		}
 		return u;
 	}
 
-	function scoreQuestion(q:Question, v:Float)
+	function evName(ev:Event)
 	{
-		q.voteSum += Math.round(v);  // TODO voteSum:Float
-		trace('rep: updated question ${q._id.valueOf()} score: ${q.voteSum}');
+		return Type.enumConstructor(ev);
 	}
 
-	function scoreAnswer(a:Answer, v:Int)
+	function questionHandler(ev:Event)
 	{
-		a.voteSum += v;
-		trace('rep: updated answer ${a._id.valueOf()} score: ${a.voteSum}');
-	}
-
-	function scoreUser(u:User, v:Int)
-	{
-		u.points += v;
-		trace('rep: updated user ${u.email} score: ${u.points}');
-	}
-
-	function questionHandler()
-	{
-		if (question == null)
-			throw "Assert failed: broken rep handler state";
-
-		trace('rep: handling ${value} for Question');
-		switch (value) {
-		case RPostQuestion:  // could be NOOP, but assert
-			if (question.voteSum != 0)
-				throw 'Question score should start at 0 (${question._id.valueOf()})';
-			return;  // owner is author
-
-		case RFavoriteQuestion, RPostAnswer, RUpvoteAnswer, RPostComment:
-			scoreQuestion(question, 1);
-		case RUnfavoriteQuestion:
-			scoreQuestion(question, -1);
-		case RFollowQuestion, RUnfollowQuestion, RDownvoteAnswer:
-			// NOOP
+		function addVote(qst:Question, amount:Int) {
+			qst.voteSum += amount;
+			trace('rep: updated question ${qst._id.valueOf()} score to ${qst.voteSum} (added $amount)');
 		}
 
-		if (!value.match(RPostComment))  // not immediate parent of comment
-			ownerHandler(getUser(question.user));
-	}
-
-	function answerHandler()
-	{
-		if (answer == null)
-			throw "Assert failed: broken rep handler state";
-
-		trace('rep: handling ${value} for Answer');
-		switch (value) {
-		case RPostQuestion, RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion:  // ERROR
-			throw "Can't handle event for answer: " + value;
-
-		case RPostAnswer:  // could be NOOP, but assert
-			if (answer.voteSum != 0)
-				throw 'Answer score should start at 0 (${answer._id.valueOf()})';
-
-		case RUpvoteAnswer:
-			scoreAnswer(answer, 1);
-		case RDownvoteAnswer:
-			scoreAnswer(answer, -1);
-		case RPostComment:  // NOOP
-		}
-
-		if (!value.match(RPostAnswer))  // RPostAnswer => owner is author
-			ownerHandler(getUser(answer.user));
-		questionHandler();
-	}
-
-	function commentHandler()
-	{
-		if (comment == null)
-			throw "Assert failed: broken rep handler state";
-
-		trace('rep: handling ${value} for Comment');
-		if (!value.match(RPostComment))  // TODO make it a switch, safer that way
-			throw "Can't handle event for comment: " + value;
-
-		answerHandler();
-	}
-
-	function ownerHandler(user:User)
-	{
-		if (user == null || !Lambda.has(users, user))
-			throw "Assert failed: broken rep handler state";
-
-		trace('rep: handling ${value} for User (owner)');
-		switch (value) {
-		case RPostAnswer, RPostComment, RFavoriteQuestion:
-			scoreUser(user, 1);
-		case RUnfavoriteQuestion:
-			scoreUser(user, -1);
-		case RUpvoteAnswer:
-			scoreUser(user, 2);
-		case RDownvoteAnswer:
-			scoreUser(user, -2);
-		case RPostQuestion, RFollowQuestion, RUnfollowQuestion:
-			// NOOP
+		trace('rep: applying ${evName(ev)} for Question');
+		switch (ev) {
+		case EvQstFavorite(qst), EvAnsPost(_,qst), EvAnsUpvote(_,qst):
+			addVote(qst, 1);
+			ownerHandler(ev, getUser(qst.user));
+			return qst;
+		case EvCmtPost(_,_,qst):
+			addVote(qst, 1);
+			// don't dispatch an owner update, not immediate parent of comment
+			return qst;
+		case EvQstUnfavorite(qst):
+			addVote(qst, -1);
+			ownerHandler(ev, getUser(qst.user));
+			return qst;
+		case EvQstFollow(qst), EvQstUnfollow(qst), EvAnsDownvote(_,qst):
+			ownerHandler(ev, getUser(qst.user));
+			return qst;
+		case EvQstPost(qst):
+			return qst;
 		}
 	}
 
-	function authorHandler(user:User)
+	function answerHandler(ev:Event)
 	{
-		if (user == null || !Lambda.has(users, user))
-			throw "Assert failed: broken rep handler state";
+		function addVote(ans:Answer, amount:Int) {
+			ans.voteSum += amount;
+			trace('rep: updated answer ${ans._id.valueOf()} score to ${ans.voteSum} (added $amount)');
+		}
 
-		trace('rep: handling ${value} for User (action author)');
-		switch (value) {
-		case RPostQuestion, RPostComment:
-			scoreUser(user, 1);
-		case RPostAnswer:
-			scoreUser(user, 2);
-		case RFavoriteQuestion, RUnfavoriteQuestion, RFollowQuestion, RUnfollowQuestion,
-			RUpvoteAnswer, RDownvoteAnswer:
+		trace('rep: applying ${evName(ev)} for Answer');
+		switch (ev) {
+		case EvAnsUpvote(ans,_):
+			addVote(ans, 1);
+			ownerHandler(ev, getUser(ans.user));
+		case EvAnsDownvote(ans,_):
+			addVote(ans, -1);
+			ownerHandler(ev, getUser(ans.user));
+		case EvCmtPost(_,ans,_):
+			ownerHandler(ev, getUser(ans.user));
+		case _:
 			// NOOP
+		}
+		return questionHandler(ev);
+	}
+
+	function commentHandler(ev:Event)
+	{
+		trace('rep: applying ${evName(ev)} for Comment');
+		return switch (ev) {
+		case EvCmtPost(_,ans,_): answerHandler(ev);
+		case _: throw "Assert fail";
+		}
+	}
+
+	function ownerHandler(ev:Event, user:User)
+	{
+		trace('rep: applying ${evName(ev)} for User (owner)');
+		var amount = switch (ev) {
+		case EvAnsUpvote(_): 2;
+		case EvAnsDownvote(_): -2;
+		case EvQstFavorite(_), EvAnsPost(_), EvCmtPost(_): 1;
+		case EvQstUnfavorite(_): -1;
+		case _: 0;  // NOOP
+		}
+		if (amount != 0) {
+			user.points += amount;
+			trace('rep: updated user ${user.email} score to ${user.points} (added $amount)');
+		}
+	}
+
+	function authorHandler(ev:Event, user:User)
+	{
+		trace('rep: applying ${evName(ev)} for User (action author)');
+		var amount = switch (ev) {
+		case EvAnsPost(_): 2;
+		case EvQstPost(_), EvCmtPost(_): 1;
+		case _: 0;  // NOOP
+		}
+		if (amount != 0) {
+			user.points += amount;
+			trace('rep: updated user ${user.email} score to ${user.points} (added $amount)');
 		}
 	}
 
 	public function dispatch(event:Event)
 	{
-		reset(event.value);
+		users = [];  // clear the user cache
 
-		switch (event.target) {
-		case RQuestion(q):
-			question = q;
-			questionHandler();
-		case RAnswer(a, q):
-			answer = a;
-			question = q;
-			answerHandler();
-		case RComment(c, a, q):
-			comment = c;
-			answer = a;
-			question = q;
-			commentHandler();
+		var question = switch (event) {
+		case EvQstPost(q), EvQstFavorite(q), EvQstUnfavorite(q), EvQstFollow(q), EvQstUnfollow(q):
+			// TODO assert q != null
+			questionHandler(event);
+		case EvAnsPost(a,q), EvAnsUpvote(a,q), EvAnsDownvote(a,q):
+			// TODO assert a != null, q != null, a in q
+			answerHandler(event);
+		case EvCmtPost(c,a,q):
+			// TODO assert c != null, a != null, q != null, c in a, a in q
+			commentHandler(event);
 		}
 
 		if (loop.session.isAuthenticated())
-			authorHandler(getUser(loop.session.user));
+			authorHandler(event, getUser(loop.session.user));
+
+		if (question == null)
+			throw "Assert fail";
 
 		question.update(data);
 		for (user in users)

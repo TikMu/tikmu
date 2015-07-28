@@ -3,29 +3,18 @@ package effect;
 import db.Question;
 import db.User;
 
-enum EventValue {
-	RPostQuestion;
+enum Event {
+	EvQstPost(q:Question);
+	// EvQstView(q:Question);
+	EvQstFavorite(q:Question);
+	EvQstUnfavorite(q:Question);
+	EvQstFollow(q:Question);
+	EvQstUnfollow(q:Question);
 
-	// RViewQuestion;  // TODO
-	RFavoriteQuestion;
-	RUnfavoriteQuestion;
-	RFollowQuestion;
-	RUnfollowQuestion;
-	RPostAnswer;
+	EvAnsPost(a:Answer, q:Question);
+	EvAnsUpvote(a:Answer, q:Question);
+	EvAnsDownvote(a:Answer, q:Question);
 
-	RUpvoteAnswer;
-	RDownvoteAnswer;
-	RPostComment;
-}
-
-enum EventTarget {
-	RQuestion(q:Question);
-	RAnswer(a:Answer, q:Question);
-	RComment(c:Comment, a:Answer, q:Question);
-}
-
-typedef Event = {
-	value : EventValue,
-	target : EventTarget
+	EvCmtPost(c:Comment, a:Answer, q:Question);
 }
 
