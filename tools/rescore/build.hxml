@@ -1,4 +1,4 @@
--neko rescore.n
+-neko ../rescore.n
 -main ReScore
 -cp .
 -cp ../../appserver/src
