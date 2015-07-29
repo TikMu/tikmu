@@ -30,32 +30,32 @@ class Reputation {
 		if (amount.author != null && amount.author != 0 && ctx.loop.session.isAuthenticated()) {
 			author = getUser(ctx.loop.session.user);
 			author.points += amount.author;
-			trace('rep: changing user (author) ${author.email} score to ${author.points} (add ${amount.author})');
+			trace('rep: changing User (author) ${author.email} score to ${author.points} (add ${amount.author})');
 		}
 
 		if (amount.answer != null && amount.answer != 0 && answer != null) {
 			answer.voteSum += amount.answer;
-			trace('rep: changing answer ${answer._id.valueOf()} score to ${answer.voteSum} (add ${amount.answer})');
+			trace('rep: changing Answer ${answer._id.valueOf()} score to ${answer.voteSum} (add ${amount.answer})');
 		}
 
 		if (amount.answerOwner != null && amount.answerOwner != 0 && answer != null) {
 			var owner = getUser(answer.user);
 			if (owner != author) {
 				owner.points += amount.answerOwner;
-				trace('rep: changing user (answer owner) ${owner.email} score to ${owner.points} (add ${amount.answerOwner})');
+				trace('rep: changing User (question owner) ${owner.email} score to ${owner.points} (add ${amount.answerOwner})');
 			}
 		}
 
 		if (amount.question != null && amount.question != 0 && question != null) {
 			question.voteSum += amount.question;
-			trace('rep: changing question ${question._id.valueOf()} score to ${question.voteSum} (add ${amount.question})');
+			trace('rep: changing Question ${question._id.valueOf()} score to ${question.voteSum} (add ${amount.question})');
 		}
 
 		if (amount.questionOwner != null && amount.questionOwner != 0 && question != null) {
 			var owner = getUser(question.user);
 			if (owner != author) {
 				owner.points += amount.questionOwner;
-				trace('rep: changing user (question owner) ${owner.email} score to ${owner.points} (add ${amount.questionOwner})');
+				trace('rep: changing User (question owner) ${owner.email} score to ${owner.points} (add ${amount.questionOwner})');
 			}
 		}
 
@@ -66,7 +66,7 @@ class Reputation {
 
 	public function dispatch(event:Event, ?pos:haxe.PosInfos)
 	{
-		trace('rep: dispatching event ${Type.enumConstructor(event)} from ${pos.fileName}:${pos.lineNumber}');
+		trace('rep: ${Type.enumConstructor(event)} from ${pos.className}::${pos.methodName}');
 		switch (event) {
 		case EvQstPost(q):
 			magic(q, null, null, { author : 1, question : 1 });
@@ -75,7 +75,7 @@ class Reputation {
 		case EvQstUnfavorite(q):
 			magic(q, null, null, { question : -1, questionOwner : -1 });
 		case EvQstFollow(q), EvQstUnfollow(q):
-			// NOOP, follow implies favorite
+			trace("rep: noop, deferred to (un)favorite, since follow implies favorite");
 		case EvAnsPost(a,q):
 			magic(q, a, null, { author : 2, question : 1, questionOwner : 1 });
 		case EvAnsUpvote(a,q):
