@@ -61,9 +61,9 @@ class Context {
 		trace('spent ${ms(tfinal-t0)} ms in total: init=${ms(tinit-t0)} response=${ms(tresponse-tinit)} writing=${ms(tfinal-tresponse)}');
 	}
 
-	public function dispatchEvent(event:Event)
+	public function dispatchEvent(event:Event, ?pos:haxe.PosInfos)
 	{
-		reputation.dispatch(event);
+		reputation.dispatch(event, pos);
 		notification.dispatch(event);
 	}
 
