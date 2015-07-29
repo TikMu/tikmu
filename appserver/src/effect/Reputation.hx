@@ -33,19 +33,6 @@ class Reputation {
 			trace('rep: changing user (author) ${author.email} score to ${author.points} (add ${amount.author})');
 		}
 
-		if (amount.question != null && amount.question != 0 && question != null) {
-			question.voteSum += amount.question;
-			trace('rep: changing question ${question._id.valueOf()} score to ${question.voteSum} (add ${amount.question})');
-		}
-
-		if (amount.questionOwner != null && amount.questionOwner != 0 && question != null) {
-			var owner = getUser(question.user);
-			if (owner != author) {
-				owner.points += amount.questionOwner;
-				trace('rep: changing user (owner) ${owner.email} score to ${owner.points} (add ${amount.questionOwner})');
-			}
-		}
-
 		if (amount.answer != null && amount.answer != 0 && answer != null) {
 			answer.voteSum += amount.answer;
 			trace('rep: changing answer ${answer._id.valueOf()} score to ${answer.voteSum} (add ${amount.answer})');
@@ -55,7 +42,20 @@ class Reputation {
 			var owner = getUser(answer.user);
 			if (owner != author) {
 				owner.points += amount.answerOwner;
-				trace('rep: changing user (owner) ${owner.email} score to ${owner.points} (add ${amount.answerOwner})');
+				trace('rep: changing user (answer owner) ${owner.email} score to ${owner.points} (add ${amount.answerOwner})');
+			}
+		}
+
+		if (amount.question != null && amount.question != 0 && question != null) {
+			question.voteSum += amount.question;
+			trace('rep: changing question ${question._id.valueOf()} score to ${question.voteSum} (add ${amount.question})');
+		}
+
+		if (amount.questionOwner != null && amount.questionOwner != 0 && question != null) {
+			var owner = getUser(question.user);
+			if (owner != author) {
+				owner.points += amount.questionOwner;
+				trace('rep: changing user (question owner) ${owner.email} score to ${owner.points} (add ${amount.questionOwner})');
 			}
 		}
 
