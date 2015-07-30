@@ -106,10 +106,8 @@ class SomeQuestion extends BaseRoute {
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		if (!loop.session.user.equals(question.user)) {
-			for (e in events)
-				_ctx.dispatchEvent(e);
-		}
+		for (e in events)
+			_ctx.dispatchEvent(e);
 
 		var state = {
 			favorite : uqq.favorite,
@@ -155,10 +153,8 @@ class SomeQuestion extends BaseRoute {
 
 		data.userActions.update({ _id : loop.session.user }, uq, true);
 
-		if (!loop.session.user.equals(question.user)) {
-			for (e in events)
-				_ctx.dispatchEvent(e);
-		}
+		for (e in events)
+			_ctx.dispatchEvent(e);
 
 		var state = {
 			favorite : uqq.favorite,

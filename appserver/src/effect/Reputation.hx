@@ -26,34 +26,31 @@ class Reputation {
 			return u;
 		}
 
-		var author = null;
 		if (amount.author != null && amount.author != 0 && ctx.loop.session.isAuthenticated()) {
-			author = getUser(ctx.loop.session.user);
+			var author = getUser(ctx.loop.session.user);
 			author.points += amount.author;
 			trace('rep: changing User (author) ${author.email} score to ${author.points} (add ${amount.author})');
 		}
 
-		if (amount.answer != null && amount.answer != 0 && answer != null) {
-			answer.voteSum += amount.answer;
-			trace('rep: changing Answer ${answer._id.valueOf()} score to ${answer.voteSum} (add ${amount.answer})');
-		}
-
-		if (amount.answerOwner != null && amount.answerOwner != 0 && answer != null) {
-			var owner = getUser(answer.user);
-			if (owner != author) {
+		if (answer != null) {
+			if (amount.answer != null && amount.answer != 0) {
+				answer.voteSum += amount.answer;
+				trace('rep: changing Answer ${answer._id.valueOf()} score to ${answer.voteSum} (add ${amount.answer})');
+			}
+			if (amount.answerOwner != null && amount.answerOwner != 0) {
+				var owner = getUser(answer.user);
 				owner.points += amount.answerOwner;
-				trace('rep: changing User (question owner) ${owner.email} score to ${owner.points} (add ${amount.answerOwner})');
+				trace('rep: changing User (answer owner) ${owner.email} score to ${owner.points} (add ${amount.answerOwner})');
 			}
 		}
 
-		if (amount.question != null && amount.question != 0 && question != null) {
-			question.voteSum += amount.question;
-			trace('rep: changing Question ${question._id.valueOf()} score to ${question.voteSum} (add ${amount.question})');
-		}
-
-		if (amount.questionOwner != null && amount.questionOwner != 0 && question != null) {
+		if (question != null) {
 			var owner = getUser(question.user);
-			if (owner != author) {
+			if (amount.question != null && amount.question != 0) {
+				question.voteSum += amount.question;
+				trace('rep: changing Question ${question._id.valueOf()} score to ${question.voteSum} (add ${amount.question})');
+			}
+			if (amount.questionOwner != null && amount.questionOwner != 0) {
 				owner.points += amount.questionOwner;
 				trace('rep: changing User (question owner) ${owner.email} score to ${owner.points} (add ${amount.questionOwner})');
 			}
@@ -64,6 +61,12 @@ class Reputation {
 			user.update(data);
 	}
 
+	function isAuthor(uid:db.helper.Ref<db.User>)
+	{
+		var author = ctx.loop.session.user;
+		return author != null && uid.equals(author);
+	}
+
 	public function dispatch(event:Event, ?pos:haxe.PosInfos)
 	{
 		trace('rep: ${Type.enumConstructor(event)} from ${pos.className}::${pos.methodName}');
@@ -71,19 +74,19 @@ class Reputation {
 		case EvQstPost(q):
 			magic(q, null, null, { author : 1, question : 1 });
 		case EvQstFavorite(q):
-			magic(q, null, null, { question : 1, questionOwner : 1 });
+			magic(q, null, null, { question : 1, questionOwner : (!isAuthor(q.user)?1:0) });
 		case EvQstUnfavorite(q):
-			magic(q, null, null, { question : -1, questionOwner : -1 });
+			magic(q, null, null, { question : -1, questionOwner : (!isAuthor(q.user)?-1:0) });
 		case EvQstFollow(q), EvQstUnfollow(q):
 			trace("rep: noop, deferred to (un)favorite, since follow implies favorite");
 		case EvAnsPost(a,q):
-			magic(q, a, null, { author : 2, question : 1, questionOwner : 1 });
+			magic(q, a, null, { author : 2, question : 1, questionOwner : (!isAuthor(q.user)?1:0) });
 		case EvAnsUpvote(a,q):
-			magic(q, a, null, { answer : 1, answerOwner : 5, question : 1, questionOwner : 2 });
+			magic(q, a, null, { answer : 1, answerOwner : (!isAuthor(a.user)?5:0), question : 1, questionOwner : (!isAuthor(q.user)?2:0) });
 		case EvAnsDownvote(a,q):
-			magic(q, a, null, { answer : -1, answerOwner : -5, question : -1, questionOwner : -2 });
+			magic(q, a, null, { answer : 1, answerOwner : (!isAuthor(a.user)?-5:0), question : 1, questionOwner : (!isAuthor(q.user)?-2:0) });
 		case EvCmtPost(c,a,q):
-			magic(q, a, c, { author : 1, answerOwner : 1, question : 1 });
+			magic(q, a, c, { answer : 1, answerOwner : (!isAuthor(a.user)?1:0), question : 1 });
 		}
 	}
 
