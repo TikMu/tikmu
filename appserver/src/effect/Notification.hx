@@ -1,7 +1,17 @@
 package effect;
 
 import effect.Event;
+import db.UserNotifications;
+using db.UserTools;
 
+/**
+  The notification system dispatcher.
+
+  It notifies users when:
+   - there are replies to some question being monitored
+     (TODO auto follow questions you ask or answer)
+   - an answer is upvoted on downvoted
+**/
 class Notification {
 	var ctx:Context;
 	var data(get,never):StorageContext;
@@ -9,22 +19,31 @@ class Notification {
 	var loop(get,never):IterationContext;
 		inline function get_loop() return ctx.loop;
 
-	public function dispatch(event:Event)
+	function magic(uids:Array<db.helper.Ref<db.User>>, msg:NotificationMessage, url:String)
 	{
+		for (uid in uids) {
+			var n = uid.getUserNotifications(data, true);
+			n.unread.push({ msg : msg, url : url });
+			data.userNotifications.update({ _id : n._id }, n);  // FIXME
+			trace('bell: will notify user ${uid} of ${msg} (url: $url)');
+		}
+	}
+
+	public function dispatch(event:Event, ?pos:haxe.PosInfos)
+	{
+		// TODO get question followers
+		trace('bell: ${Type.enumConstructor(event)} from ${pos.className}::${pos.methodName}');
 		switch (event) {
-		case EvAnsPost(ans,qst):
-			if (qst.user == loop.session.user)
-				return;
-			trace("notify: question owner of posted answer");
-			data.userNotifications.update(
-				{ _id : qst.user },
-				{ "$push" : { msg : "New answer" } },
-				true
-			);
-		case EvCmtPost(cmt,ans,qst):
-			trace("notify: TODO notify question owner of posted answer");
-			trace("notify: notify answer owner of posted comment");
+		case EvAnsPost(a,q):
+			magic([], NoMsgAnswerPosted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
+		case EvCmtPost(c,a,q):
+			magic([], NoMsgCommentPosted, '/question/${q._id.valueOf()}#${c._id.valueOf()}');
+		case EvAnsUpvote(a,q):
+			// magic([a.user], NoMsgAnswerUpvoted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
+		case EvAnsDownvote(a,q):
+			// magic([a.user], NoMsgAnswerDownvoted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
 		case _:
+			trace("bell: noop");
 		}
 	}
 

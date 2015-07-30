@@ -64,7 +64,7 @@ class Context {
 	public function dispatchEvent(event:Event, ?pos:haxe.PosInfos)
 	{
 		reputation.dispatch(event, pos);
-		notification.dispatch(event);
+		notification.dispatch(event, pos);
 	}
 
 	public function new(db)

@@ -24,5 +24,22 @@ class UserTools {
 		}
 		return actions;
 	}
+
+	public static function getUserNotifications(user:Ref<User>, data:StorageContext, ?create=false):Null<UserNotifications>
+	{
+		var notifications = data.userNotifications.findOne({ _id : user });
+		if (!create)
+			return notifications;
+
+		if (notifications == null) {
+			notifications = {
+				_id : user,
+				unread : [],
+				archive : []
+			}
+			data.userNotifications.insert(notifications);
+		}
+		return notifications;
+	}
 }
 
