@@ -3,7 +3,11 @@ TikMu
 
 This is the central repository for the TikMu app.
 
-A self-updating server lives, and branches other than the master one can be requested through the `X-Dev-Branch` header.  More generally, any git 'ref' can be requested by setting the `X-Dev-Ref` accordindly.  More details of the live server are available on [documentation/live-server.md](documentation/live-server.md).
+A self-updating server lives, and branches other than the master one can be
+requested through the `X-Dev-Branch` header.  More generally, any git 'ref' can
+be requested by setting the `X-Dev-Ref` accordingly.  More details of the live
+server are available on
+[documentation/live-server.md](documentation/live-server.md).
 
 [![Check out the live server](https://img.shields.io/badge/live%20at-maxikali.com-brightgreen.svg)](https://maxikali.com/)
 [![Join the chat at https://gitter.im/jonasmalacofilho/tikmu](https://img.shields.io/badge/gitter-join %20chat-green.svg)](https://gitter.im/jonasmalacofilho/tikmu?utm_source=badge&utm_medium=badge&utm_content=badge)
