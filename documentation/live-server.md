@@ -1,7 +1,7 @@
 The live server
 ===============
 
-> **We're a proper SSL setup and other security enhancements.  Don't reuse a
+> **We're missing a proper SSL setup and other security enhancements.  Don't reuse a
 > password from somewhere else and don't post any private or valuable data.**
 
 A rudimentary CI deployment has been set up: [https://104.236.51.222].  This
