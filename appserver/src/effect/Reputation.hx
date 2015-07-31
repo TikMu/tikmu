@@ -84,7 +84,7 @@ class Reputation {
 		case EvAnsUpvote(a,q):
 			magic(q, a, null, { answer : 1, answerOwner : (!isAuthor(a.user)?5:0), question : 1, questionOwner : (!isAuthor(q.user)?2:0) });
 		case EvAnsDownvote(a,q):
-			magic(q, a, null, { answer : 1, answerOwner : (!isAuthor(a.user)?-5:0), question : 1, questionOwner : (!isAuthor(q.user)?-2:0) });
+			magic(q, a, null, { answer : -1, answerOwner : (!isAuthor(a.user)?-5:0), question : -1, questionOwner : (!isAuthor(q.user)?-2:0) });
 		case EvCmtPost(c,a,q):
 			magic(q, a, c, { answer : 1, answerOwner : (!isAuthor(a.user)?1:0), question : 1 });
 		}
