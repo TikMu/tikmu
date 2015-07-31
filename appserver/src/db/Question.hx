@@ -1,6 +1,5 @@
 package db;
 
-import db.helper.*;
 import org.bsonspec.*;
 
 typedef Question = {

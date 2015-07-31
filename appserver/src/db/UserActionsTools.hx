@@ -2,7 +2,6 @@ package db;
 
 import db.Question;
 import db.UserActions;
-import db.helper.Ref;
 
 class UserActionsTools {
 	public static function questionSummary(actions:Null<UserActions>, question:Ref<Question>):Null<QuestionActions>

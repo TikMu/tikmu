@@ -15,7 +15,7 @@ typedef Notification = {
 }
 
 typedef UserNotifications = {
-	_id : db.helper.Ref<User>,
+	_id : Ref<User>,
 	unread : Array<Notification>,
 	archive : Array<Notification>
 }

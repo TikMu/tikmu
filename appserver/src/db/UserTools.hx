@@ -1,7 +1,5 @@
 package db;
 
-import db.helper.Ref;
-
 class UserTools {
 	public static function update(user:User, data:StorageContext):Void
 	{

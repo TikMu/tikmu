@@ -1,8 +1,6 @@
 package db;
 
 import db.Question;
-import db.helper.Ref;
-import org.bsonspec.ObjectID;
 
 typedef QuestionActions = {
 	question : Ref<Question>,

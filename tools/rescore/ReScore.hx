@@ -1,7 +1,7 @@
 import org.mongodb.*;
 
 class ReScore {
-	static function fakeSession(userId:db.helper.Ref<db.User>)
+	static function fakeSession(userId:db.Ref<db.User>)
 	{
 		return new db.Session(null, userId, 1e9, null);
 	}

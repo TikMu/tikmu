@@ -1,5 +1,6 @@
 package effect;
 
+import db.*;
 import db.Question;
 using db.QuestionTools;
 using db.UserTools;
@@ -14,8 +15,8 @@ class Reputation {
 	function magic(question:Question, ?answer:Answer, ?comment:Comment,
 		amount:{ ?author : Int, ?question : Int, ?questionOwner : Int, ?answer : Int, ?answerOwner : Int})
 	{
-		var users = new Array<db.User>();
-		function getUser(uid:db.helper.Ref<db.User>) {
+		var users = new Array<User>();
+		function getUser(uid:Ref<User>) {
 			var u = Lambda.find(users, function (x) return x._id.equals(uid));
 			if (u == null) {
 				u = uid.get(data.users.col);
@@ -61,7 +62,7 @@ class Reputation {
 			user.update(data);
 	}
 
-	function isAuthor(uid:db.helper.Ref<db.User>)
+	function isAuthor(uid:Ref<User>)
 	{
 		var author = ctx.loop.session.user;
 		return author != null && uid.equals(author);

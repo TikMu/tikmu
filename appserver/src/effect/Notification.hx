@@ -1,7 +1,8 @@
 package effect;
 
-import effect.Event;
+import db.*;
 import db.UserNotifications;
+import effect.Event;
 using db.UserTools;
 
 /**
@@ -19,7 +20,7 @@ class Notification {
 	var loop(get,never):IterationContext;
 		inline function get_loop() return ctx.loop;
 
-	function magic(uids:Array<db.helper.Ref<db.User>>, msg:NotificationMessage, url:String)
+	function magic(uids:Array<Ref<User>>, msg:NotificationMessage, url:String)
 	{
 		for (uid in uids) {
 			var n = uid.getUserNotifications(data, true);
