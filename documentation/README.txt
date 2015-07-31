@@ -5,18 +5,18 @@ TikMu existing documentation
 Repository index
 ----------------
 
- /
- ├── appserver               all actual code running (application server + client side code)
- │   ├── src                 haxe sources and direct assets, such as templates (stored alongside their corresponding routes)
- │   ├── www                 output directory that will be served over http, including static assets
- │   ├── build.hxml          app server build recipe
- │   └── test.hxml           unit tests execution recipe
- ├── documentation           (this directory)
- ├── experiments             an assortment of experiments
- ├── tools                   helper tools
- │   ├── rescore             tool: resets and recomputes all reputations (user, answer and question)
- ├── Build.hx                autonomous build script (used by the CI server)
- └── README.md
+/
+├── appserver        all actual code running (application server + client side code)
+│   ├── src          haxe sources and direct assets, such as templates (stored with routes)
+│   ├── www          output directory that will be served over http, including static assets
+│   ├── build.hxml   app server build recipe
+│   └── test.hxml    unit tests execution recipe
+├── documentation    (this directory)
+├── experiments      an assortment of experiments
+├── tools            helper tools
+│   ├── rescore      tool: resets and recomputes all reputations (user, answer and question)
+├── Build.hx         autonomous build script (used by the CI – continuous integration – server)
+└── README.md
 
 
 Documentation index
@@ -24,16 +24,16 @@ Documentation index
 
 Simplified directory of existing documentation:
 
- /documentation
- ├── local-setup
- │   └── pre-commit         shell script git hook to prevent broken commits
- ├── server-setup
- │   ├── github-listener    (dir) webhook to github push events that rebuilds the CI (continuous integration) server
- │   ├── nginx-config       (dir) for the CI server
- │   ├── iptables.v4        simple firewall configuration
- │   └── tora.service       systemd service file for tora
- ├── live-server.md         live and self updating development server
- └── README.txt             (this file)
+/documentation
+├── local-setup
+│   └── pre-commit       shell script git hook to prevent broken commits
+├── server-setup
+│   ├── github-listener  (dir) webhook to github push events that rebuilds the CI server
+│   ├── nginx-config     (dir) for the CI server
+│   ├── iptables.v4      simple firewall configuration
+│   └── tora.service     systemd service file for tora
+├── live-server.md       live and self updating development server
+└── README.txt           (this file)
 
 
 Commit and issue tags
