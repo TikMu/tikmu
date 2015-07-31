@@ -32,9 +32,8 @@ class AnswerActions {
 
 			count.html(Std.string(Std.parseInt(count.html()) + inc));
 		}
-		function onFail() {  // FIXME (not restoring previous data)
+		function onFail() {  // TODO improve, maybe check current server status
 			elem.toggleClass("pressed");
-			count.html(Std.string(Std.parseInt(count.html()) - inc));
 		}
 
 		elem.toggleClass("pressed");
