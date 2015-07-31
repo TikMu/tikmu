@@ -23,9 +23,10 @@ class Notification {
 	{
 		for (uid in uids) {
 			var n = uid.getUserNotifications(data, true);
+			trace(n);
 			n.unread.push({ msg : msg, url : url });
 			data.userNotifications.update({ _id : n._id }, n);  // FIXME
-			trace('bell: will notify user ${uid} of ${msg} (url: $url)');
+			trace('bell: will notify user ${uid.valueOf()} of ${msg} (url: $url)');
 		}
 	}
 
@@ -39,9 +40,9 @@ class Notification {
 		case EvCmtPost(c,a,q):
 			magic([], NoMsgCommentPosted, '/question/${q._id.valueOf()}#${c._id.valueOf()}');
 		case EvAnsUpvote(a,q):
-			// magic([a.user], NoMsgAnswerUpvoted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
+			magic([a.user], NoMsgAnswerUpvoted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
 		case EvAnsDownvote(a,q):
-			// magic([a.user], NoMsgAnswerDownvoted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
+			magic([a.user], NoMsgAnswerDownvoted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
 		case _:
 			trace("bell: noop");
 		}

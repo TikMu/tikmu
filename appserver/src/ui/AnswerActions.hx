@@ -32,7 +32,7 @@ class AnswerActions {
 
 			count.html(Std.string(Std.parseInt(count.html()) + inc));
 		}
-		function onFail() {
+		function onFail() {  // FIXME (not restoring previous data)
 			elem.toggleClass("pressed");
 			count.html(Std.string(Std.parseInt(count.html()) - inc));
 		}
