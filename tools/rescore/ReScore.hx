@@ -56,10 +56,10 @@ class ReScore {
 			for (uqq in uq.onQuestion) {
 				var q = uqq.question.get(data.questions.col);
 				if (!uq._id.equals(q.user)) {
-				    if (uqq.favorite)
-					    rep.dispatch(EvQstFavorite(q));
-				    if (uqq.following)
-					    rep.dispatch(EvQstFollow(q));
+					if (uqq.favorite)
+						rep.dispatch(EvQstFavorite(q));
+					if (uqq.following)
+						rep.dispatch(EvQstFollow(q));
 				}
 			}
 			for (uqa in uq.onAnswer) {
