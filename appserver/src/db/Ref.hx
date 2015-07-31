@@ -10,16 +10,16 @@ typedef Object<K> = {
 }
 
 @:forward abstract Ref<V:Object<K>>(K) from K to K {
-	inline public function new(id)
+	public inline function new(id)
 		this = id;
+
+	@:from public static function fromObject<V:Object<K>>(o:V):Ref<V>
+		return new Ref(o._id);
 
 	public function get(c:Collection):V
 		return c.findOne({ '_id' : this });
 
-	@:from public static function fromObject<V:Object<K>>(o:V)
-		return new Ref(o._id);
-
-	@:extern inline public function asId():ObjectID
+	public inline function asId():ObjectID
 		return this;
 }
 

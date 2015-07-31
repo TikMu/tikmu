@@ -3,6 +3,8 @@ package effect;
 import db.*;
 import db.UserNotifications;
 import effect.Event;
+import org.bsonspec.ObjectID;
+import org.mongodb.Cursor;
 using db.UserTools;
 
 /**
@@ -20,26 +22,31 @@ class Notification {
 	var loop(get,never):IterationContext;
 		inline function get_loop() return ctx.loop;
 
-	function magic(uids:Array<Ref<User>>, msg:NotificationMessage, url:String)
+	function magic(uids:Iterable<Ref<User>>, msg:NotificationMessage, url:String)
 	{
 		for (uid in uids) {
 			var n = uid.getUserNotifications(data, true);
-			trace(n);
 			n.unread.push({ msg : msg, url : url });
 			data.userNotifications.update({ _id : n._id }, n);  // FIXME
 			trace('bell: will notify user ${uid.valueOf()} of ${msg} (url: $url)');
 		}
 	}
 
+	function getFollowers(qid:Ref<Question>):Iterable<Ref<User>>
+	{
+		var actions = data.userActions.find({ onQuestion : {"$elemMatch":{ question : qid }} }).toArray();
+		return actions.map(function (x) return x._id);
+		// TODO return lazy iterable instead of array
+	}
+
 	public function dispatch(event:Event, ?pos:haxe.PosInfos)
 	{
-		// TODO get question followers
 		trace('bell: ${Type.enumConstructor(event)} from ${pos.className}::${pos.methodName}');
 		switch (event) {
 		case EvAnsPost(a,q):
-			magic([], NoMsgAnswerPosted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
+			magic(getFollowers(q), NoMsgAnswerPosted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
 		case EvCmtPost(c,a,q):
-			magic([], NoMsgCommentPosted, '/question/${q._id.valueOf()}#${c._id.valueOf()}');
+			magic(getFollowers(q), NoMsgCommentPosted, '/question/${q._id.valueOf()}#${c._id.valueOf()}');
 		case EvAnsUpvote(a,q):
 			magic([a.user], NoMsgAnswerUpvoted, '/question/${q._id.valueOf()}#${a._id.valueOf()}');
 		case EvAnsDownvote(a,q):
