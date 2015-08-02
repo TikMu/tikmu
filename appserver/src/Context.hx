@@ -86,6 +86,7 @@ class Context {
 			list : new route.List(this),
 			login: new route.Login(this),
 			logout: new route.LogOut(this),
+			notifications : new route.Notifications(this),
 			question : new route.Question(this),
 			register: new route.Register(this),
 			search : new route.List.Search(this),
