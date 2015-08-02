@@ -18,3 +18,7 @@ enum AuthorizationError {
 	ExpiredSession(s:Session);
 }
 
+enum NotificationError {
+	ENoMatchingNotification(url:String);
+}
+

@@ -1,5 +1,6 @@
 package route;
 
+import Error;
 using db.UserTools;
 
 class Notifications extends BaseRoute {
@@ -21,7 +22,22 @@ class Notifications extends BaseRoute {
 		return serialize(n);
 	}
 
-	public function postRead(url:String)  // TODO
-		return mweb.http.Status.NotFound;
+	public function postRead(args:{ url : String })
+	{
+		var n = loop.session.user.getUserNotifications(data);
+		if (n == null)
+			throw ENoMatchingNotification(args.url);
+
+		var matching = Lambda.filter(n.unread, function (x) return x.url == args.url);
+		if (matching.length == 0)
+			throw ENoMatchingNotification(args.url);
+
+		for (item in matching)
+			n.unread.remove(item);
+		for (item in matching)
+			n.archive.push(item);
+		data.userNotifications.update({ _id : n._id }, n);
+		return mweb.http.Response.empty().redirect(args.url);
+	}
 }
 
