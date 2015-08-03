@@ -36,7 +36,7 @@ class SomeAnswer extends BaseRoute {
 
 		if (vote != 0 && vote*uqa.vote <= 0) {
 			uqa.vote += vote;
-			data.userActions.update({ _id : loop.session.user }, uq, true);
+			data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO atomic
 			_ctx.dispatchEvent(vote > 0 ? EvAnsUpvote(answer, question) : EvAnsDownvote(answer, question));
 		}
 
@@ -63,7 +63,9 @@ class SomeAnswer extends BaseRoute {
 			deleted : false
 		};
 		answer.comments.push(cmt);
-		question.updateAnswer(answer, data);
+		data.questions.update({ _id : question._id, answers : { _id : answer._id } },{
+			"$push" : { "answers.$.comments" : cmt }
+		});
 		_ctx.dispatchEvent(EvCmtPost(cmt, answer, question));
 		return new Response().redirect('/question/${question._id.valueOf()}#${cmt._id.valueOf()}');
 	}
@@ -85,7 +87,10 @@ class SomeAnswer extends BaseRoute {
 
 		answer.contents = args.updated;
 		answer.modified = loop.now;
-		question.updateAnswer(answer, data);
+		data.questions.update({ _id : question._id, answers : { _id : answer._id } }, {
+			"answers.$.contents" : answer.contents,
+			"answers.$.modified" : answer.modified
+		});
 		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
 	}
 
@@ -96,7 +101,10 @@ class SomeAnswer extends BaseRoute {
 
 		answer.deleted = true;
 		answer.modified = loop.now;
-		question.updateAnswer(answer, data);
+		data.questions.update({ _id : question._id, answers : { _id : answer._id } }, {
+			"answers.$.deleted" : answer.deleted,
+			"answers.$.modified" : answer.modified
+		});
 		return new Response().redirect('/question/${question._id.valueOf()}');
 	}
 

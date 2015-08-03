@@ -64,7 +64,7 @@ class SomeQuestion extends BaseRoute {
 			comments : []
 		};
 		question.answers.push(ans);
-		data.questions.update({ _id : question._id }, question);
+		data.questions.update({ _id : question._id }, {"$push":{ answers : ans }} );
 		_ctx.dispatchEvent(EvAnsPost(ans, question));
 		return new Response().redirect('/question/${question._id.valueOf()}#${ans._id.valueOf()}');
 	}
@@ -104,7 +104,7 @@ class SomeQuestion extends BaseRoute {
 			events = [EvQstFavorite(question)];
 		}
 
-		data.userActions.update({ _id : loop.session.user }, uq, true);
+		data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO atomic
 
 		for (e in events)
 			_ctx.dispatchEvent(e);
@@ -151,7 +151,7 @@ class SomeQuestion extends BaseRoute {
 			}
 		}
 
-		data.userActions.update({ _id : loop.session.user }, uq, true);
+		data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO atomic
 
 		for (e in events)
 			_ctx.dispatchEvent(e);
@@ -170,7 +170,10 @@ class SomeQuestion extends BaseRoute {
 
 		question.contents = args.updated;
 		question.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		data.questions.update({ _id : question._id }, {
+			contents : question.contents,
+			modified : question.modified
+		});
 		return new Response().redirect('/question/${question._id.valueOf()}');
 	}
 
@@ -181,7 +184,10 @@ class SomeQuestion extends BaseRoute {
 
 		question.deleted = true;
 		question.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		data.questions.update({ _id : question._id }, {
+			deleted : question.deleted,
+			modified : question.modified
+		});
 		return new Response().redirect('/');
 	}
 
