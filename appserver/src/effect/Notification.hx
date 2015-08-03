@@ -26,8 +26,11 @@ class Notification {
 	{
 		for (uid in uids) {
 			var n = uid.getUserNotifications(data, true);
-			n.unread.push({ msg : msg, url : url });
-			data.userNotifications.update({ _id : n._id }, n);  // FIXME
+			var nn = { msg : msg, url : url };
+			n.unread.push(nn);
+			data.userNotifications.update({ _id : n._id }, {
+				"$push" : { unread : nn }
+			});
 			trace('bell: will notify user ${uid.valueOf()} of ${msg} (url: $url)');
 		}
 	}
