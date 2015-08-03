@@ -36,7 +36,7 @@ class Notifications extends BaseRoute {
 			n.unread.remove(item);
 		for (item in matching)
 			n.archive.push(item);
-		data.userNotifications.update({ _id : n._id }, n);
+		data.userNotifications.update({ _id : n._id }, n);  // TODO handle concurrent updates
 		return mweb.http.Response.empty().redirect(args.url);
 	}
 }

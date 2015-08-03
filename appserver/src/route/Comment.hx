@@ -23,7 +23,7 @@ class SomeComment extends BaseRoute {
 
 		comment.contents = args.updated;
 		comment.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		data.questions.update({ _id : question._id }, question);  // TODO handle concurrent updates
 		return new Response().redirect('/question/${question._id.valueOf()}#${comment._id.valueOf()}');
 	}
 
@@ -34,7 +34,7 @@ class SomeComment extends BaseRoute {
 
 		comment.deleted = true;
 		comment.modified = loop.now;
-		data.questions.update({ _id : question._id }, question);
+		data.questions.update({ _id : question._id }, question);  // TODO handle concurrent updates
 		return new Response().redirect('/question/${question._id.valueOf()}#${answer._id.valueOf()}');
 	}
 

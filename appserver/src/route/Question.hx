@@ -104,7 +104,7 @@ class SomeQuestion extends BaseRoute {
 			events = [EvQstFavorite(question)];
 		}
 
-		data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO atomic
+		data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO handle concurrent updates
 
 		for (e in events)
 			_ctx.dispatchEvent(e);
@@ -151,7 +151,7 @@ class SomeQuestion extends BaseRoute {
 			}
 		}
 
-		data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO atomic
+		data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO handle concurrent updates
 
 		for (e in events)
 			_ctx.dispatchEvent(e);

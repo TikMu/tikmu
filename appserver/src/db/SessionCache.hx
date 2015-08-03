@@ -127,6 +127,12 @@ class SessionCache {
         }
     }
 
+    public function close(session:Session):Void
+    {
+        session.close();
+        manager.update({ _id : session._id }, { closedAt : session.closedAt });
+    }
+
     // Terminate `session` saving its current state on the db
     public function terminate(session:Session):Bool
     {

@@ -36,7 +36,7 @@ class SomeAnswer extends BaseRoute {
 
 		if (vote != 0 && vote*uqa.vote <= 0) {
 			uqa.vote += vote;
-			data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO atomic
+			data.userActions.update({ _id : loop.session.user }, uq, true);  // TODO handle concurrent updates
 			_ctx.dispatchEvent(vote > 0 ? EvAnsUpvote(answer, question) : EvAnsDownvote(answer, question));
 		}
 

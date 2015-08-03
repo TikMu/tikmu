@@ -104,8 +104,7 @@ class Auth {
 
 	public static function logOut(ctx:Context)
 	{
-		ctx.loop.session.close();
-		ctx.data.sessions.save(ctx.loop.session);
+		ctx.data.sessions.close(ctx.loop.session);
 		trace('logged out');
 	}
 
