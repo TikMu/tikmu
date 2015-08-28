@@ -85,6 +85,13 @@ li {
 	height: 17px;
 }
 
+#notify{
+	background-image: url('../img/icon-notify.png');
+	background-size: 13px 15px;
+	width: 16px;
+	height: 16px;
+}
+
 
 /* Columns */
 
