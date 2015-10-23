@@ -4,7 +4,7 @@
 @ctx.aux.head.setData({ title : teaser + (teaser != question.contents ? "..." : "") }).execute()
 <body>
 	@ctx.aux.menu.execute()
-	<main>
+	<main class="question_open">
 		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
 		<article id="@qid" class="question question_open">
 			<header class="question_header">

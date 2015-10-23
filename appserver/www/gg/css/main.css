@@ -233,8 +233,12 @@ li {
 
 /* Questions open */
 
-.question_open {
+main.question_open {
 	max-width: 620px;
+	margin: 0 auto;
+}
+
+article.question_open {
 	background-color: #95B300;
 	color: #FFF;
 }
