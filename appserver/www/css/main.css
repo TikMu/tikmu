@@ -114,7 +114,8 @@ li {
 	background-image: url('../img/icon-user-avatar.png');
 	background-repeat: no-repeat;
 	background-size: 30px 30px;
-	padding-right: 5px;
+	background-position-x: 12px;
+	padding-right: 15px;
 	height: 30px;
 	width: 30px;
 	border: none;
