@@ -14,7 +14,7 @@ input, button {
 }
 
 a {
-	color: #fff !important;
+	color: #fff;
 }
 
 /* but keep the default color on 'temp' (unstiled) elements */
