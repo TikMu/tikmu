@@ -17,6 +17,9 @@ a {
 	color: #fff;
 }
 
+.row{
+	max-width: 60.6rem;	
+}
 /* but keep the default color on 'temp' (unstiled) elements */
 .temp a, a.temp {
 	color: gray;
