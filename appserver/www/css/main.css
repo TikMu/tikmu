@@ -15,7 +15,6 @@ input, button {
 
 a {
 	color: #fff;
-	text-decoration: none;
 }
 
 /* but keep the default color on 'temp' (unstiled) elements */
@@ -114,10 +113,10 @@ li {
 	background-image: url('../img/icon-user-avatar.png');
 	background-repeat: no-repeat;
 	background-size: 30px 30px;
-	background-position-x: 12px;
+	background-position: 19px;
 	padding-right: 15px;
 	height: 30px;
-	width: 30px;
+	width: 57px;
 	border: none;
 	display: inline-block;
 }
