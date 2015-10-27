@@ -100,23 +100,26 @@ li {
 
 .question_card {
 	background-color: #95B300;
-	border-radius: 5px; 
+	border-radius: 10px;
 	max-width: 300px;
-	min-width: 300px;
-	color: #fff;
+	min-width: 310px;
+	color: #FFF;
 	display: inline-block;
 	vertical-align: top;
-
+	margin-top: 10px;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	margin-left: 10px;
 }
 
 .user_avatar {
 	background-image: url('../img/icon-user-avatar.png');
 	background-repeat: no-repeat;
-	background-size: 30px 30px;
+	background-size: 40px 40px;
 	background-position: 19px;
 	padding-right: 15px;
-	height: 30px;
-	width: 57px;
+	height: 40px;
+	width: 62px;
 	border: none;
 	display: inline-block;
 }
