@@ -13,9 +13,8 @@
 	</div>
 </header>
 <menu class="temp">
-
 	<a href="#" class="button" data-dropdown="drop">Link Dropdown &raquo;</a>
-<ul id="drop" class="[tiny small medium large content]f-dropdown" data-dropdown-content>
+<ul id="drop" class="[large content]f-dropdown" data-dropdown-content>
   <li><a href="#">This is a link</a></li>
   <li><a href="#">This is another</a></li>
   <li><a href="#">Yet another</a></li>
@@ -26,8 +25,8 @@
 		<label><input name="useTags" type="checkbox" value="true" />tags</label>
 	</form></li>
 	@if(ctx.loop.session.isAuthenticated()) {
-	<li class="has-dropdown"><a href="#">Menu</a>
-		<ul class="dropdown">
+	<li class="button" data-dropdown="drop"><a href="#">Menu</a>
+		<ul id="drop" class="[large content]f-dropdown" data-dropdown-content>
 		<li><a href="/favorites">Favorites</a></li>
 		<li><a href="">Settings</a></li>
 		<li><a href="/logout">Log out</a></li>
