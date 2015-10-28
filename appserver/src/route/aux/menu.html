@@ -2,7 +2,16 @@
 	<div id="header">
 		<div id="header_nav">
 			<li><a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
-			<li><a href="#" id="main_menu" class="icon">Menu</a></li>
+			<li class="button" data-dropdown="drop"><a href="#" id="main_menu" class="icon">Menu</a>
+				<ul id="drop" class="[large content]f-dropdown" data-dropdown-content>
+					<li><a href="/favorites">Favorites</a></li>
+					<li><a href="">Settings</a></li>
+					<li><a href="/logout">Log out</a></li>
+				} else {
+					<li><a href="/login">Log in</a></li>
+				}
+				</ul>
+			</li>
 			<li><a href="/" id="logo" class="icon">TikMu</a></li>
 			<li class="right">
 				<a href="" id="notify" class="icon">Not!</a>
@@ -13,27 +22,14 @@
 	</div>
 </header>
 <menu class="temp">
-	<a href="#" class="button" data-dropdown="drop">Link Dropdown &raquo;</a>
-<ul id="drop" class="[large content]f-dropdown" data-dropdown-content>
-  <li><a href="#">This is a link</a></li>
-  <li><a href="#">This is another</a></li>
-  <li><a href="#">Yet another</a></li>
-</ul>
 	<li><form action="/search" method="get">
 		<button type="submit">Find!</button>
 		<input name="query" type="text" placeholder="Search" />
 		<label><input name="useTags" type="checkbox" value="true" />tags</label>
 	</form></li>
 	@if(ctx.loop.session.isAuthenticated()) {
-	<li class="button" data-dropdown="drop"><a href="#">Menu</a>
-		<ul id="drop" class="[large content]f-dropdown" data-dropdown-content>
-		<li><a href="/favorites">Favorites</a></li>
-		<li><a href="">Settings</a></li>
-		<li><a href="/logout">Log out</a></li>
-		} else {
-		<li><a href="/login">Log in</a></li>
-		}
-		</ul>
+	<li><a href="#">Menu</a>
+		
 	</li>
 
 </menu>
