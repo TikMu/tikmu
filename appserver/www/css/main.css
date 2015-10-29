@@ -61,7 +61,7 @@ li {
 	background-size: 16px 16px;
 	width: 16px;
 	height: 16px;
-	margin: 0 10px 0 0;
+	margin: 15px 10px 0 0;
 }
 
 #logo {
@@ -69,7 +69,7 @@ li {
 	background-size: 57px 17px;
 	width: 57px;
 	height: 17px;
-	margin: 0 20px 0 0;
+	margin: 15px 20px 0 0;
 }
 
 #location {
@@ -77,7 +77,7 @@ li {
 	background-size: 16px 16px;
 	width: 16px;
 	height: 16px;
-	margin: 0 10px 0 0;
+	margin: 15px 10px 0 0;
 	background-repeat: no-repeat;
 }
 
@@ -86,6 +86,7 @@ li {
 	background-size: 19px 17px;
 	width: 19px;
 	height: 17px;
+	margin: 15px 10px 0 0;
 	background-repeat: no-repeat;
 }
 
@@ -94,7 +95,7 @@ li {
 	background-size: 17px 15px;
 	width: 19px;
 	height: 16px;
-	margin: 0 10px 0px 4px;
+	margin: 15px 10px 0px 4px;
 	background-repeat: no-repeat;
 }
 
