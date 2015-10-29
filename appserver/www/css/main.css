@@ -76,7 +76,6 @@ li {
 	background-size: 16px 16px;
 	width: 16px;
 	height: 16px;
-	margin: 0 10px 0 0;
 }
 
 #post_question {
@@ -91,7 +90,6 @@ li {
 	background-size: 17px 15px;
 	width: 19px;
 	height: 16px;
-	margin: 0 10px 0px 4px;
 }
 
 
@@ -149,7 +147,6 @@ li {
 	margin: 30px 0 15px 0;
 	padding-bottom: 20px;
 	border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-	margin: 0 20px 20px 20px;
 }
 
 
@@ -186,8 +183,7 @@ li {
 	text-indent: 1000%;
 	white-space: nowrap;
 	overflow: hidden;
-	text-decoration: none;
-	margin-bottom: 15px;
+	text-decoration: none;q
 }
 
 .icon.answer {
