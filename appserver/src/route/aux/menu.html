@@ -21,18 +21,20 @@
 
 	<!-- Left Nav Section -->
 	<ul class="left">
-		<li class="button" <a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
+		<li><a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
 		<li><a href="/" id="logo" class="icon" >TikMu</a></li>
-			<a href="#" id="main_menu" class="icon" data-dropdown="drop"></a>
+			<button href="#" id="main_menu" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown"></button>
 			@if(ctx.loop.session.isAuthenticated()) {
-			<ul id="drop" class="[medium content]f-dropdown" data-dropdown-content>
+			<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
 				<li><a href="/favorites">Favorites</a></li>
 				<li><a href="#">Settings</a></li>
 				<li><a href="/logout">Log out</a></li>
 			} else {
 			<li><a href="/login">Log in</a></li>
 		}
+			</ul>
 	</ul>
 		</section>
 	</nav>
 </div>
+
