@@ -1,31 +1,39 @@
-<header>
-	<div id="header">
-		<div id="header_nav">
-			<li class="active"><a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
-			@if(ctx.loop.session.isAuthenticated()) {
-			<li data-dropdown="drop"><a href="#" id="main_menu" class="icon">Menu</a>
-				<ul id="drop" class="[small content]f-dropdown" data-dropdown-content>
-					<li><a href="/favorites">Favorites</a></li>
-					<li><a href="#">Settings</a></li>
-					<li><a href="/logout">Log out</a></li>
-				} else {
-					<li><a href="/login">Log in</a></li>
-				}
-				</ul>
+
+<!-- nav config Foundation -->
+<div>
+	<nav class="top-bar" data-topbar>
+		<ul class="title-area">
+			<li class="name">
+				<h1><a href="#"></a></h1>
 			</li>
-			<li><a href="/" id="logo" class="icon">TikMu</a></li>
-			<li class="right">
+			<li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+		</ul>
+
+		<section class="top-bar-section">
+			<!-- Right Nav Section -->
+			<ul class="right">
 				<a href="" id="notify" class="icon">Not!</a>
 				<a href="" id="location" class="icon">Loc!</a>	
 				<a href="/ask" id="post_question" class="icon">Ask!</a>
-			</li>
-		</div>
-	</div>
-</header>
-<menu class="temp">
-	<li><form action="/search" method="get">
-		<button type="submit">Find!</button>
-		<input name="query" type="text" placeholder="Search" />
-		<label><input name="useTags" type="checkbox" value="true" />tags</label>
-	</form></li>
-</menu>
+			</ul>
+		</li>
+	</ul>
+
+	<!-- Left Nav Section -->
+	<ul class="left">
+		<li class="active"><a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
+		<li class="has-dropdown">
+			@if(ctx.loop.session.isAuthenticated()) {
+			<a href="#" id="main_menu">Menu</a>
+			<ul id="dropdown">
+				<li><a href="/favorites">Favorites</a></li>
+				<li><a href="#">Settings</a></li>
+				<li><a href="/logout">Log out</a></li>
+			} else {
+			<li><a href="/login">Log in</a></li>
+		}
+	</li>
+	</ul>
+		</section>
+	</nav>
+</div>
