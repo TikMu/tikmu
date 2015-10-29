@@ -22,10 +22,11 @@
 	<!-- Left Nav Section -->
 	<ul class="left">
 		<li <a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
+		<li><a href="/" id="logo" class="icon">TikMu</a></li>
 		<li class="has-dropdown">
+			<a href="#" id="main_menu"></a>
 			@if(ctx.loop.session.isAuthenticated()) {
-			<a href="#" id="main_menu">Menu</a>
-			<ul id="dropdown">
+			<ul class="dropdown">
 				<li><a href="/favorites">Favorites</a></li>
 				<li><a href="#">Settings</a></li>
 				<li><a href="/logout">Log out</a></li>
