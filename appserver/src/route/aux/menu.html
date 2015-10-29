@@ -12,16 +12,18 @@
 		<section class="top-bar-section">
 			<!-- Right Nav Section -->
 			<ul class="right">
-				<a href="" id="notify" class="icon">Not!</a>
-				<a href="" id="location" class="icon">Loc!</a>	
-				<a href="/ask" id="post_question" class="icon">Ask!</a>
+				<li>	
+					<a href="" id="notify" class="icon">Not!</a>
+					<a href="" id="location" class="icon">Loc!</a>	
+					<a href="/ask" id="post_question" class="icon">Ask!</a>
+				</li>
 			</ul>
 
 	<!-- Left Nav Section -->
 	<ul class="left">
 		<li><a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
-		<li><a href="/" id="logo" class="icon" >TikMu</a></li>
-			<a href="#" id="main_menu" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown"><span>></span></a>
+		<li><a href="/" id="logo">TikMu</a></li>
+		<li><a href="#" id="main_menu" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" 	class="button dropdown"><span></span></a></li>
 			@if(ctx.loop.session.isAuthenticated()) {
 			<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
 				<li><a href="/favorites">Favorites</a></li>

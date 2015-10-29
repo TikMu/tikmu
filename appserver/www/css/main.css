@@ -69,7 +69,6 @@ li {
 	background-size: 57px 17px;
 	width: 57px;
 	height: 17px;
-	margin: 0 20px 0 0;
 }
 
 #location {
@@ -188,6 +187,7 @@ li {
 	white-space: nowrap;
 	overflow: hidden;
 	text-decoration: none;
+	margin-bottom: 15px;
 }
 
 .icon.answer {
