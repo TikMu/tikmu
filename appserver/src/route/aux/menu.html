@@ -24,10 +24,10 @@
 		<li><a href="/" id="logo" class="icon">TikMu</a></li>
 		<li><a href="#" id="main_menu" class="icon" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="has-dropdown"></a></li>
 			@if(ctx.loop.session.isAuthenticated()) {
-			<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true">
+			<ul id="drop1" data-dropdown-content class="f-dropdown small content" aria-hidden="true" style="position: absolute; left: 169.933px; top: 37px;">
 				<li><a href="/favorites">Favorites</a></li>
 				<li><a href="#">Settings</a></li>
-				<li><a href="/logout">Log out</a></li>
+				<li><a href="/logout">Log out</a></li>	
 			} else {
 			<li><a href="/login">Log in</a></li>
 		}
