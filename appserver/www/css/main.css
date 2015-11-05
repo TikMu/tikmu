@@ -79,7 +79,7 @@ li {
 }
 
 #post_question {
-	background-image: url('../img/icon-post-question.png');
+	background-image: url('/img/icon-post-question.png');
 	background-size: 19px 17px;
 	width: 19px;
 	height: 17px;
@@ -101,7 +101,7 @@ li {
 
 .question_card {
 	background-color: #95B300;
-	border-radius: 5px; 
+	border-radius: 5px;
 	max-width: 300px;
 	min-width: 300px;
 	color: #fff;
@@ -111,7 +111,7 @@ li {
 }
 
 .user_avatar {
-	background-image: url('../img/icon-user-avatar.png');
+	background-image: url('/icon-user-avatar.png');
 	background-repeat: no-repeat;
 	background-size: 30px 30px;
 	padding-right: 5px;
@@ -236,11 +236,15 @@ li {
 main.question_open {
 	max-width: 620px;
 	margin: 0 auto;
+	/*add*/
+	border-radius: 5%;
+
 }
 
 article.question_open {
 	background-color: #95B300;
 	color: #FFF;
+
 }
 
 .answer_list {
@@ -272,7 +276,9 @@ article.question_open {
 	border: 1px solid #CCC;
 	border-radius: 5px;
 	font-size: 16px;
-	width: 77%;
+	/*new adjusments. Remove this comment after test*/
+	width: 427px;
+	position: absolute;
 }
 
 .answer_submit_button {
@@ -285,15 +291,18 @@ article.question_open {
 	border-right: 0;
 	color: #FFF;
 	font-size: 16px;
-	margin-left: 2%;
-	width: 20%;
+	margin-left: -1%;
+	/*new adjusments. Remove this comment after test*/
+	width: 115px%;
 	text-align: center;
-
+	display: inline;
+  	position: relative;
+	width: 121px;
+	left: 80%;
+	bottom: 2%;
 }
 
 .footer_icons {
 	text-align: right;
 	margin-top: -20px;
 }
-
-
