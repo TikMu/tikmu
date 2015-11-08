@@ -279,9 +279,9 @@ li {
 .share_answer{
 	background-image: url('../img/icon-answer-gray.png');
 	background-size: 24px 24px;
-	width: 20px;
-	height: 24px;
-	margin: 10px;
+	width: 24px;
+	height: 20px;
+	margin: 10px 10px 10px 0px;
 	top: 50%;
 }
 
@@ -296,7 +296,7 @@ li {
 .comment_answer {
 	height: auto;
 	position: absolute;
-	top: 44%;
+	top: 30%;
 	color:gray;
 }
 
