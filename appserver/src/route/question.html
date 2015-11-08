@@ -44,12 +44,9 @@
 						<div class="answer_user_name">@u.name</div>
 						<div class="answer_user_date">@this.getPrettyDelta(a.created)</div>
 					</header>
-					
-					<div class="answer_container"><!-- TODO move and style-->
-						<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
-						<ul class="vote">
-						<li class="@upclass">upvote</li>	
-						Current votes: <li class="vote_count">@a.voteSum</li>
+					<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
+					<p class="temp"><!-- TODO move and style-->
+						Current votes: <span class="vote_count">@a.voteSum</span>
 						@if(ctx.loop.session.isAuthenticated()) {
 							@if(!ctx.loop.session.user.equals(a.user)) {
 							@{
@@ -61,13 +58,11 @@
 								else if (vote < 0)
 									dnclass += " pressed";
 							}
-							<li class="@dnclass">downvote</li>
+							<a class="@upclass">upvote</a>
+							<a class="@dnclass">downvote</a>
 							}
 						}
-					</ul>
-					</div>	
-					
-					<footer class="temp">
+					</p>
 							<!-- Workin on [frá] -->
 					<div class="comment_icons">
 					<a href="#" class="share_answer icon">Share</a>
@@ -77,9 +72,8 @@
 							<button type="submit">&gt</button>
 							<button type="button" onclick="document.getElementById('@aid/comment').hidden = true">^</button>
 						</form>
-					</div>
 					</footer>
-				
+				</div>
 					<section class="comment_list">
 						@for (c in a.comments)
 						{ @{var u = this.getUser(c.user); var cid = c._id.valueOf(); }
