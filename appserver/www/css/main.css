@@ -223,9 +223,49 @@ li {
 	margin: 0 20px 0 0;
 }
 
+
+/* user content & vote*/
 .temp .upvote, .temp .downvote {
 	cursor: pointer;
 }
+
+.answer_container{
+
+}
+
+.answer_content {
+    font-size: 16px;
+    display: inline;
+    height: 40px;
+    vertical-align: 50%;
+    top: 20px;
+}
+
+
+
+/* vote*/
+
+.vote{
+
+}
+
+.vote_li {
+    display: inline-block;
+    text-align: right;
+    width: 77%;
+}
+
+.upvote{
+	color: gray;
+}
+.vote_count{
+	color: gray;
+}
+
+.downvote{
+	color: gray;
+}
+
 
 .icon.pressed {
 	filter: invert(1) opacity(.3);
