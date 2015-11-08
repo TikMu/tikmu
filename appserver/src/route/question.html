@@ -63,6 +63,7 @@
 							}
 						}
 					</p>
+					<footer class="temp">
 							<!-- Workin on [frá] -->
 					<div class="comment_icons">
 					<a href="#" class="share_answer icon">Share</a>
@@ -72,7 +73,9 @@
 							<button type="submit">&gt</button>
 							<button type="button" onclick="document.getElementById('@aid/comment').hidden = true">^</button>
 						</form>
+					</div>
 					</footer>
+				
 					<section class="comment_list">
 						@for (c in a.comments)
 						{ @{var u = this.getUser(c.user); var cid = c._id.valueOf(); }

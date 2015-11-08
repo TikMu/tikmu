@@ -235,20 +235,23 @@ li {
 	background-size: 24px 24px;
 	width: 20px;
 	height: 24px;
-	margin: 0 10px 0 0;
+	margin: 10px;
 	top: 50%;
 }
 
 .comment_icons{
 	text-align: left;
-	height: 55px;
+	height: 46px;
 	position: relative;
-	top: 50%;
+	bottom: 6px;
+
 }
 
 .comment_answer {
 	height: auto;
-	top: 50%;
+	position: absolute;
+	top: 44%;
+	color:gray;
 }
 
 /* Questions open */
