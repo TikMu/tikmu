@@ -32,6 +32,12 @@ li {
 
 /* Header */
 
+.question_card_header {
+    left: 20px;
+    display: inline-block;
+    position: relative;
+}
+
 #header {
 	margin: 0 auto;
 	padding: 0;
