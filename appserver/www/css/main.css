@@ -185,7 +185,7 @@ li {
 	border: none;
 	cursor: pointer;
 	display: inline-block;
-	text-indent: -9999%;
+	text-indent: 9999%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-decoration: none;
