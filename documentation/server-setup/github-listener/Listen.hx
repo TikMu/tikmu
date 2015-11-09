@@ -67,165 +67,192 @@ typedef PushEvent = {
 	sender : Sender
 }
 
-class Listen {
-	static var config = {
-		secret : "not much of a secret, but will have to make due for now",
-		remote : "origin",
-		repository : "jonasmalacofilho/tikmu",
-		baseDir : "/var/build/tikmu",
-		baseBuildDir : "/var/build/tikmu-builds",
-		baseOutputDir : "/var/www/tikmu",
-		haxeArgs : ["-D", "tikmu_require_login", "-D", "tikmu_cache_module"]
-	}
+typedef Hook = {
+	owner : String,
+	repository : String,
+	secret : String,
+	baseBuildDir : String,
+	baseOutputDir : String,
+	scripts : {
+		delete: String,
+		prepare: String,
+		build: String,
+		deploy: String,
+	},
+	slack : Null<{
+		url : String,
+		username : Null<String>,
+		channel : Null<String>
+	}>
+}
 
-	static function customTrace(msg:String, ?p:haxe.PosInfos) {
+typedef Config = {
+	hooks : Array<Hook>
+}
+
+enum ListenMessage {
+	MFailedDelete(hook:Hook, ref:String, exitCode:Int, out:String, err:String);
+	MDeleted(hook:Hook, ref:String);
+	MFailed(hook:Hook, ref:String, head:String, exitCode:Int, out:String, err:String);
+	MSuccessful(hook:Hook, ref:String, head:String);
+}
+
+class Listen {
+	static function customTrace(msg:String, ?p:haxe.PosInfos)
+	{
 		if (p.customParams != null)
 			msg = msg + ',' + p.customParams.join(',');
 		var s = '[${Web.getClientIP()}] ${p.fileName}:${p.lineNumber}:	$msg\n';
 		Sys.stderr().writeString(s);
 	}
 
-	static function verifiedSig(data:String, sig:String)
+	static function verifiedSig(secret:String, data:String, sig:String)
 	{
 		var sig = sig.toLowerCase().split("=");
 		if (sig[0] != "sha1")
 			throw 'Unsupported hash algorithm in signature: ${sig[0]}';
-		var secret = Bytes.ofString(config.secret);
+		var secret = Bytes.ofString(secret);
 		var data = Bytes.ofString(data);
 		var hmac = new Hmac(SHA1).make(secret, data);
 		return hmac.toHex() == sig[1];
 	}
 
-	static function rmrf(path:String)
+	static function respond(config:Config)
 	{
-		// this is fucking dangerous, considering path errors and escaping
-		// issues...
-		//
-		// don't use this script with this unless you're brave and have nothing
-		// to loose!  you have been warned.
-		if (command("rm", ["-rf", path]) != 0)
-			throw 'Failed rm -rf command (path: $path)';
+		var event = Web.getClientHeader("X-GitHub-Event").toLowerCase();
+		if (event == "ping") {
+			return {
+				status : 200,
+				msg : null
+			};
+		} else if (event != "push") {
+			trace('ERROR: expected "push" or "ping" but got $event');
+			return {
+				status : 417,  // expectation failed
+				msg : null
+			}
+		}
+
+		var sig = Web.getClientHeader("X-Hub-Signature");
+		var data = Web.getPostData();
+		var push:PushEvent = haxe.Json.parse(data);
+		var hook = Lambda.find(config.hooks,
+			function (h)
+				return h.repository == push.repository.name &&
+					h.owner == push.repository.owner.name
+		);
+		if (hook == null) {
+			trace('ERROR: no hook set up for ${push.repository.full_name}');
+			return {
+				status : 404,
+				msg : null
+			}
+		}
+		if (!verifiedSig(hook.secret, data, sig)) {
+			trace('ERROR: signature did not match');
+			return {
+				status : 403,  // forbidden
+				msg : null
+			}
+		}
+
+		var ref = push.ref.replace("refs/", "");
+
+		if (push.deleted) {
+			trace('accepted delete request for $ref');
+			var p = new SimpleProcess(hook.scripts.delete, [hook.baseBuildDir, hook.baseOutputDir, ref]);
+			var r = p.simpleRun();
+			if (r.exitCode != 0) {
+				return {
+					status : 500,
+					msg : MFailedDelete(hook, ref, r.exitCode, r.stdout.toString(), r.stderr.toString())
+				}
+			}
+			return {
+				status : 200,
+				msg : MDeleted(hook, ref)
+			}
+		} else {
+			var head = push.head_commit.id;
+			trace('accepted build request for $ref at ${head}');
+			var out = new haxe.io.BytesBuffer();
+			var err = new haxe.io.BytesBuffer();
+			for (s in [hook.scripts.prepare, hook.scripts.build, hook.scripts.deploy]) {
+				var p = new SimpleProcess(s, [hook.baseBuildDir, hook.baseOutputDir, ref, head]);
+				var r = p.simpleRun(out, err);
+				if (r.exitCode != 0) {
+					return {
+						status : 500,
+						msg : MFailed(hook, ref, head, r.exitCode, out.getBytes().toString(), err.getBytes().toString())
+					}
+				}
+			}
+			return {
+				status : 200,
+				msg : MSuccessful(hook, ref, head)
+			}
+		}
 	}
 
-	static function cpr(origin:String, destination:String)
+	static function reportToSlack(url, payload:Dynamic, username, channel)
 	{
-		var args = ["-r", origin, destination];
-		if (command("cp", args) != 0)
-			throw 'Failed copy command (origin: $origin, destination: $destination)';
-	}
-
-	static function notifySlack(payload:{ text : String })
-	{
-		var url = "https://hooks.slack.com/services/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";
 		var req = new haxe.Http(url);
+		if (username != null)
+			payload.username = username;
+		if (channel != null)
+			payload.channel = channel;
 		req.setPostData(haxe.Json.stringify(payload));
 		req.request(true);
 	}
 
-	static function respond()
+	static function makeLink(hook:Hook, head:String)
 	{
-		var data = Web.getPostData();
-		var sig = Web.getClientHeader("X-Hub-Signature");
-		if (!verifiedSig(data, sig)) {
-			Web.setReturnCode(403);  // forbidden
-			return;
-		}
-
-		var delivery = Web.getClientHeader("X-GitHub-Delivery");
-		trace('Delivery: $delivery');
-
-		var event = Web.getClientHeader("X-GitHub-Event").toLowerCase();
-		trace('Event: $event');
-		if (event == "ping") {
-			Web.setReturnCode(200);
-			return;
-		}
-		if (event != "push") {
-			Web.setReturnCode(417);  // expectation failed
-			trace('ERROR: Expecting "push" or "ping" events');
-			return;
-		}
-
-		var push = (haxe.Json.parse(data):PushEvent);
-
-		if (push.repository.full_name != config.repository) {
-			Web.setReturnCode(417);  // expectation failed
-			trace('ERROR: Expecting repository to be "${config.repository}"');
-			return;
-		}
-
-		var ref = push.ref.replace("refs/", "");
-		var buildDir = '${config.baseBuildDir}/$ref';
-		var outputDir = '${config.baseOutputDir}/$ref';
-
-		if (push.deleted) {
-			Web.setReturnCode(202);  // accepted
-			trace('Accepted remove request for ref "$ref"');
-			rmrf(outputDir);
-			return;
-		}
-
-		var head = push.head_commit.id;
-		trace('Accepted build request for ref "$ref" (head is "${head.substr(0,7)}")');
-
-		trace('Fetching from ${config.remote}');
-		setCwd(config.baseDir);
-		command("git", ["fetch", config.remote]);
-
-		var infos = {
-			built_at : Date.now(),
-			ref : ref,
-			commit : {
-				id : push.head_commit.id,
-				timestamp : push.head_commit.timestamp,
-				author : push.head_commit.author.name,
-				message : push.head_commit.message,
-			}
-		}
-
-		try {
-			trace('Calling a build to "$buildDir" with ${config.haxeArgs}');
-			Build.begin(config.baseDir, head, buildDir, config.haxeArgs);
-
-			trace('Installing to "$outputDir"');
-			rmrf(outputDir);
-			cpr('$buildDir/appserver/www', outputDir);
-
-			trace("Adding infos.json");
-			sys.io.File.saveContent('$outputDir/infos.json', haxe.Json.stringify(infos));
-
-			Web.setReturnCode(200);  // OK
-			println("Build successfull");
-			notifySlack({
-				text : '*${infos.commit.id.substr(0,7)}* deployed: _${infos.ref}_'
-			});
-		} catch (e:Dynamic) {
-			Web.setReturnCode(500);  // Internal Server Error
-			println('Build failed with error: $e');
-			var msg = '*${infos.commit.id.substr(0,7)}* failed ';
-			var epath = '$buildDir/appserver/.haxe.stderr';
-			var haxeErr = sys.FileSystem.exists(epath) ? sys.io.File.getContent(epath).trim() : "";
-			if (haxeErr.length > 0) {
-				msg += 'with:\n>```\n$haxeErr\n```\n';
-			} else {
-				msg += "with unknown error\n";
-			}
-			notifySlack({
-				text : msg
-			});
-		}
+		return '<https://github.com/${hook.owner}/${hook.repository}/commit/$head|${head.substr(0,7)}>';
 	}
 
 	static function main()
 	{
 		haxe.Log.trace = customTrace;
 		Web.cacheModule(main);
-
 		try {
-			respond();
+			var config = haxe.Json.parse(sys.io.File.getContent("/etc/listen_config.json"));
+			var res = respond(config);
+			Web.setReturnCode(res.status);
+			switch (res.msg) {
+			case null:  // NOOP
+			case MDeleted(hook, ref):
+			case MSuccessful(hook, ref, head):
+			case MFailedDelete(hook, ref, exit, out, err):
+				err = err.trim();
+				var msg = {
+					fallback : '[${hook.repository}:$ref] failed to delete',
+					title : 'Delete failed',
+					text : 'Failed with exit code `$exit`' +
+						if (err.length > 0) ':\n```\n$err\n```\n' else '',
+					fields : [
+						{ title : "Repository", value : '${hook.repository}' },
+						{ title : "Ref", value : ref }
+					]
+				};
+				reportToSlack(hook.slack.url, { attachments : [msg] }, hook.slack.username, hook.slack.channel);
+			case MFailed(hook, ref, head, exit, out, err):
+				err = err.trim();
+				var msg = {
+					fallback : '[${hook.repository}:$ref] ${makeLink(hook, head)} failed',
+					title : 'Build failed',
+					text : 'Failed with exit code `$exit`' +
+						if (err.length > 0) ':\n```\n$err\n```\n' else '',
+					fields : [
+						{ title : "Repository", value : '${hook.repository}' },
+						{ title : "Ref", value : ref },
+						{ title : "Commit", value : head }
+					]
+				};
+				reportToSlack(hook.slack.url, { attachments : [msg] }, hook.slack.username, hook.slack.channel);
+			}
 		} catch (e:Dynamic) {
-			Web.setReturnCode(500);  // Internal Server Error
-			println('Build aborted with error: $e');
+			Web.setReturnCode(500);  // internal Server Error
+			trace('ERROR: $e');
 			var s = haxe.CallStack.exceptionStack();
 			trace("Call stack: " + haxe.CallStack.toString(s));
 		}

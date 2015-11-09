@@ -1,0 +1,11 @@
+{ hooks : [
+	{
+		owner : "jonasmalacofilho",
+		repository : "tikmu",
+		secret : "not much of a secret, but will have to make due for now",
+		baseBuildDir : "/var/build/tikmu-builds",
+		baseOutputDir : "/var/www/tikmu",
+		haxeArgs : ["-D", "tikmu_require_login", "-D", "tikmu-cache_module"],
+	}
+] }
+
