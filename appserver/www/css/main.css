@@ -247,61 +247,41 @@ li {
 
 .vote {
 	position: relative;
-  top: -150%;
+  	-moz-transform: translateY(-50%);
 	height: 4em;
 	float: right;
-	width: 5em;	
+	width: 4em;	
 	border: 1px solid;
 }
 
-
 .upvote{
-	position: relative;
-  top: 0px;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-	-moz-transform: translateY(-50%);
-  transform: translateY(-50%);
-	-webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
+	position: absolute;
+	background-image: url("../img/icon-upvote");
+	top: 0px;
+	left: 
 }
+
+
+.upvote.pressed{
+	position: absolute;
+	background-image: url("../img/icon-upvote");
+	top: 0px;
+	left: 6px
+}
+
 .vote_count{
 	position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-	-moz-transform: translateY(-50%);
-  transform: translateY(-50%);
-	-webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
+  	vertical-align: middle;
+	top: 1.7em;
+	left: 1.7em;
 }
 
 .downvote{
-	position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-	-moz-transform: translateY(-50%);
-  transform: translateY(-50%);
-	-webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
+	position: absolute;
+	bottom: 0px;
+	background-image: url("../img/icon-downvote");
 }
 
-
-@mixin vertical-align($position: relative) {
-  position: $position;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-	-moz-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-span.line{
-	
-}
 
 
 .icon.pressed {
