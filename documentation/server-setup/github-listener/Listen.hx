@@ -114,6 +114,14 @@ class Listen {
 			throw 'Failed copy command (origin: $origin, destination: $destination)';
 	}
 
+	static function notifySlack(payload:{ text : String })
+	{
+		var url = "https://hooks.slack.com/services/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";
+		var req = new haxe.Http(url);
+		req.setPostData(haxe.Json.stringify(payload));
+		req.request(true);
+	}
+
 	static function respond()
 	{
 		var data = Web.getPostData();
@@ -164,14 +172,6 @@ class Listen {
 		setCwd(config.baseDir);
 		command("git", ["fetch", config.remote]);
 
-		trace('Calling a build to "$buildDir" with ${config.haxeArgs}');
-		Build.begin(config.baseDir, head, buildDir, config.haxeArgs);
-
-		trace('Installing to "$outputDir"');
-		rmrf(outputDir);
-		cpr('$buildDir/appserver/www', outputDir);
-
-		trace("Adding infos.json");
 		var infos = {
 			built_at : Date.now(),
 			ref : ref,
@@ -182,10 +182,38 @@ class Listen {
 				message : push.head_commit.message,
 			}
 		}
-		sys.io.File.saveContent('$outputDir/infos.json', haxe.Json.stringify(infos));
 
-		Web.setReturnCode(200);  // OK
-		println("Build successfull");
+		try {
+			trace('Calling a build to "$buildDir" with ${config.haxeArgs}');
+			Build.begin(config.baseDir, head, buildDir, config.haxeArgs);
+
+			trace('Installing to "$outputDir"');
+			rmrf(outputDir);
+			cpr('$buildDir/appserver/www', outputDir);
+
+			trace("Adding infos.json");
+			sys.io.File.saveContent('$outputDir/infos.json', haxe.Json.stringify(infos));
+
+			Web.setReturnCode(200);  // OK
+			println("Build successfull");
+			notifySlack({
+				text : '*${infos.commit.id.substr(0,7)}* deployed: _${infos.ref}_'
+			});
+		} catch (e:Dynamic) {
+			Web.setReturnCode(500);  // Internal Server Error
+			println('Build failed with error: $e');
+			var msg = '*${infos.commit.id.substr(0,7)}* failed ';
+			var epath = '$buildDir/appserver/.haxe.stderr';
+			var haxeErr = sys.FileSystem.exists(epath) ? sys.io.File.getContent(epath).trim() : "";
+			if (haxeErr.length > 0) {
+				msg += 'with:\n>```\n$haxeErr\n```\n';
+			} else {
+				msg += "with unknown error\n";
+			}
+			notifySlack({
+				text : msg
+			});
+		}
 	}
 
 	static function main()

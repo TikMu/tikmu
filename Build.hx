@@ -7,7 +7,9 @@
 **/
 
 import Sys.*;
+import haxe.io.*;
 import sys.FileSystem;
+import sys.io.File;
 using StringTools;
 
 typedef Define = {
@@ -78,6 +80,41 @@ class Haxelib {
 
 }
 
+class SimpleProcess extends sys.io.Process {
+	static function readBytes(src:haxe.io.Input, dst:BytesBuffer, len:Int):Bool
+	{
+		var b = Bytes.alloc(len);
+		try {
+			var n = src.readBytes(b, 0, len);
+			if (n > 0)
+				dst.addBytes(b, 0, n);
+			return false;
+		} catch (e:haxe.io.Eof) {}
+		return true;
+	}
+
+	public function simpleRun() : { exitCode:Int, stdout:Bytes, stderr:Bytes }
+	{
+		var out = new BytesBuffer();
+		var err = new BytesBuffer();
+
+		var outEof = false, errEof = false;
+		while (!outEof || !errEof) {
+			outEof = readBytes(stdout, out, 4096);
+			errEof = readBytes(stderr, err, 1024);
+		}
+
+		var exit = exitCode();
+		this.close();
+
+		return {
+			exitCode : exit,
+			stdout : out.getBytes(),
+			stderr : err.getBytes()
+		}
+	}
+}
+
 class Build {
 
 	static var libs = [
@@ -131,7 +168,11 @@ class Build {
 			throw "Error while linking to another local haxelib setup";
 		trace("Running haxe");
 		var args = haxeArgs.concat(["build.hxml"]);
-		if (command("haxe", args) != 0)
+		var haxe = new SimpleProcess("haxe", args);
+		var res = haxe.simpleRun();
+		File.saveContent(".haxe.stdout", res.stdout.toString());
+		File.saveContent(".haxe.stderr", res.stderr.toString());
+		if (res.exitCode != 0)
 			throw "Failed compilation";
 	}
 
