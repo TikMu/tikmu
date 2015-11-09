@@ -224,10 +224,8 @@ li {
 }
 
 
-/* user content & vote*/
-.temp .upvote, .temp .downvote {
-	cursor: pointer;
-}
+
+
 
 .answer_container{ 
 /*TODO Style*/
@@ -256,15 +254,17 @@ li {
 
 .upvote{
 	position: absolute;
-	background-image: url("../img/icon-upvote");
+	cursor: pointer;
+	background-image: url("../img/icon-upvote.png");
 	top: 0px;
-	left: 
+	left: 6px;
 }
 
 
 .upvote.pressed{
 	position: absolute;
-	background-image: url("../img/icon-upvote");
+	cursor: pointer;
+	background-image: url("../img/icon-upvote.png");
 	top: 0px;
 	left: 6px
 }
@@ -278,8 +278,9 @@ li {
 
 .downvote{
 	position: absolute;
+	cursor: pointer;
 	bottom: 0px;
-	background-image: url("../img/icon-downvote");
+	background-image: url("../img/icon-downvote.png");
 }
 
 
