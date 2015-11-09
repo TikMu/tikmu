@@ -229,8 +229,8 @@ li {
 	cursor: pointer;
 }
 
-.answer_container{
-
+.answer_container{ 
+/*TODO Style*/
 }
 
 .answer_content {
@@ -245,25 +245,62 @@ li {
 
 /* vote*/
 
-.vote{
-
+.vote {
+	position: relative;
+  top: -150%;
+	height: 4em;
+	float: right;
+	width: 5em;	
+	border: 1px solid;
 }
 
-.vote_li {
-    display: inline-block;
-    text-align: right;
-    width: 77%;
-}
 
 .upvote{
-	color: gray;
+	position: relative;
+  top: 0px;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+	-webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 .vote_count{
-	color: gray;
+	position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+	-webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 .downvote{
-	color: gray;
+	position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+	-webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+
+@mixin vertical-align($position: relative) {
+  position: $position;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+span.line{
+	
 }
 
 

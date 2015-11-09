@@ -44,8 +44,10 @@
 						<div class="answer_user_name">@u.name</div>
 						<div class="answer_user_date">@this.getPrettyDelta(a.created)</div>
 					</header>
-					<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
-					<p class="temp"><!-- TODO move and style-->
+					
+					<div class="answer_container"><!-- TODO move and style-->
+						<p class="answer_content">@a.contents</p><!-- TODO toHtml -->
+					<div class="vote">								
 						Current votes: <span class="vote_count">@a.voteSum</span>
 						@if(ctx.loop.session.isAuthenticated()) {
 							@if(!ctx.loop.session.user.equals(a.user)) {
@@ -58,11 +60,12 @@
 								else if (vote < 0)
 									dnclass += " pressed";
 							}
-							<a class="@upclass">upvote</a>
-							<a class="@dnclass">downvote</a>
+							<span class="@upclass">upvote</span>
+							<span class="@dnclass">downvote</span>
 							}
 						}
-					</p>
+						</div>	
+					</div>
 							<!-- Workin on [frá] -->
 					<div class="comment_icons">
 					<a href="#" class="share_answer icon">Share</a>
