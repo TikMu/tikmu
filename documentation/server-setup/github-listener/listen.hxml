@@ -1,4 +1,5 @@
 -neko listen.n
 -main Listen
 -cp ../../../
+-lib hxssl
 
