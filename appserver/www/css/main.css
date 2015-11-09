@@ -185,7 +185,7 @@ li {
 	border: none;
 	cursor: pointer;
 	display: inline-block;
-	text-indent: 1000%;
+	text-indent: -9999%;
 	white-space: nowrap;
 	overflow: hidden;
 	text-decoration: none;
@@ -255,34 +255,46 @@ li {
 .upvote{
 	position: absolute;
 	cursor: pointer;
-	background-image: url("../img/icon-upvote.png");
-	top: 0px;
-	left: 6px;
+	background: url("../img/icon-upvote.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	width: 4em;
+	background-position: 30px -4px;
+	text-indent: -9999px;
 }
 
 
 .upvote.pressed{
 	position: absolute;
 	cursor: pointer;
-	background-image: url("../img/icon-upvote.png");
-	top: 0px;
-	left: 6px
+	background: url("../img/icon-upvote.png");
+	background-size: 20px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	width: 4em;
+	background-position: 30px -4px;
+	text-indent: -9999px;
 }
 
 .vote_count{
 	position: relative;
   	vertical-align: middle;
 	top: 1.7em;
-	left: 1.7em;
+	left: 3em;
 }
 
 .downvote{
 	position: absolute;
+	width: 4em;
 	cursor: pointer;
 	bottom: 0px;
 	background-image: url("../img/icon-downvote.png");
+	background-size:20px;
+	background-repeat: no-repeat;
+	background-position: 28px -2px;
+	text-indent: -9999px;
 }
-
 
 
 .icon.pressed {
