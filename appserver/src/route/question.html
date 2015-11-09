@@ -8,6 +8,9 @@
 		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
 		<article id="@qid" class="question question_open">
 			<header class="question_header">
+				<div class="close_button">
+					<button class="close">&times;</button>
+				</div>
 				<div class="user_avatar"></div>
 				<div class="user_description">
 					<div class="user_name">@u.name</div>
