@@ -27,17 +27,18 @@ class Context {
 
 		loop = new IterationContext(routeMap);
 
+		trace('${Web.getMethod()} ${Web.getURI()}');
+
 		var hpat = ~/(.+\.)?([^.]+\.[^.]+)/;
 		if (hpat.match(Web.getHostName())) {
 			domain = hpat.matched(2);
 			subdomain = hpat.matched(1);
-			trace('subdomain: $subdomain at domain: $domain');
+			trace('host: ($subdomain)$domain');
 		} else {
 			domain = subdomain = null;
 			trace('WARNING: could not parse ${Web.getHostName()}');
 		}
 
-		trace('${Web.getMethod()} ${Web.getURI()}');
 		trace('from ${Web.getClientIP()} at ${loop.now}');
 		for (h in Web.getClientHeaders()) {
 			if (Lambda.exists(headerPxFilter, function (x) return StringTools.startsWith(h.header, x)))
