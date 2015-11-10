@@ -156,7 +156,7 @@ class Auth {
 	{
 		var cookies = Web.getCookies();
 		if (!ctx.loop.session.isValid())
-			response.setCookie("_session", "", mkCookieAttrs(ctx));
+			response.setCookie("_session", "");
 		else if (cookies.get("_session") != ctx.loop.session._id)
 			response.setCookie("_session", ctx.loop.session._id, mkCookieAttrs(ctx));
 	}
