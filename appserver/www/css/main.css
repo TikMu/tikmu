@@ -279,10 +279,9 @@ li {
 }
 
 .vote_count{
-	position: relative;
+	position: absolute;
   	vertical-align: middle;
-	top: 1.7em;
-	left: 3em;
+	padding: 20px 0px 0px 34px;
 }
 
 .downvote{
@@ -314,13 +313,8 @@ li {
 	width: 24px;
 	height: 20px;
 	margin: 10px 10px 10px 0px;
-	top: 50%;
-	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncA type="table" tableValues="0 0.4" /></feComponentTransfer></filter></svg>#filter');
 	-webkit-filter: opacity(40%);
 	        filter: opacity(40%);
-	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.52756 0.42911999999999995 0.04332 0 0 0.12756 0.82912 0.04332 0 0 0.12756 0.42911999999999995 0.44332 0 0 0 0 0 1 0" /></filter></svg>#filter');
-	-webkit-filter: grayscale(60%);
-	        filter: grayscale(60%);
 }
 
 .comment_icons{
