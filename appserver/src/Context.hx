@@ -29,6 +29,12 @@ class Context {
 
 		trace('${Web.getMethod()} ${Web.getURI()}');
 
+		trace('from ${Web.getClientIP()} at ${loop.now}');
+		for (h in Web.getClientHeaders()) {
+			if (Lambda.exists(headerPxFilter, function (x) return StringTools.startsWith(h.header, x)))
+				trace('${h.header}: ${h.value}');
+		}
+
 		var hpat = ~/(.+\.)?([^.]+\.[^.]+)/;
 		if (hpat.match(Web.getHostName())) {
 			domain = hpat.matched(2);
@@ -37,12 +43,6 @@ class Context {
 		} else {
 			domain = subdomain = null;
 			trace('WARNING: could not parse ${Web.getHostName()}');
-		}
-
-		trace('from ${Web.getClientIP()} at ${loop.now}');
-		for (h in Web.getClientHeaders()) {
-			if (Lambda.exists(headerPxFilter, function (x) return StringTools.startsWith(h.header, x)))
-				trace('${h.header}: ${h.value}');
 		}
 
 		trace('session cache: ${data.sessions.used}/${data.sessions.size} slots in use');

@@ -38,7 +38,9 @@ class Auth {
 
 	static function mkCookieAttrs(ctx:Context)
 	{
-		var att = ['Domain=.${ctx.domain}', "Path=/"];
+		var att = ["Path=/"];
+		if (ctx.domain != null)
+			att.push('Domain=.${ctx.domain}');
 		if (Web.isTora)  // TODO better handle dev builds
 			att.push("Secure");
 		return att;
