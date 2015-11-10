@@ -36,6 +36,14 @@ class Auth {
 		return name.length > 0 && name.length <= 32;
 	}
 
+	static function mkCookieAttrs(ctx:Context)
+	{
+		var att = ['Domain=${ctx.domain}', "Path=/"];
+		if (Web.isTora)  // TODO better handle dev builds
+			att.push("Secure");
+		return att;
+	}
+
 	public static function register(ctx:Context, email:String, name:String, pass:String)
 	{
 		email = StringTools.trim(email);
@@ -141,8 +149,6 @@ class Auth {
 		}
 	}
 
-	static var _sessionAttributes = Web.isTora ? ["Path=/", "Secure"] : ["Path=/"];  // TODO better handle dev builds
-
 	/**
 		Set updated session cookie when necessary
 	**/
@@ -150,9 +156,9 @@ class Auth {
 	{
 		var cookies = Web.getCookies();
 		if (!ctx.loop.session.isValid())
-			response.setCookie("_session", "", _sessionAttributes);
+			response.setCookie("_session", "", mkCookieAttrs(ctx));
 		else if (cookies.get("_session") != ctx.loop.session._id)
-			response.setCookie("_session", ctx.loop.session._id, _sessionAttributes);
+			response.setCookie("_session", ctx.loop.session._id, mkCookieAttrs(ctx));
 	}
 }
 

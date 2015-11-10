@@ -4,7 +4,7 @@ import mweb.*;
 import effect.*;
 
 class Context {
-	static var headerPxFilter = ["Host", "Authorization", "X-"];
+	static var headerPxFilter = ["Authorization", "X-"];
 	var routeMap:Route<Dynamic>;
 	var reputation:Reputation;
 	var notification:Notification;
@@ -12,6 +12,8 @@ class Context {
 	public var data(default,null):StorageContext;
 	public var loop(default,null):IterationContext;
 	public var aux(default,null):AuxiliaryContext;
+	public var domain(default,null):String;
+	public var subdomain(default,null):String;
 
 	static function ms(s:Float)
 	{
@@ -25,13 +27,22 @@ class Context {
 
 		loop = new IterationContext(routeMap);
 
+		var hpat = ~/(.+\.)?([^.]+\.[^.]+)/;
+		if (hpat.match(Web.getHostName())) {
+			domain = hpat.matched(2);
+			subdomain = hpat.matched(1);
+			trace('subdomain: $subdomain at domain: $domain');
+		} else {
+			domain = subdomain = null;
+			trace('WARNING: could not parse ${Web.getHostName()}');
+		}
+
 		trace('${Web.getMethod()} ${Web.getURI()}');
 		trace('from ${Web.getClientIP()} at ${loop.now}');
 		for (h in Web.getClientHeaders()) {
 			if (Lambda.exists(headerPxFilter, function (x) return StringTools.startsWith(h.header, x)))
 				trace('${h.header}: ${h.value}');
 		}
-		trace('hostname: ${Web.getHostName()}');
 
 		trace('session cache: ${data.sessions.used}/${data.sessions.size} slots in use');
 
