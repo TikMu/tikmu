@@ -405,20 +405,24 @@ article.question_open {
 	margin-top: -20px;
 }
 
-.close_button {
-	width: 0;
-	height: 0;
+
+/* close question / right corner button*/
+
+div.close_button{
 	border-top: 50px solid #657F02;
 	border-left: 50px solid transparent;
   float: right;	
 }
-
+ 
 .close {
 	font-family: Garamond, "Apple Garamond";
-	float: right;
-	overflow: hidden;
+  -moz-transform: translateY(-70%); 
+	-moz-transform: translateX(160%);
 	font-size: 25px;
+	float: right;
 	color: white;
 	background-color: transparent;
-	border: none;	
-}
+	background-size: 20px 20px;
+  width: 40px; 
+	height: 40px; 
+} 
