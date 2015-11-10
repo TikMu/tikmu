@@ -4,7 +4,7 @@ import mweb.*;
 import effect.*;
 
 class Context {
-	static var headerPxFilter = ["Authorization", "X-"];
+	static var headerPxFilter = ["Host", "Authorization", "X-"];
 	var routeMap:Route<Dynamic>;
 	var reputation:Reputation;
 	var notification:Notification;
@@ -31,6 +31,7 @@ class Context {
 			if (Lambda.exists(headerPxFilter, function (x) return StringTools.startsWith(h.header, x)))
 				trace('${h.header}: ${h.value}');
 		}
+		trace('hostname: ${Web.getHostName()}');
 
 		trace('session cache: ${data.sessions.used}/${data.sessions.size} slots in use');
 
