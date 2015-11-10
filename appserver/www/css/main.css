@@ -227,16 +227,21 @@ li {
 
 
 
-.answer_container{ 
-/*TODO Style*/
+ /*answer container*/
+ 
+.answer_container{
+	position: relative;	
 }
+
 
 .answer_content {
     font-size: 16px;
-    display: inline;
-    height: 40px;
-    vertical-align: 50%;
-    top: 20px;
+	font-weight: 400;
+    -webkit-transform: translateY(20%);
+        -ms-transform: translateY(20%);
+            transform: translateY(20%);
+    width: 80%;
+    height: 50%;
 }
 
 
