@@ -283,6 +283,23 @@ li {
 	border: none;	
 }
 
+.submit_comment{
+	position: absolute;
+	top: 18%;
+	padding: 2px 3px 1px 7px;
+	background-color: #C3C2C3;
+	border-radius: 5px;
+	border-bottom: 1px solid #D1D1D1;
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
+	color: RGBA(255, 255, 255, 0.84);
+	font-size:14px;
+	text-align: center;
+	display: inline;
+	width: 13%;
+	right: 2%;
+}
 
 
 /* vote*/
