@@ -258,10 +258,10 @@ li {
 	position: absolute;
 	display: inline;
 	font-size: 13px;
-	height: 24px;
-	width: 77%;
-	top; 50%;
-	margin-top: 5px;
+	height: 21px;
+	width: 75%;
+	top: 15%;
+	margin-top: 0px;
 	margin-left: 5px;
   	border: 1px solid #CCC;
 	border-radius: 5px; 
