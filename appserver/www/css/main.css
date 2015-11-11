@@ -377,7 +377,6 @@ article.question_open {
 	position: relative;
 }
 
-}
 
 .answer_box {
 	background-color: #EEE;
@@ -407,8 +406,7 @@ article.question_open {
 	display: inline;
   	position: absolute;
 	width: 20%;
-	right: 15px;
-	
+	right: 15px;	
 }
 
 .footer_icons {
