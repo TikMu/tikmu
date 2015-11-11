@@ -73,9 +73,13 @@
 					<a href="#" class="share_answer icon">Share</a>
 						<a href="#" class="comment_answer" onclick="document.getElementById('@aid/comment').hidden = false">Comment</a>
 						<form id="@aid/comment" action="/answer/@aid/comment" method="post" hidden="true">
-							<input name="comment" type="text" placeholder="Comment" />
-							<button type="submit">&gt</button>
-							<button type="button" onclick="document.getElementById('@aid/comment').hidden = true">^</button>
+							<div class="comment_container">
+								<div class="comment_avatar"></div>
+
+							<input  class="comment_text" name="comment" type="text" placeholder="Comment" />
+							<button class="submit_comment"type="submit">Send</button>
+							<!-- <button  type="button" onclick="document.getElementById('@aid/comment').hidden = true">></button> Implement this later -->
+						</div>
 						</form>
 					</footer>
 				</div>
