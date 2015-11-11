@@ -228,7 +228,7 @@ li {
 
 
  /*answer container*/
- 
+
 .answer_container{
 	position: relative;	
 }
@@ -372,6 +372,13 @@ article.question_open {
 	font-size: 16px;
 }
 
+.answer_main_question{
+	width: 100%;
+	position: relative;
+}
+
+}
+
 .answer_box {
 	background-color: #EEE;
 	padding: 15px 20px;
@@ -382,8 +389,8 @@ article.question_open {
 	border: 1px solid #CCC;
 	border-radius: 5px;
 	font-size: 16px;
-	width: 427px;
-	position: absolute;
+	width: 74%;
+	display: inline;
 }
 
 .answer_submit_button {
@@ -396,13 +403,12 @@ article.question_open {
 	border-right: 0;
 	color: #FFF;
 	font-size: 16px;
-	margin-left: -1%;
 	text-align: center;
 	display: inline;
-  	position: relative;
-	width: 121px;
-	left: 80%;
-	bottom: 2%;
+  	position: absolute;
+	width: 20%;
+	right: 15px;
+	
 }
 
 .footer_icons {
