@@ -304,6 +304,19 @@ li {
 	right: 2%;
 }
 
+.comment_list{
+	background-color: #F4F3F4;
+ 	margin: 0px -20px;
+	padding: 0 40px;	
+}
+
+.background_comment{
+	margin: 0px 0 0px -40px;
+	padding: 4% 40px;	
+	width: 100%;	
+	border: 2px solid white;	
+}
+
 
 /* vote*/
 

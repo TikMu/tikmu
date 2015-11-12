@@ -86,12 +86,14 @@
 					<section class="comment_list">
 						@for (c in a.comments)
 						{ @{var u = this.getUser(c.user); var cid = c._id.valueOf(); }
+						<div class="background_comment">
 						<article id="@cid" class="comment">
 							<header>
 								<div class="answer_user_name">@u.name</div>
 								<div class="answer_user_date">@this.getPrettyDelta(c.created)</div>
 							</header>
-							<p class="answer_content">@c.contents</p><!-- TODO toHtml -->
+							<p class="answer_content">@c.contents</p>
+						</div>	
 						</article>
 						}
 					</section>
