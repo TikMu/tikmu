@@ -416,6 +416,11 @@ li {
 	color:gray;
 }
 
+/*Rename this*/
+.answer {
+    padding: 5px;
+}
+
 /* Questions open */
 
 main.question_open {
@@ -436,7 +441,7 @@ article.question_open {
 	background-color: #FFF;
 	color: #333;
 	margin-top: 20px;
-	padding: 20px;
+	padding: 10px 20px 20px 20px;
 }
 
 .answer_user_name {
