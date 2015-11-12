@@ -254,7 +254,7 @@ li {
 	
 }
 
-.comment_text{
+comment_text{
 	position: absolute;
 	display: inline;
 	font-size: 13px;
@@ -265,8 +265,11 @@ li {
 	margin-left: 5px;
   	border: 1px solid #CCC;
 	border-radius: 5px; 
+	padding: 0 10% 0 2%;
+	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncA type="table" tableValues="0 0.5" /></feComponentTransfer></filter></svg>#filter');
+	-webkit-filter: opacity(50%);
+	        filter: opacity(50%);
 }
-
 .comment_avatar{
 	position: relative;
 	background-image: url('../img/icon-user-avatar.png');
