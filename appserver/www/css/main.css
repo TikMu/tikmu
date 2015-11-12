@@ -254,7 +254,7 @@ li {
 	
 }
 
-comment_text{
+.comment_text{
 	position: absolute;
 	display: inline;
 	font-size: 13px;
