@@ -1,5 +1,10 @@
 $(document).ready(function(){
-	$(".close, body").click(function(){
-    $(".question_open").hide();
-  });
+	$(".question_card_question > a, .question_card_answers > a").click(function(){
+    	console.log(this.href);
+    	$.get(this.href).done(function(x){
+    		console.log(x);
+    	});
+  	});
 });
+
+
