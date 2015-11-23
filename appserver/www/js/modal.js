@@ -7,10 +7,10 @@ $(document).ready(function(){
     		$("main").after(question);
     	});
     	clk.preventDefault();
+  	});
 
-    	$(".question_open.modal").click(function() {
+    $(".question_open.modal").click(function() {
             $(".question_open.modal, question_open").hide('fast', function() {
             });
         });
-  	});
 });
