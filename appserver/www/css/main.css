@@ -473,7 +473,7 @@ li {
 
 /* Question open */
 
-.question_open {
+div.question_open {
 	max-width: 620px;
 	margin: 0 auto;
 	/*add*/
