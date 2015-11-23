@@ -4,7 +4,7 @@ $(document).ready(function(){
     		var data = $(html).filter("div.question_open");
     		var question = $("<div class='question_open modal'></div>");
     		data.appendTo(question);
-    		$(".question_open").after(question);
+    		$("main").after(question);
                 $(".overlay").click(function() {
                 $(".question_open.modal, div.question_open").hide('fast', function() {
             });
