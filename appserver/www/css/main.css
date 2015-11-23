@@ -520,6 +520,27 @@ div.question_open {
 */
 }
 
+div.question_open {
+	max-width: 620px;	
+	z-index: 999;
+	width: 50%;
+	height: 50%;
+	overflow: auto;
+	margin: auto;
+	position: fixed;
+	top: 0; left: 0; bottom: 0; right: 0;
+
+}	
+
+div.overlay {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	z-index: -10;
+	background-color: rgba(0,0,0,0.5);
+	top: 57px; left: 0; bottom: 0; right: 0;
+}
+
 div.overlay {
 	position: fixed;
 	top: 57px;
