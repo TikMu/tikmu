@@ -5,7 +5,7 @@ $(document).ready(function(){
     		var question = $("<div class='question_open modal'></div>");
     		data.appendTo(question);
     		$("main").after(question);
-                $("overlay").click(function() {
+                $(".overlay").click(function() {
                 $(".question_open.modal, question_open").hide('fast', function() {
             });
         });
