@@ -6,6 +6,7 @@ $(document).ready(function(){
     		data.appendTo(question);
     		$("main").after(question);
                 $(".question_open.modal").click(function() {
+                $( "div" ).removeClass( "overlay" );
                 $(".question_open.modal, question_open").hide('fast', function() {
             });
         });
