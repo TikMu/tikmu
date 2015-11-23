@@ -5,12 +5,13 @@ $(document).ready(function(){
     		var question = $("<div class='question_open modal'></div>");
     		data.appendTo(question);
     		$("main").after(question);
+                $(".question_open.modal").click(function() {
+                $(".question_open.modal, question_open").hide('fast', function() {
+            });
+        });
     	});
     	clk.preventDefault();
   	});
 });
 
- $(".question_open.modal").click(function() {
-            $(".question_open.modal, question_open").hide('fast', function() {
-            });
-        });
+
