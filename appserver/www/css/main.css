@@ -473,7 +473,7 @@ li {
 
 /* Question open */
 
-main.question_open {
+.question_open {
 	max-width: 620px;
 	margin: 0 auto;
 	/*add*/
@@ -483,7 +483,7 @@ main.question_open {
 */
 }
 
-.overlay {
+div.overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
