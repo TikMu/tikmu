@@ -8,9 +8,9 @@ $(document).ready(function(){
     	});
     	clk.preventDefault();
   	});
+});
 
-    $(".question_open.modal").click(function() {
+ $(".question_open.modal").click(function() {
             $(".question_open.modal, question_open").hide('fast', function() {
             });
         });
-});
