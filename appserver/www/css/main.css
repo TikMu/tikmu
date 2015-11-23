@@ -514,7 +514,6 @@ div.question_open {
 	max-width: 620px;
 	margin: 0 auto;
 	/*add*/
-	border-radius: 5%;
 	z-index: 10;
 	/*box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
 */
