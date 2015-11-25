@@ -10,13 +10,12 @@
 		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
 		<article id="@qid" class="question question_open">
 			<header class="question_header">
-				<div class="close_button">
+				<div class="close_button"></div>
 					<a class="close">&times;</a>
 				<div class="user_avatar"></div>
 				<div class="user_description">
 					<div class="user_name">@u.name</div>
 					<div class="user_reputation">@u.points</div>
-					</div>
 				</div>
 			</header>
 			<p class="question_card_question">@question.contents</p><!-- TODO toHtml -->
