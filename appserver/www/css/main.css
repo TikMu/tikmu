@@ -69,11 +69,17 @@ a {
 }
 
 /* but keep the default color on 'temp' (unstiled) elements */
-.temp a, a.temp {
+/*.temp a, a.temp {
 	color: gray;
 }
+*/
 
 
+.temp {
+	color: gray;
+	position: relative;
+	top: 60px;
+}
 
 li {
 	list-style: none;
@@ -200,6 +206,8 @@ li {
 	color: #fff;
 	display: inline-block;
 	vertical-align: top;
+	position: relative;
+	top:65px;
 
 }
 
