@@ -398,8 +398,7 @@ li {
 }
 
 .background_comment{
-	margin: 0px 0 0px -40px;
-	padding: 4% 40px;	
+	padding: 3%;	
 	width: 100%;	
 	border: 2px solid white;	
 }
@@ -482,7 +481,7 @@ li {
 	background-image: url('../img/icon-answer-gray.png');
 	background-size: 24px 24px;
 	width: 24px;
-	height: 20px;
+	height: 70%;
 	margin: 10px 10px 10px 0px;
 	-webkit-filter: opacity(40%);
 	        filter: opacity(40%);
@@ -499,7 +498,7 @@ li {
 .comment_answer {
 	height: auto;
 	position: absolute;
-	top: 30%;
+	top: 50%;
 	color:gray;
 }
 
@@ -540,16 +539,6 @@ div.overlay {
 	top: 57px; left: 0; bottom: 0; right: 0;
 }
 
-div.overlay {
-	position: fixed;
-	top: 57px;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -10;
-	background-color: rgba(0,0,0,0.5);
-}
-
 article.question_open {
 	background-color: #95B300;
 	color: #FFF;
@@ -563,7 +552,6 @@ article.question_open {
 	width: 100%;
 	height: 100%;
 	z-index: 11;
-	/* background-color: rgba(0,0,0,0.5); */
 }
 
 
@@ -631,10 +619,12 @@ article.question_open {
 
 /* close question / right corner button*/
 
-div.close_button{
+div.close_button {
+	position: absolute;
 	border-top: 50px solid #657F02;
 	border-left: 50px solid transparent;
-  	float: right;	
+  	right: 0px;	
+	
 }
  
 .close {
@@ -644,15 +634,10 @@ div.close_button{
 	color: white;
 	background-color: transparent;
 	background-size: 20px 20px;
-  	width: 40px; 
-	height: 40px;
-	-webkit-transform: translateY(-70%);
-	    -ms-transform: translateY(-70%);
-	        transform: translateY(-70%); 
-	-webkit-transform: translateX(170%); 
-	    -ms-transform: translateX(170%); 
-	        transform: translateX(170%);
-	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncA type="table" tableValues="0 0.6" /></feComponentTransfer></filter></svg>#filter');
+  	width: 4.2%; 
+  	margin: 2px;
+  	cursor: pointer;
+	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncA type="table" tableValues="0 0.6" /></feComponentTransfer></filter></svg>#filter'); 
 	-webkit-filter: opacity(60%);
 	        filter: opacity(60%); 	
 }
