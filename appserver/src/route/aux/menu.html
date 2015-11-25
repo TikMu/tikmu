@@ -19,10 +19,10 @@
 		<label><input name="useTags" type="checkbox" value="true" /> tags</label>
 	</form></li>
 	@if(ctx.loop.session.isAuthenticated()) {
-	<li><a href="/favorites">Favorites</a></li>
-	<li><a href="">Settings</a></li>
-	<li><a href="/logout">Log out</a></li>
+	<li><a class="temp" href="/favorites">Favorites</a></li>
+	<li><a  class="temp" href="">Settings</a></li>
+	<li><a  class="temp" href="/logout">Log out</a></li>
 	} else {
-	<li><a href="/login">Log in</a></li>
+	<li><a class="temp" href="/login">Log in</a></li>
 	}
 </menu>
