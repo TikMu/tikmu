@@ -4,12 +4,12 @@ $(document).ready(function(){
             var data = $(html).filter("div.question_open");
             var question = $("<div class='question_open modal'></div>");
             data.appendTo(question);
-            $("article.question.question_open").fadeIn(800);
+            $("article.question.question_open").fadeTo("slow", 1);
             $("main").after(question);
             $("article.question.question_card").addClass("blurred");
 
         $(".overlay, .close").click(function() {
-            $("div.question_open.modal, .div.question_open").fadeOut(800);
+            $("div.question_open.modal, .div.question_open").fadeTo("slow", 0);;
             $("article.question.question_card").removeClass ("blurred");
             $("div.question_open.modal, .div.question_open, .overlay").detach();   
         });
