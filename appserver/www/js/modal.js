@@ -10,7 +10,7 @@ $(document).ready(function(){
         
         $(".overlay, .close").click(function() {
             $("div.question_open.modal, .div.question_open").fadeOut('slow');
-            $("article.question.question_card").removeClass ("blurred overlay");    
+            $("article.question.question_card, .div.question_open.modal").removeClass ("blurred overlay");    
         });
         });
         clk.preventDefault();
