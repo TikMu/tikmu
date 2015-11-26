@@ -6,11 +6,11 @@ $(document).ready(function(){
             data.appendTo(question);
             $("main").after(question);
             $("article.question.question_card").addClass ("blurred");
-            $(".question_open.modal, .div.question_open, .overlay").fadeIn('slow');
+            $(".question_open.modal, .div.question_open").fadeIn('slow');
         
         $(".overlay, .close").click(function() {
             $(".question_open.modal, .div.question_open").fadeOut('slow');
-            $("article.question.question_card").removeClass ("blurred");    
+            $("article.question.question_card").removeClass ("blurred, overlay");    
         });
         });
         clk.preventDefault();
