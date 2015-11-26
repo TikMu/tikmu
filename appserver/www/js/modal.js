@@ -4,15 +4,14 @@ $(document).ready(function(){
             var data = $(html).filter("div.question_open");
             var question = $("<div class='question_open modal'></div>");
             data.appendTo(question);
-            $("div.question_open.modal, .div.question_open, .overlay").fadeIn('slow');
-            $("div.overlay").css("opacity", "60");
-             
+            $("article.question.question_open").fadeIn(800);
             $("main").after(question);
             $("article.question.question_card").addClass("blurred");
 
         $(".overlay, .close").click(function() {
-            $("div.question_open.modal, .div.question_open").fadeOut('slow');
-            $("article.question.question_card, .div.question_open.modal").removeClass ("blurred");    
+            $("div.question_open.modal, .div.question_open").fadeOut(800);
+            $("article.question.question_card").removeClass ("blurred");
+            $("div.question_open.modal, .div.question_open, .overlay").detach();   
         });
         });
         clk.preventDefault();
