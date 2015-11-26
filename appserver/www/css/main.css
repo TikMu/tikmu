@@ -85,6 +85,11 @@ li {
 	list-style: none;
 }
 
+.blurred {
+  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="1" /></filter></svg>#filter');
+  -webkit-filter: blur(1px);
+          filter: blur(1px);
+}
 
 /* Header */
 
@@ -543,7 +548,7 @@ div.overlay {
 	width: 100%;
 	height: 100%;
 	z-index: -10;
-	background-color: rgba(0,0,0,0.7);
+	background-color: rgba(0,0,0,0.2);
 	top: 57px; left: 0; bottom: 0; right: 0;
 }
 
