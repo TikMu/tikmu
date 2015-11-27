@@ -522,14 +522,14 @@ li {
 
 /* Question open */
 
-div.question_open {
+/*div.question_open {
 	max-width: 620px;
 	margin: 0 auto;
 	/*add*/
-	z-index: 10;
+	/*z-index: 10;*/
 	/*box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
 */
-}
+/*}*/
 
 div.question_open {
 	max-width: 620px;	
