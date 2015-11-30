@@ -9,7 +9,7 @@ $(document).ready(function(){
             $("article.question.question_open").fadeTo("slow", 1); 
             $("main").after(question);
 
-            var windowOffset = $(document).offset().top;
+            var windowOffset = $('html').offset().top;
             var questionHeight = question.height();
             var windowHeight = $(window).height();
             var positionModal;
