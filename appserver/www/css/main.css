@@ -558,14 +558,11 @@ article.question_open {
 
 }
 
+/* AQUI =)*/
 .question_open.modal {
-	position: absolute;
-	top: 50%;
-	left: 30%;
-	width: 100%;
-	height: 100%;
-	z-index: 11;
+	
 }
+
 
 
 .answer_list {
