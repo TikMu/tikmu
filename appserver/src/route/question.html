@@ -8,7 +8,7 @@
 	<div class="question_open">
 		<div class="overlay"></div>
 		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
-		<article id="@qid" class="question question_open">
+		<article id="@qid" class="question question_open_inner"> <!-- sera que isso vai zoar algum js? Acho que não, e acho que tb pode tirar o primeiro question. ISso o outro programador colocou, mas nem existe essa regra lá no main.css (tava reparando)  -->
 			<header class="question_header">
 				<div class="close_button"></div>
 					<a class="close">&times;</a>

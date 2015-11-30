@@ -531,7 +531,13 @@ li {
 */
 /*}*/
 
-div.question_open {
+/* AQUI =)*/
+.question_open.modal {
+ 
+}
+
+
+.question_open_inner {
 	max-width: 620px;	
 	z-index: 999;
 	width: 50%;
@@ -558,10 +564,7 @@ article.question_open {
 
 }
 
-/* AQUI =)*/
-.question_open.modal {
-	
-}
+
 
 
 
