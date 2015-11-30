@@ -533,6 +533,10 @@ li {
 
 /* AQUI =)*/
 .question_open.modal {
+ 
+}
+
+.question_open {
  position:absolute; 
  width:100%; 
  height:100%; 

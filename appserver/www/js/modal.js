@@ -9,7 +9,7 @@ $(document).ready(function(){
             $("div.question_open.modal, .div.question_open, .overlay").fadeIn(4000); 
             $("main").after(question);
 
-            var windowOffset = $('.question_open.modal ').offset().top;
+            var windowOffset = $('.question_open').offset().top;
             var questionHeight = question.height();
             var windowHeight = $(window).height();
             var positionModal;
