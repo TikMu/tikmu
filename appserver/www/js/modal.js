@@ -6,10 +6,10 @@ $(document).ready(function(){
             data.appendTo(question);
             
 
-            $("article.question.question_open").fadeTo("slow", 1); 
+            $("div.question_open.modal, .div.question_open, .overlay").fadeIn(4000); 
             $("main").after(question);
 
-            var windowOffset = $('html').offset().top;
+            var windowOffset = $('.question_open.modal ').offset().top;
             var questionHeight = question.height();
             var windowHeight = $(window).height();
             var positionModal;
@@ -28,7 +28,7 @@ $(document).ready(function(){
             $("article.question.question_card").addClass("blurred");
 
         $(".overlay, .close").click(function() {
-            $("div.question_open.modal, .div.question_open").fadeTo("slow", 0);; 
+            $("div.question_open.modal, .div.question_open, .overlay").fadeOut(4000);; 
             $("article.question.question_card").removeClass ("blurred");
             $("div.question_open.modal, .div.question_open, .overlay").detach();   
         });
