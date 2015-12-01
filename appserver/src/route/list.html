@@ -47,6 +47,12 @@
 			</article>
 			}
 		</main>
+		<script type="text/javascript" src="/js/waterfall.js"></script>
+		<script type="text/javascript">
+			var draw = function () { waterfall("main") };
+			// TODO don't redraw for every contiguous resize
+			$(this).ready(draw).resize(draw);
+		</script>
 	</body>
 </html>
 

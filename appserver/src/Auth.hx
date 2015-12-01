@@ -39,8 +39,10 @@ class Auth {
 	static function mkCookieAttrs(ctx:Context)
 	{
 		var att = ["Path=/"];
+#if !TIKMU_COOKIE_NO_DOMAIN
 		if (ctx.domain != null)
 			att.push('Domain=.${ctx.domain}');
+#end
 		if (Web.isTora)  // TODO better handle dev builds
 			att.push("Secure");
 		return att;

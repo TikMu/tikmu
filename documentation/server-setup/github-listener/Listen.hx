@@ -155,6 +155,7 @@ class Listen {
 		}
 
 		var ref = push.ref.replace("refs/", "");
+                var name = ref.split("/").slice(1).join("-");
 		var buildDir = '${config.baseBuildDir}/$ref';
 		var outputDir = '${config.baseOutputDir}/$ref';
 
@@ -197,12 +198,12 @@ class Listen {
 			Web.setReturnCode(200);  // OK
 			println("Build successfull");
 			notifySlack({
-				text : '*${infos.commit.id.substr(0,7)}* deployed: _${infos.ref}_'
+				text : '*${name}*: `${infos.commit.id.substr(0,7)}` deployed at <https://$name.maxikali.com|$name.maxikali.com>'
 			});
 		} catch (e:Dynamic) {
 			Web.setReturnCode(500);  // Internal Server Error
 			println('Build failed with error: $e');
-			var msg = '*${infos.commit.id.substr(0,7)}* failed ';
+			var msg = '*$name*: `${infos.commit.id.substr(0,7)}` failed to build ';
 			var epath = '$buildDir/appserver/.haxe.stderr';
 			var haxeErr = sys.FileSystem.exists(epath) ? sys.io.File.getContent(epath).trim() : "";
 			if (haxeErr.length > 0) {

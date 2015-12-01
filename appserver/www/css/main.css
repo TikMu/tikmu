@@ -211,9 +211,13 @@ li {
 	color: #fff;
 	display: inline-block;
 	vertical-align: top;
+<<<<<<< HEAD
 	position: relative;
 	top:65px;
 
+=======
+	margin: 5px;
+>>>>>>> origin
 }
 
 .user_avatar {
