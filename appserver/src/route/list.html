@@ -3,7 +3,7 @@
 	@ctx.aux.head.setData({ title : title }).execute()
 	<body>
 		@ctx.aux.menu.execute()
-		<main>
+		<main class="grid">
 			@for (q in questions)
 			{ @{var u = this.getUser(q.user);}
 			<article class="question question_card" id="@q._id.valueOf()">
@@ -49,7 +49,7 @@
 		</main>
 		<script type="text/javascript" src="/js/waterfall.js"></script>
 		<script type="text/javascript">
-			var draw = function () { waterfall("main") };
+			var draw = function () { waterfall(".grid") };
 			// TODO don't redraw for every contiguous resize
 			$(this).ready(draw).resize(draw);
 		</script>
