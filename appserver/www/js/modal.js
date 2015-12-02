@@ -6,8 +6,8 @@ $(document).ready(function(){
             data.appendTo(question);
             $("main").after(question);
 
-            var windowOffset = $('question.question_open_inner').offset().top;
-            var questionHeight = $('question.question_open_inner').height();
+            var windowOffset = $('.question_open_inner').offset().top;
+            var questionHeight = $('.question_open_inner').height();
             var windowHeight = $(window).height();
             var positionModal;
 
