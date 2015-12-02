@@ -22,12 +22,12 @@ $(document).ready(function(){
                 positionModal = windowOffset + 30;
             }
 
-            $('.question_open_inner').css({'top':positionModal});
+            $('question.question_open_inner').css({'top':positionModal});
+            console.log('positionModal');
 
             $("article.question.question_card").addClass("blurred");
 
-        $(".overlay, .close").click(function() {
-            $("div.question_open.modal, .div.question_open, .overlay").fadeOut(4000);; 
+        $(".overlay, .close").click(function() { 
             $("article.question.question_card").removeClass ("blurred");
             $("div.question_open.modal, .div.question_open, .overlay").detach();   
         });

@@ -8,7 +8,7 @@
 	<div class="question_open">
 		<div class="overlay"></div>
 		@{ var u = this.getUser(question.user); var qid = question._id.valueOf(); }
-		<article id="@qid" class="question question_open_inner"> <!-- sera que isso vai zoar algum js? Acho que não, e acho que tb pode tirar o primeiro question. ISso o outro programador colocou, mas nem existe essa regra lá no main.css (tava reparando)  -->
+		<article id="@qid" class="question question_open_inner"> 
 			<header class="question_header">
 				<div class="close_button"></div>
 					<a class="close">&times;</a>
@@ -23,7 +23,7 @@
 				<div class="location_date">@Std.random(10)km @this.getPrettyDelta(question.created)</div>
 				<div class="footer_icons">
 					<a href="#answer_box" class="answer icon">Answer</a>
-					<a href="#@qid" class="share icon">Share</a><!-- TODO -->
+					<a href="#@qid" class="share icon">Share</a>
 					@if(ctx.loop.session.isAuthenticated()) {
 					@{
 						var favclass = "favorite icon";
