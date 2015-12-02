@@ -554,7 +554,7 @@ li {
 	max-width: 620px;	
 	z-index: 999;
 	width: 50%;
-	height: 50%;
+	/*height: 50%;*/
 	overflow: auto;
 	margin: auto;
 	position: absolute;
