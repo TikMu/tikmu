@@ -4,12 +4,11 @@ $(document).ready(function(){
             var data = $(html).filter("div.question_open");
             var question = $("<div class='question_open modal'></div>");
             data.appendTo(question);
-            
-
-            $("div.question_open.modal, .div.question_open, .overlay").fadeIn(4000); 
             $("main").after(question);
 
-            var windowOffset = $('.question_open').offset().top;
+
+
+            var windowOffset = $('.question.question_open_inner').offset().top;
             var questionHeight = question.height();
             var windowHeight = $(window).height();
             var positionModal;
