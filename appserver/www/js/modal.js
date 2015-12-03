@@ -17,12 +17,13 @@ $(document).ready(function(){
                 positionModal = windowOffset + ((windowHeight - 60 - questionHeight) / 2);
             }
             else {
-                positionModal = windowOffset + 30;
+                positionModal = windowOffset + 120;
             }
 
             $('.question_open_inner').css({'top':positionModal});
-
+            $(".grid").css({'max-height': questionHeight + 430 ; 'overflow: hidden'});
             $("article.question.question_card").addClass("blurred");
+
 
         $(".overlay, .close").click(function() {
             $("div.question_open.modal, .div.question_open, .overlay").fadeOut(4000);; 

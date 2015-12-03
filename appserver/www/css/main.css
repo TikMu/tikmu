@@ -660,7 +660,7 @@ div.close_button {
 	color: white;
 	background-color: transparent;
 	background-size: 20px 20px;
-  	width: 4.2%; 
+  	width: 21px; 
   	margin: 2px;
   	cursor: pointer;
 	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feComponentTransfer color-interpolation-filters="sRGB"><feFuncA type="table" tableValues="0 0.6" /></feComponentTransfer></filter></svg>#filter'); 
