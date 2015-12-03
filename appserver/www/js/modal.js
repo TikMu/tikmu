@@ -21,7 +21,7 @@ $(document).ready(function(){
             }
 
             $('.question_open_inner').css({'top':positionModal});
-            $(".grid").css({'max-height': questionHeight + 430 ; 'overflow: hidden'});
+            $(".grid").css({'max-height':questionHeight + 430 , 'overflow':'hidden'});
             $("article.question.question_card").addClass("blurred");
 
 
