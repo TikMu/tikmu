@@ -537,7 +537,11 @@ li {
 
 /* AQUI =)*/
 .question_open.modal {
- 
+	display: none;
+    overflow-y: scroll;
+    position: fixed;
+    top: 0; right: 0;
+    height: 100%; width: 100%;
 }
 
 .question_open {

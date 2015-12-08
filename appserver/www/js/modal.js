@@ -22,12 +22,12 @@ $(document).ready(function(){
 
             $('.question_open_inner').css({'top':positionModal});
             $('body').css({'overflow':'hidden'});
-            $('.question_open.modal').css({'display':'block !important'});
+            $('div.question_open.modal').css({'display':'block'});
             $('article.question.question_card').addClass('blurred');
 
         $(".overlay, .close").click(function() {
-            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(4000);; 
-            $('article.question.question_card.').removeClass ('blurred');
+            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(800);; 
+            $("article.question.question_card.").removeClass ('blurred');
             $('body').css({'overflow':'auto'});
             $('div.question_open.modal, .div.question_open, .overlay').detach();   
         });
