@@ -26,11 +26,13 @@ $(document).ready(function(){
             $('article.question.question_card').addClass('blurred');
 
         $(".overlay, .close").click(function() {
-            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(800);; 
+            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(800, function() { 
+        $(this).remove(); 
+
             $("article.question.question_card").removeClass ('blurred');
             $('body').css({'overflow':'auto'});
-            // $('div.question_open.modal, .div.question_open, .overlay').detach();   
-        });
+            });
+            });
         });
         clk.preventDefault();
     });
