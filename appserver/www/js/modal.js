@@ -28,6 +28,7 @@ $(document).ready(function(){
         $(".overlay, .close").click(function() {
             $("div.question_open.modal, .div.question_open, .overlay").fadeOut(4000);; 
             $("article.question.question_card").removeClass ("blurred");
+            $(".grid").css({'max-height':'100%' , 'overflow':'auto'});
             $("div.question_open.modal, .div.question_open, .overlay").detach();   
         });
         });
