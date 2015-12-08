@@ -19,17 +19,17 @@ $(document).ready(function(){
             // else {
             //     positionModal = windowOffset + 120;
             // }
-
+            $('div.question_open.modal, .div.question_open, .overlay').fadeIn(800); 
             $('.question_open_inner').css({'top':200});
             $('body').css({'overflow':'hidden'});
             $('div.question_open.modal').css({'display':'block'});
             $('article.question.question_card').addClass('blurred');
 
         $(".overlay, .close").click(function() {
-            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(1600);; 
+            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(800);; 
             $("article.question.question_card").removeClass ('blurred');
             $('body').css({'overflow':'auto'});
-            $('div.question_open.modal, .div.question_open, .overlay').detach();   
+            // $('div.question_open.modal, .div.question_open, .overlay').detach();   
         });
         });
         clk.preventDefault();
