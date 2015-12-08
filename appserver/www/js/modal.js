@@ -26,7 +26,7 @@ $(document).ready(function(){
             $('article.question.question_card').addClass('blurred');
 
         $(".overlay, .close").click(function() {
-            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(800, function() { 
+            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(600, function() { 
         $(this).remove(); 
 
             $("article.question.question_card").removeClass ('blurred');
