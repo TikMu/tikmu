@@ -21,15 +21,15 @@ $(document).ready(function(){
             }
 
             $('.question_open_inner').css({'top':positionModal});
-            $(".grid").css({'max-height':questionHeight + 430 , 'overflow':'hidden'});
-            $("article.question.question_card").addClass("blurred");
-
+            $('body').css({'overflow':'hidden'});
+            $('.question_open.modal').css({'display':'block !important'});
+            $('article.question.question_card').addClass('blurred');
 
         $(".overlay, .close").click(function() {
-            $("div.question_open.modal, .div.question_open, .overlay").fadeOut(4000);; 
-            $("article.question.question_card").removeClass ("blurred");
-            $(".grid").css({'max-height':'100%' , 'overflow':'auto'});
-            $("div.question_open.modal, .div.question_open, .overlay").detach();   
+            $('div.question_open.modal, .div.question_open, .overlay').fadeOut(4000);; 
+            $('article.question.question_card.').removeClass ('blurred');
+            $('body').css({'overflow':'auto'});
+            $('div.question_open.modal, .div.question_open, .overlay').detach();   
         });
         });
         clk.preventDefault();

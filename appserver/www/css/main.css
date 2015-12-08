@@ -551,6 +551,8 @@ li {
 
 
 .question_open_inner {
+	background-color: #95B300;
+	color: #FFF;
 	max-width: 620px;	
 	z-index: 999;
 	width: 50%;
@@ -559,7 +561,7 @@ li {
 	margin: auto;
 	position: absolute;
 	top: 0; left: 0; right: 0;
-
+	margin-bottom: 70px;
 }	
 
 div.overlay {
@@ -572,8 +574,7 @@ div.overlay {
 }
 
 .question_open_inner {
-	background-color: #95B300;
-	color: #FFF;
+	
 
 }
 
