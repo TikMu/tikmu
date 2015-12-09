@@ -6,14 +6,16 @@ $(document).ready(function(){
             data.appendTo(question);
             $("main").after(question);
 
+
             $('div.question_open.modal, .div.question_open, .overlay').fadeIn('slow'); 
-            $('article.question.question_card').toggleClass('is-blurred');
+            $('article.question.question_card').addClass('is-blurred');
+            $('body').addClass('is-locked');
 
         $(".overlay, .close").click(function() {
             $('div.question_open.modal, .div.question_open, .overlay').fadeOut('slow', function() { 
                 $(this).remove(); 
-                $('article.question.question_card').toggleClass('is-blurred');
-                $('body').toggleClass('is-locked');
+                $('article.question.question_card').removeClass('is-blurred');
+                $('body').removeClass('is-locked');
             });
             });
         });
