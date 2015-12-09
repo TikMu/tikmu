@@ -589,15 +589,18 @@ div.overlay {
 
 .answer_user_name {
 	color: #8763DD;
+	padding-top: 9px;
+
 }
 
 .answer_user_date {
 	color: #AAA;
+	padding: 3px 0;
 }
 
 /* DIV answer box*/
 
-.answer_box{
+.answer_inner{
 	position: relative;	
 }
 
