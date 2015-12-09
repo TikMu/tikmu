@@ -239,14 +239,15 @@ li {
 	box-shadow: 0 5px 10px 0 #757575, 0 4px 5px 0 #a8a8a8;
 }
 
-@media (min-width: 410px) 
+/*fail test*/
+/*@media (min-width: 410px) 
 {
   .question_card 
    {
     max-width:600px;
     width:100%;
    }
-}
+}*/
 
 .user_avatar {
 	background-image: url('../img/icon-user-avatar.png');
