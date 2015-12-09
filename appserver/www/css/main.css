@@ -48,6 +48,17 @@ table {
 	border-spacing: 0;
 }
 
+
+/*media queries test*/
+@media (max-width: 2311px) 
+{
+  .grid 
+   {
+    left: 6.5%;
+   }
+}
+
+
 /*TikMU*/
 
 body {
