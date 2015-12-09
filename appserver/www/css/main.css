@@ -495,27 +495,23 @@ li {
 
 .share_answer{
 	background-image: url('../img/icon-answer-gray.png');
-	background-size: 24px 24px;
-	width: 24px;
-	height: 70%;
-	margin: 10px 10px 10px 0px;
+	width: 25px;
+	height: 30px;
+	display: inline-block;
+	vertical-align: middle;
 	-webkit-filter: opacity(40%);
 	        filter: opacity(40%);
 }
 
 .comment_icons{
-	text-align: left;
-	height: 46px;
-	position: relative;
-	bottom: 6px;
-
+	
 }
 
 .comment_answer {
-	height: auto;
-	position: absolute;
-	top: 50%;
+	height: 25px;
 	color:gray;
+	padding-left: 10px;
+	display: inline-block;
 }
 
 /*Answer.icon*/
@@ -612,7 +608,7 @@ div.overlay {
    	font-weight: 400;
     width: 90%;
     max-height: 450px;
-    min-height: 50px;
+    min-height: 32px;
     line-height:1.8;
     display: -webkit-box;
     display: -webkit-flex;
