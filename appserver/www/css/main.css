@@ -429,18 +429,34 @@ li {
 
 /* vote*/
 
+.lt_count{
+display: inline-block;
+
+}
+
+.lt_upclass{
+	display: inline-block;
+
+}
+
+.lt_downclass{
+	display: inline-block;
+
+}
+
 .vote {
-	position: relative;
+	/*position: relative;*/
+	/*float: right;*/
+	/*width: 4em;	
 	height: 4em;
-	float: right;
-	width: 4em;	
 	-webkit-transform: translateY(-50%);	
 	    -ms-transform: translateY(-50%);	
-	        transform: translateY(-50%);
+	        transform: translateY(-50%);*/
+	        text-align: center;
 }
 
 .upvote{
-	position: absolute;
+	/*position: absolute;*/
 	cursor: pointer;
 	background: url("../img/icon-upvote.png");
 	background-size: 20px;
@@ -449,11 +465,12 @@ li {
 	width: 4em;
 	background-position: 28px -4px;
 	text-indent: -9999px;
+	text-align: right;
 }
 
 
 .upvote.pressed{
-	position: absolute;
+	/*position: absolute;*/
 	cursor: pointer;
 	background: url("../img/icon-upvote.png");
 	background-size: 20px;
@@ -462,16 +479,18 @@ li {
 	width: 4em;
 	background-position: 28px -4px;
 	text-indent: -9999px;
+	text-align: right;
 }
 
 .vote_count{
-	position: absolute;
-  	vertical-align: middle;
-	padding: 20px 0px 0px 34px;
+	/*position: absolute;*/
+  	/*vertical-align: middle;*/
+	/*padding: 20px 0px 0px 34px;*/
+	text-align: right;
 }
 
 .downvote{
-	position: absolute;
+	/*position: absolute;*/
 	width: 4em;
 	cursor: pointer;
 	bottom: 0px;
@@ -480,6 +499,7 @@ li {
 	background-repeat: no-repeat;
 	background-position: 28px -2px;
 	text-indent: -9999px;
+	text-align: right;
 }
 
 .icon.pressed {
