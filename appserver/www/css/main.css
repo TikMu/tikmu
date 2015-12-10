@@ -455,50 +455,40 @@ display: inline-block;
 	        text-align: center;
 }
 
-.upvote{
-	/*position: absolute;*/
+.upvote.lt_downclass{
+	
 	cursor: pointer;
-	background: url("../img/icon-upvote.png");
-	background-size: 20px;
-	background-repeat: no-repeat;
-	overflow: hidden;
-	width: 4em;
-	background-position: 28px -4px;
-	text-indent: -9999px;
-	text-align: right;
+	background-image: url("../img/icon-upvote.png");
+	background-size:24px;
+	background-repeat:no-repeat;
+	width: 30px;
+	height:30px;
 }
 
 
-.upvote.pressed{
-	/*position: absolute;*/
+.upvote.pressed.lt_downclass{
+	
 	cursor: pointer;
-	background: url("../img/icon-upvote.png");
-	background-size: 20px;
-	background-repeat: no-repeat;
-	overflow: hidden;
-	width: 4em;
-	background-position: 28px -4px;
-	text-indent: -9999px;
-	text-align: right;
+	background-image: url("../img/icon-upvote.png");
+	background-size:24px;
+	background-repeat:no-repeat;
+	width: 30px;
+	height:30px;
 }
 
 .vote_count{
-	/*position: absolute;*/
-  	/*vertical-align: middle;*/
-	/*padding: 20px 0px 0px 34px;*/
+	
 	text-align: right;
 }
 
-.downvote{
-	/*position: absolute;*/
-	width: 4em;
+.downvote.lt_downclass{
 	cursor: pointer;
 	bottom: 0px;
 	background-image: url("../img/icon-downvote.png");
-	background-size:20px;
-	background-repeat: no-repeat;
-	background-position: 28px -2px;
-	text-indent: -9999px;
+	background-size:24px;
+	background-repeat:no-repeat;
+	width: 30px;
+	height:30px;
 	text-align: right;
 }
 
