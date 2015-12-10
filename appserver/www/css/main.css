@@ -455,7 +455,7 @@ display: inline-block;
 	        text-align: center;
 }
 
-.upvote{
+.icon.upvote{
 	/*position: absolute;*/
 	cursor: pointer;
 	background: url("../img/icon-upvote.png");
@@ -469,7 +469,7 @@ display: inline-block;
 }
 
 
-.upvote.pressed{
+.icon.upvote.pressed{
 	/*position: absolute;*/
 	cursor: pointer;
 	background: url("../img/icon-upvote.png");
@@ -489,7 +489,7 @@ display: inline-block;
 	text-align: right;
 }
 
-.downvote{
+.icon.downvote{
 	/*position: absolute;*/
 	width: 4em;
 	cursor: pointer;
