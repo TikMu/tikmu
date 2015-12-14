@@ -435,7 +435,7 @@ li {
 
 .vote {
 	/*position: relative;*/
-	/*float: right;*/
+	float: right;
 	/*width: 4em;	
 	height: 4em;
 	-webkit-transform: translateY(-50%);	
