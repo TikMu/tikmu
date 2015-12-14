@@ -429,19 +429,8 @@ li {
 
 /* vote*/
 
-.lt_count{
-display: inline-block;
-
-}
-
-.lt_upclass{
+.is-inline-block{
 	display: inline-block;
-
-}
-
-.lt_downclass{
-	display: inline-block;
-
 }
 
 .vote {
@@ -455,7 +444,7 @@ display: inline-block;
 	        text-align: center;
 }
 
-.upvote.lt_downclass{
+span.upclass.icon{
 	
 	cursor: pointer;
 	background-image: url("../img/icon-upvote.png");
@@ -466,7 +455,7 @@ display: inline-block;
 }
 
 
-.upvote.pressed.lt_downclass{
+.upvote.pressed.{
 	
 	cursor: pointer;
 	background-image: url("../img/icon-upvote.png");
@@ -481,7 +470,7 @@ display: inline-block;
 	text-align: right;
 }
 
-.downvote.lt_downclass{
+span.dnclass.icon{
 	cursor: pointer;
 	bottom: 0px;
 	background-image: url("../img/icon-downvote.png");

@@ -67,16 +67,16 @@
 							}
 						</div>
 						<div class="lt_upclass">	
-							<span class="@upclass lt_upclass"></span>
+							<span class="@upclass icon"></span>
 						</div>
 						<div class="lt_dnclass">
-						<span class="@dnclass lt_dnclass"></span>
-					</div>
+							<span class="@dnclass icon"></span>
+						</div>
 							}
 						}
-						</div>	
-					</div>
-							<!-- Workin on [frá] -->
+						</div>	<!-- vote -->
+					</div> <!-- answer inner -->
+							
 					<div class="comment_icons">
 					<a href="#" class="share_answer icon">Share</a>
 						<a href="#" class="comment_answer" onclick="document.getElementById('@aid/comment').hidden = false">comment</a>
@@ -101,13 +101,13 @@
 								<div class="answer_user_date">@this.getPrettyDelta(c.created)</div>
 							</header>
 							<p class="comment_content">@c.contents</p>
-						</article>
+						</article> <!-- comment  -->
 						</div>
 						}
-					</section>
-				</article>
+					</section> <!-- comment list -->
+				</article> <!-- answer containner -->
 				}
-			</section>
+			</section> <!-- answer_list -->
 			<section class="answer_main_question">
 			<form class="answer_box" action="/question/@qid/answer" method="post">
 				<input name="answer" type="text" placeholder="Help this traveler!" class="answer_textinput" />
@@ -115,8 +115,8 @@
 			</form>
 			</section>
 
-		</article>
-	</div>
+		</article> <!-- Question Open inner -->
+	</div>  <!--  Question open -->
 </body>
 </html>
 
