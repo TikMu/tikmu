@@ -444,7 +444,7 @@ li {
 	        text-align: center;
 }
 
-span.upclass.icon{
+span.upvote.icon{
 	
 	cursor: pointer;
 	background-image: url("../img/icon-upvote.png");
@@ -470,7 +470,7 @@ span.upclass.icon{
 	text-align: right;
 }
 
-span.dnclass.icon{
+span.downvote.icon{
 	cursor: pointer;
 	bottom: 0px;
 	background-image: url("../img/icon-downvote.png");
