@@ -440,7 +440,7 @@ li {
 	height: 66px;
 	width: 60px;
 	right: 0px;
-	top: -76px;
+	top: -40px;
 	margin: 0px;
 }
 
@@ -466,7 +466,7 @@ span.upvote.icon{
 
 .vote_count{
 	position:absolute;
-	top: 65px;
+	top: 25px;
 	right: 10px	
 }
 
