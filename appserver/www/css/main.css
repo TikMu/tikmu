@@ -429,18 +429,18 @@ li {
 
 /* vote*/
 
-.is-position-relative{
+..is-position-relative{
 	position:relative;
-	height: 30px	
+	height: 35px;
 }
 
 .vote {
 	position: absolute;
 	text-align: center;
-	height: 40px;
+	height: 66px;
 	width: 60px;
 	right: 0px;
-	top: -40px;
+	top: -76px;
 	margin: 0px;
 }
 
@@ -466,9 +466,10 @@ span.upvote.icon{
 
 .vote_count{
 	position:absolute;
-	top: 54px;
+	top: 65px;
 	right: 10px	
 }
+
 
 span.downvote.icon{
 	position:absolute;
