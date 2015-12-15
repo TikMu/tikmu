@@ -444,7 +444,7 @@ li {
 	margin: 0px;
 }
 
-span.upvote.icon{
+a.upvote.icon{
 	cursor: pointer;
 	background-image: url("../img/icon-upvote.png");
 	background-size:24px;
@@ -455,7 +455,7 @@ span.upvote.icon{
 }
 
 
-.upvote.pressed {
+a.upvote.pressed {
 	cursor: pointer;
 	background-image: url("../img/icon-upvote.png");
 	background-size:24px;
@@ -471,7 +471,7 @@ span.upvote.icon{
 }
 
 
-span.downvote.icon, span.downvote.icon.pressed {
+a.downvote.icon, a.downvote.icon.pressed {
 	position:absolute;
 	cursor: pointer;
 	bottom: 0px;
