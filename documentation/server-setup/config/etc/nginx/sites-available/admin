@@ -1,0 +1,25 @@
+server {
+	listen 2000 ssl;
+	include snippets/snakeoil.conf;
+	server_name _;
+	root /var/www/robrt;
+	location /incoming {
+		proxy_pass http://localhost:6667/;
+	}
+	location /logs {
+		autoindex on;
+	}
+}
+
+server {
+	listen 2001 ssl;
+	include snippets/snakeoil.conf;
+	server_name _;
+	root /var/www/tora;
+	location ~ \.n {
+		fastcgi_split_path_info ^(.+\.n)(/.+)$;
+		include fastcgi-tora.conf;
+		fastcgi_pass 127.0.0.1:6666;
+	}
+}
+

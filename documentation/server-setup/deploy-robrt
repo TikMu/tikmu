@@ -1,0 +1,18 @@
+#!/bin/bash
+if [ "$1" = "" || "$2" = "" ]
+then
+	echo "Usage: deploy-robrt <robrt-directory> <server>"
+	exit 1
+fi
+set -ex
+dir=$PWD
+
+cd $1
+npm pack
+pkg=$(ls -x *.tgz | tail -n 1 || "")
+
+cd $dir
+scp $1/$pkg root@$2:/tmp/
+cmd="set -ex; /bin/bash -xec 'npm install -g /tmp/$pkg && systemctl daemon-reload'"
+ssh root@$2 $cmd
+

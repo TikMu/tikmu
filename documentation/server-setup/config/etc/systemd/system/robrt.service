@@ -1,0 +1,15 @@
+[Unit]
+Description=Robrt, a robot that listens to GitHub events and deploys stuff
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/run/robrt.pid
+ExecStart=/usr/bin/env robrt listen 6667
+TimeoutStopSec=30
+KillMode=mixed
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+

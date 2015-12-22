@@ -1,0 +1,9 @@
+#!/bin/bash
+if [ "$1" = "" ]
+then
+	echo "Usage: restart-all <server>"
+	exit 1
+fi
+set -ex
+
+ssh root@$1 'set -ex; systemctl restart robrt && nginx -s reload'

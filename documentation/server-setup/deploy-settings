@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ "$1" = "" ] || [ "$2" = "" ]
+then
+	echo "Usage: deploy-settings <robrt-dir> <server>"
+	exit 1
+fi
+set -ex
+
+haxe -cp $1/src confs.hxml
+tar -cvf settings.tgz -C config .
+scp settings.tgz root@$2:/tmp/
+ssh root@$2 'set -ex; tar -xvf /tmp/settings.tgz -C /'
+
