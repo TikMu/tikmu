@@ -6,4 +6,4 @@ then
 fi
 set -ex
 
-ssh root@$1 'set -ex; systemctl restart robrt && nginx -s reload'
+ssh root@$1 'set -ex; systemctl restart robrt && nginx -s reload && sleep 1 && systemctl status robrt && systemctl status nginx'
