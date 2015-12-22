@@ -2,8 +2,8 @@ import robrt.server.ServerConfig;
 
 class RobrtConf {
 	static var serverAddress = "159.203.147.242";
-	static var logUrl = 'https://$serverAddress:2000/$$build_id.txt';
-	static var branchUrl = 'https://$$branch.$serverAddress';
+	static var logUrl = 'https://$serverAddress:2000/logs/$$build_id.txt';
+	static var branchUrl = 'https://$$base_branch.$serverAddress';
 	static var prUrl = 'https://pr-$$pr_number.$serverAddress';
 
 	static var ghBranchUrl = "https://github.com/$user/$repo/commits/$base_branch";

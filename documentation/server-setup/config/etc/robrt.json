@@ -20,7 +20,7 @@
                     {
                       "short": false,
                       "title": "Additional information",
-                      "value": "(<https://github.com/$user/$repo/commits/$base_branch|view branch>, <https://github.com/$user/$repo/commit/$base_commit|view commit>, <https://159.203.147.242:2000/$build_id.txt|view log>)"
+                      "value": "(<https://github.com/$user/$repo/commits/$base_branch|view branch>, <https://github.com/$user/$repo/commit/$base_commit|view commit>, <https://159.203.147.242:2000/logs/$build_id.txt|view log>)"
                     }
                   ],
                   "fallback": "Sorry, failed to build commit $base_commit_short"
@@ -36,12 +36,12 @@
                     {
                       "short": false,
                       "title": "Rendered branch '$base_branch'",
-                      "value": "https://$branch.159.203.147.242"
+                      "value": "https://$base_branch.159.203.147.242"
                     },
                     {
                       "short": false,
                       "title": "Additional information",
-                      "value": "(<https://github.com/$user/$repo/commits/$base_branch|view branch>, <https://github.com/$user/$repo/commit/$base_commit|view commit>, <https://159.203.147.242:2000/$build_id.txt|view log>)"
+                      "value": "(<https://github.com/$user/$repo/commits/$base_branch|view branch>, <https://github.com/$user/$repo/commit/$base_commit|view commit>, <https://159.203.147.242:2000/logs/$build_id.txt|view log>)"
                     }
                   ],
                   "fallback": "Your updated '$base_branch' branch is available at commit $base_commit_short"
@@ -109,7 +109,7 @@
                     {
                       "short": false,
                       "title": "Additional information",
-                      "value": "(<https://github.com/$user/$repo/pull/$pr_number|view pull request>, <https://github.com/$user/$repo/commit/$pr_commit|view commit>, <https://159.203.147.242:2000/$build_id.txt|view log>)"
+                      "value": "(<https://github.com/$user/$repo/pull/$pr_number|view pull request>, <https://github.com/$user/$repo/commit/$pr_commit|view commit>, <https://159.203.147.242:2000/logs/$build_id.txt|view log>)"
                     }
                   ],
                   "fallback": "Sorry, failed to build pull request $pr_number"
@@ -130,7 +130,7 @@
                     {
                       "short": false,
                       "title": "Additional information",
-                      "value": "(<https://github.com/$user/$repo/pull/$pr_number|view pull request>, <https://github.com/$user/$repo/commit/$pr_commit|view commit>, <https://159.203.147.242:2000/$build_id.txt|view log>)"
+                      "value": "(<https://github.com/$user/$repo/pull/$pr_number|view pull request>, <https://github.com/$user/$repo/commit/$pr_commit|view commit>, <https://159.203.147.242:2000/logs/$build_id.txt|view log>)"
                     }
                   ],
                   "fallback": "Your updated pull request #$pr_number is available at commit $pr_commit_short"
@@ -283,7 +283,7 @@
                 "payload": {
                   "description": "Build error",
                   "state": "failure",
-                  "target_url": "https://159.203.147.242:2000/$build_id.txt"
+                  "target_url": "https://159.203.147.242:2000/logs/$build_id.txt"
                 },
                 "events": [
                   "build-failure"
