@@ -64,7 +64,7 @@ class RobrtConf {
 				fields : [
 				{
 					title : "Rendered branch '$base_branch'", short : false,
-					value : '$branchUrl',
+					value : '<$branchUrl>',
 				},
 				{
 					title : "Additional information", short : false,

@@ -36,7 +36,7 @@
                     {
                       "short": false,
                       "title": "Rendered branch '$base_branch'",
-                      "value": "https://$base_branch.159.203.147.242"
+                      "value": "<https://$base_branch.159.203.147.242>"
                     },
                     {
                       "short": false,
