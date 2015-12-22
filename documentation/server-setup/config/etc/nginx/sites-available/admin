@@ -5,6 +5,8 @@ server {
 	root /var/www/robrt;
 	location /incoming {
 		proxy_pass http://localhost:6667/;
+		add_header X-Robrt-Name "Maxikali.Robrt";
+		add_header X-Robrt-Description "The new CI system for TikMu";
 	}
 	location /logs {
 		autoindex on;
