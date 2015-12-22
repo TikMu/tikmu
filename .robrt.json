@@ -7,7 +7,12 @@
 	},
 	"build" : {
 		"cmds" : [
-			"echo 'Hello, World!'"
+			"env | grep ROBRT",
+			"mongod &>/dev/null & echo 'Starting mongo'",
+			"cd $ROBRT_REPOSITORY_DIR/appserver && haxe -D hidesuccess test.hxml",
+			"cd $ROBRT_REPOSITORY_DIR/tools/rescore && haxe build.hxml",
+			"cd $ROBRT_REPOSITORY_DIR/appserver && haxe -D tikmu_require_login -D tikmu_cache_module build.hxml",
+			"cp -vr $ROBRT_REPOSITORY_DIR/appserver/www/* $ROBRT_OUTPUT_DIR/"
 		]
 	}
 }
