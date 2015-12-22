@@ -8,7 +8,7 @@
 	"build" : {
 		"cmds" : [
 			"env | grep ROBRT",
-			"mongod &>/dev/null & echo 'Starting mongo'",
+			"mongod &>/dev/null & echo 'Starting mongo' && sleep 1",
 			"cd $ROBRT_REPOSITORY_DIR/appserver && haxe -D hidesuccess test.hxml",
 			"cd $ROBRT_REPOSITORY_DIR/tools/rescore && haxe build.hxml",
 			"cd $ROBRT_REPOSITORY_DIR/appserver && haxe -D tikmu_require_login -D tikmu_cache_module build.hxml",
