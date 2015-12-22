@@ -35,7 +35,7 @@ class Context {
 				trace('${h.header}: ${h.value}');
 		}
 
-		var hpat = ~/^(.+?\.)?(new\.)?(.+)$/;
+		var hpat = ~/^(.+?\.)?(.+)$/;
 		if (hpat.match(Web.getHostName())) {
 			domain = hpat.matched(2);
 			subdomain = hpat.matched(1);
