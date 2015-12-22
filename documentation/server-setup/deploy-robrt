@@ -1,18 +1,26 @@
 #!/bin/bash
-if [ "$1" = "" || "$2" = "" ]
+if [ "$1" = "" ]
 then
-	echo "Usage: deploy-robrt <robrt-directory> <server>"
+	echo "Usage: deploy-robrt <robrt-directory> [server]"
 	exit 1
 fi
+server=new.maxikali.com
+robrt=$1
+if [ "$2" != "" ]
+then
+	echo "Using custom server $2"
+	server=$2
+fi
 set -ex
+
 dir=$PWD
 
-cd $1
+cd $robrt
 npm pack
 pkg=$(ls -x *.tgz | tail -n 1 || "")
 
 cd $dir
-scp $1/$pkg root@$2:/tmp/
+scp $robrt/$pkg root@$server:/tmp/
 cmd="set -ex; /bin/bash -xec 'npm install -g /tmp/$pkg && systemctl daemon-reload'"
-ssh root@$2 $cmd
+ssh root@$server $cmd
 

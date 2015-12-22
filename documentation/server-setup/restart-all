@@ -1,9 +1,12 @@
 #!/bin/bash
-if [ "$1" = "" ]
+server=new.maxikali.com
+if [ "$1" != "" ]
 then
-	echo "Usage: restart-all <server>"
-	exit 1
+	echo "Usage: restart-all [server]"
+	echo "Using custom server $1"
+	server=$1
 fi
 set -ex
 
-ssh root@$1 'set -ex; systemctl restart robrt && nginx -s reload && sleep 1 && systemctl status robrt && systemctl status nginx'
+ssh root@$server 'set -ex; systemctl restart robrt && nginx -s reload && sleep 1 && systemctl status robrt && systemctl status nginx'
+
