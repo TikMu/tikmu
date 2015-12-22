@@ -218,7 +218,16 @@
               },
               {
                 "payload": {
-                  "description": "Missing or invalid .robrt.json",
+                  "description": "Build has been disabled by the lack of .robrt.json file",
+                  "state": "success"
+                },
+                "events": [
+                  "no-repo-conf"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Invalid .robrt.json",
                   "state": "failure"
                 },
                 "events": [

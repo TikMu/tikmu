@@ -9,5 +9,5 @@ set -ex
 haxe -cp $1/src confs.hxml
 tar -cvf settings.tgz -C config .
 scp settings.tgz root@$2:/tmp/
-ssh root@$2 'set -ex; tar -xvf /tmp/settings.tgz -C /'
+ssh root@$2 'set -ex; tar -xvf /tmp/settings.tgz -C / && systemctl daemon-reload'
 

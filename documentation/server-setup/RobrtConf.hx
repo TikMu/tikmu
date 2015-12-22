@@ -20,7 +20,8 @@ class RobrtConf {
 		{ events : [EFailedMerge], payload : { state : "failure", description : "This branch has conflicts that must be resolved" } },
 
 		{ events : [EPreparing], payload : { state : "pending", description : "Preparing a docker container" } },
-		{ events : [EInvalidRepoConf], payload : { state : "failure", description : "Missing or invalid .robrt.json" } },
+		{ events : [ENoRepoConf], payload : { state : "success", description : "Build has been disabled by the lack of .robrt.json file" } },
+		{ events : [EInvalidRepoConf], payload : { state : "failure", description : "Invalid .robrt.json" } },
 		{ events : [ENoRepoPrepare], payload : { state : "failure", description : "Nothing to do (no 'prepare' in .robrt.json)" } },
 		{ events : [EPrepareError], payload : { state : "error", description : "Error preparing container (build id is $build_id)" } },
 
