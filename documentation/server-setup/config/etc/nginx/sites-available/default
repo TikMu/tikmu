@@ -14,7 +14,7 @@ server {
 
 	include snippets/snakeoil.conf;
 
-	server_name ~^(?<ref_name>.+)\.maxikali\.com$;
+	server_name ~^(?<ref_name>.+)\.159\.203\.147\.242$;
 
 	# set the root to the correct branch
 	root /var/www/tikmu/heads/$ref_name;
@@ -44,7 +44,7 @@ server {
 
 	include snippets/snakeoil.conf;
 
-	server_name maxikali.com;
+	server_name _;
 
 	set $dev_ref heads/master;
 	# get desired branch from X-Dev-Branch header
