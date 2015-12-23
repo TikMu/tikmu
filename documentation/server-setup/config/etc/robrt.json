@@ -1,0 +1,357 @@
+{
+  "repositories": [
+    {
+      "notification_targets": [
+        {
+          "name": "slack",
+          "type": "slack",
+          "url": "https://hooks.slack.com/services/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",
+          "customPayload": {
+            "branch_builds": [
+              {
+                "payload": {
+                  "color": "#D00000",
+                  "fields": [
+                    {
+                      "short": false,
+                      "title": "Error",
+                      "value": "I'm sorry, but branch '$base_branch' has failed to build.  This can very well be my fault, but you can check the log and see if there's something you can do"
+                    },
+                    {
+                      "short": false,
+                      "title": "Additional information",
+                      "value": "(<https://github.com/$user/$repo/commits/$base_branch|view branch>, <https://github.com/$user/$repo/commit/$base_commit|view commit>, <https://new.maxikali.com:2000/logs/$build_id.txt|view log>)"
+                    }
+                  ],
+                  "fallback": "Sorry, failed to build commit $base_commit_short"
+                },
+                "events": [
+                  "build-failure"
+                ]
+              },
+              {
+                "payload": {
+                  "color": "#00D000",
+                  "fields": [
+                    {
+                      "short": false,
+                      "title": "Rendered branch '$base_branch'",
+                      "value": "<https://$base_branch.new.maxikali.com>"
+                    },
+                    {
+                      "short": false,
+                      "title": "Additional information",
+                      "value": "(<https://github.com/$user/$repo/commits/$base_branch|view branch>, <https://github.com/$user/$repo/commit/$base_commit|view commit>, <https://new.maxikali.com:2000/logs/$build_id.txt|view log>)"
+                    }
+                  ],
+                  "fallback": "Your updated '$base_branch' branch is available at commit $base_commit_short"
+                },
+                "events": [
+                  "export-success"
+                ]
+              },
+              {
+                "payload": {
+                  "color": "#D0D0D0",
+                  "fields": [
+                    {
+                      "short": false,
+                      "title": "Bip... Bip... Failure",
+                      "value": "I'm very sorry, but I appear to be severely malfunctioning!  My overlord Jonas has been alerted and will fix me as soon as possible.  The build id was $build_id."
+                    }
+                  ],
+                  "fallback": "Sorry, failed miserably with build $build_id"
+                },
+                "events": [
+                  "invalid-repo_conf",
+                  "repository-error",
+                  "no-repo-prepare",
+                  "prepare-error",
+                  "no-build",
+                  "no-repo-build",
+                  "build-error",
+                  "no-export",
+                  "export-error"
+                ]
+              }
+            ],
+            "pull_requests": [
+              {
+                "payload": {
+                  "color": "#D00000",
+                  "fields": [
+                    {
+                      "short": false,
+                      "title": "Error",
+                      "value": "I'm sorry, but pull request #$pr_number has conflicts that must be resolved before I can attempt to build it."
+                    },
+                    {
+                      "short": false,
+                      "title": "Additional information",
+                      "value": "(<https://github.com/$user/$repo/pull/$pr_number|view pull request>)"
+                    }
+                  ],
+                  "fallback": "Sorry, pull request #$pr_number has conflicts that must be resolved"
+                },
+                "events": [
+                  "failed-merge"
+                ]
+              },
+              {
+                "payload": {
+                  "color": "#D00000",
+                  "fields": [
+                    {
+                      "short": false,
+                      "title": "Error",
+                      "value": "I'm sorry, but pull request #$pr_number has failed to build.  This can very well be my fault, but you can check the log and see if there's something you can do"
+                    },
+                    {
+                      "short": false,
+                      "title": "Additional information",
+                      "value": "(<https://github.com/$user/$repo/pull/$pr_number|view pull request>, <https://github.com/$user/$repo/commit/$pr_commit|view commit>, <https://new.maxikali.com:2000/logs/$build_id.txt|view log>)"
+                    }
+                  ],
+                  "fallback": "Sorry, failed to build pull request $pr_number"
+                },
+                "events": [
+                  "build-failure"
+                ]
+              },
+              {
+                "payload": {
+                  "color": "#00D000",
+                  "fields": [
+                    {
+                      "short": false,
+                      "title": "Rendered pull request #$pr_number",
+                      "value": "<https://pr-$pr_number.new.maxikali.com>"
+                    },
+                    {
+                      "short": false,
+                      "title": "Additional information",
+                      "value": "(<https://github.com/$user/$repo/pull/$pr_number|view pull request>, <https://github.com/$user/$repo/commit/$pr_commit|view commit>, <https://new.maxikali.com:2000/logs/$build_id.txt|view log>)"
+                    }
+                  ],
+                  "fallback": "Your updated pull request #$pr_number is available at commit $pr_commit_short"
+                },
+                "events": [
+                  "export-success"
+                ]
+              },
+              {
+                "payload": {
+                  "color": "#D0D0D0",
+                  "fields": [
+                    {
+                      "short": false,
+                      "title": "Bip... Bip... Failure",
+                      "value": "I'm very sorry, but I appear to be severely malfunctioning!  My overlord Jonas has been alerted and will fix me as soon as possible.  The build id was $build_id."
+                    }
+                  ],
+                  "fallback": "Sorry, failed miserably with build $build_id"
+                },
+                "events": [
+                  "invalid-repo_conf",
+                  "repository-error",
+                  "no-repo-prepare",
+                  "prepare-error",
+                  "no-build",
+                  "no-repo-build",
+                  "build-error",
+                  "no-export",
+                  "export-error"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "github",
+          "type": "github",
+          "customPayload": {
+            "pull_requests": [
+              {
+                "payload": {
+                  "description": "Received",
+                  "state": "pending"
+                },
+                "events": [
+                  "started"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Cloning and attempting to merge",
+                  "state": "pending"
+                },
+                "events": [
+                  "opening-repo"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Error opening repository (build id is $build_id)",
+                  "state": "error"
+                },
+                "events": [
+                  "repository-error"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "This branch has conflicts that must be resolved",
+                  "state": "failure"
+                },
+                "events": [
+                  "failed-merge"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Preparing a docker container",
+                  "state": "pending"
+                },
+                "events": [
+                  "preparing"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Build has been disabled by the lack of .robrt.json file",
+                  "state": "success"
+                },
+                "events": [
+                  "no-repo-conf"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Invalid .robrt.json",
+                  "state": "failure"
+                },
+                "events": [
+                  "invalid-repo_conf"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Nothing to do (no 'prepare' in .robrt.json)",
+                  "state": "failure"
+                },
+                "events": [
+                  "no-repo-prepare"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Error preparing container (build id is $build_id)",
+                  "state": "error"
+                },
+                "events": [
+                  "prepare-error"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Building",
+                  "state": "pending"
+                },
+                "events": [
+                  "building"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Nothing to build (build id is $build_id)",
+                  "state": "error"
+                },
+                "events": [
+                  "no-build"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Nothing to build (no 'build' in .robrt.json or no commands to run)",
+                  "state": "failure"
+                },
+                "events": [
+                  "no-repo-build"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Error running build (build id is $build_id)",
+                  "state": "error"
+                },
+                "events": [
+                  "build-error"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Build error",
+                  "state": "failure",
+                  "target_url": "https://new.maxikali.com:2000/logs/$build_id.txt"
+                },
+                "events": [
+                  "build-failure"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Exporting",
+                  "state": "pending"
+                },
+                "events": [
+                  "exporting"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Nothing to export (build id is $build_id)",
+                  "state": "error"
+                },
+                "events": [
+                  "no-export"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Error exporting (build id is $build_id)",
+                  "state": "error"
+                },
+                "events": [
+                  "export-error"
+                ]
+              },
+              {
+                "payload": {
+                  "description": "Build id $build_id successfull.  Output generated...",
+                  "state": "success",
+                  "target_url": "https://pr-$pr_number.new.maxikali.com"
+                },
+                "events": [
+                  "done"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "full_name": "jonasmalacofilho/tikmu",
+      "hook_secret": "not much of a secret, but will have to make due for now",
+      "export_options": {
+        "destination": {
+          "branches": "/var/www/tikmu/heads/$base_branch",
+          "build_log": "/var/www/robrt/logs/$build_id.txt",
+          "pull_requests": "/var/www/tikmu/heads/pr-$pr_number"
+        }
+      },
+      "oauth2_token": "f0fdb07653673e9cad7e8838a3788103a96d1740",
+      "build_options": {
+        "directory": "/var/robrt/builds/jonasmalacofilho/tikmu"
+      }
+    }
+  ]
+}
