@@ -12,11 +12,9 @@ server {
 	listen 443 ssl;
 	listen [::]:443 ssl;
 
-	ssl on;
-	ssl_certificate /etc/nginx/self.crt;
-	ssl_certificate_key /etc/nginx/self.key;
+	include snippets/snakeoil.conf;
 
-	server_name ~^(?<ref_name>.+)\.maxikali\.com$;
+	server_name ~^(?<ref_name>.+)\.new\.maxikali\.com$;
 
 	# set the root to the correct branch
 	root /var/www/tikmu/heads/$ref_name;
@@ -46,7 +44,7 @@ server {
 
 	include snippets/snakeoil.conf;
 
-	server_name maxikali.com;
+	server_name new.maxikali.com;
 
 	set $dev_ref heads/master;
 	# get desired branch from X-Dev-Branch header
