@@ -1,0 +1,20 @@
+#!/bin/bash
+if [ "$1" = "" ]
+then
+	echo "Usage: deploy-settings <robrt-dir> [server]"
+	exit 1
+fi
+server=new.maxikali.com
+robrt=$1
+if [ "$2" != "" ]
+then
+	echo "Using custom server $2"
+	server=$2
+fi
+set -ex
+
+haxe -cp $robrt/src confs.hxml
+tar -cvf settings.tgz -C config .
+scp settings.tgz root@$server:/tmp/
+ssh root@$server 'set -ex; tar -xvf /tmp/settings.tgz -C / && systemctl daemon-reload'
+

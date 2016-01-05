@@ -1,0 +1,5 @@
+# requires -cp to the path for robrt
+-neko robrt-conf.n
+-main RobrtConf
+-cmd neko robrt-conf.n > config/etc/robrt.json
+

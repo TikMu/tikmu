@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 PIDFile=/run/tora.pid
-ExecStart=/usr/bin/neko /var/build/tora/tora.n -fcgi
+ExecStart=/usr/bin/neko /var/git/tora/tora.n -fcgi
 TimeoutStopSec=5
 KillMode=mixed
 
