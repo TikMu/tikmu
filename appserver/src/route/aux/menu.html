@@ -3,18 +3,19 @@
 		<!-- left nav -->
 		<nav id="header_nav">
 			<ul>
-			<li><a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
-			<li><a href="#" id="main_menu" class="icon">Menu</a></li>
-				<ul>
-				@if(ctx.loop.session.isAuthenticated()) {
-					<li><a class="temp" href="/favorites">Favorites</a></li>
-					<li><a  class="temp" href="">Settings</a></li>
-					<li><a  class="temp" href="/logout">Log out</a></li>
-					} else {
-					<li><a class="temp" href="/login">Log in</a></li>
-					}
-				</ul>	
-			<li><a href="/" id="logo" class="icon">TikMu</a></li>
+				<li><a href="#" onclick="window.history.back()">Back!</a></li><!-- TODO only on some views -->
+					<li><a href="#" id="main_menu" class="icon">Menu</a>
+						<ul>
+						@if(ctx.loop.session.isAuthenticated()) {
+							<li><a class="temp" href="/favorites">Favorites</a></li>
+							<li><a  class="temp" href="">Settings</a></li>
+							<li><a  class="temp" href="/logout">Log out</a></li>
+							} else {
+							<li><a class="temp" href="/login">Log in</a></li>
+							}
+						</li>
+					</ul>	
+				<li><a href="/" id="logo" class="icon">TikMu</a></li>
 			</ul>
 		</nav>	
 
