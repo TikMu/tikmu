@@ -131,7 +131,7 @@ nav ul ul {display:none; position: relative; top: 100%; background-color:rgba(0,
 #header {
   display: block;
   position: fixed;
-  top: 1;
+  top: 0;
   width: 100%;
   height: 57px;
   background: rgba(0,0,0,0.85);
