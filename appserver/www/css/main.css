@@ -112,6 +112,9 @@ li {
 
 /* Header */
 
+nav ul {list-style: none; margin: 0; padding: 0;}
+nav > ul > li {float: left;}
+
 .question_card_header {
     left: 20px;
     display: inline-block;
@@ -205,6 +208,7 @@ li {
 
 .grid{
 	max-width: 100%;
+	top: 45px;
 }
 
 .question_card {
