@@ -7,8 +7,20 @@
 					<li><a href="#" id="main_menu" class="icon">Menu</a>
 						<ul>
 						@if(ctx.loop.session.isAuthenticated()) {
+							<li><form action="/search" method="get">
+							<button type="submit">Find!</button>
+							<input name="query" type="text" placeholder="Search" />
+							<label><input name="useTags" type="checkbox" value="true" /> tags</label>
+							</form></li>
+							<li><a  class="temp" href="">Settings</a>
+								<ul>
+									<li><a  class="temp" href="">Notifications</a>
+									<li><a  class="temp" href="">Alerts</a>
+									<li><a  class="temp" href="">Zoom</a>
+								</ul>	
+							</li>
 							<li><a class="temp" href="/favorites">Favorites</a></li>
-							<li><a  class="temp" href="">Settings</a></li>
+							<li><a class="temp" href="#">Following</a></li>
 							<li><a  class="temp" href="/logout">Log out</a></li>
 							} else {
 							<li><a class="temp" href="/login">Log in</a></li>
@@ -31,11 +43,8 @@
 		
 	</div>
 </header>
-<menu class="temp">
-	<li><form action="/search" method="get">
-		<button type="submit">Find!</button>
-		<input name="query" type="text" placeholder="Search" />
-		<label><input name="useTags" type="checkbox" value="true" /> tags</label>
-	</form></li>
+
+<!-- <menu class="temp">
 	
-</menu>
+	
+</menu> -->
