@@ -3,7 +3,10 @@
 @ctx.aux.head.setData({ title : "Log in" }).execute()
 <body>
 	@ctx.aux.menu.execute()
-	<main class="temp">
+	<main style="
+    position: absolute;
+    top: 90px;
+"class="temp">
 		@if (msg != null)
 		{
 		<header>
