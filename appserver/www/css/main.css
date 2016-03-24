@@ -69,6 +69,10 @@ body {
 	background-color: #E6E6E6
 }
 
+#ask{
+	top: 150px;	
+	position: relative;
+}
 
 
 input, button {
