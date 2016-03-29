@@ -3,13 +3,12 @@ TikMu
 
 This is the central repository for the TikMu app.
 
-Two self-updating servers exist, both posting build statuses on Slack.  They
-default to the master branch, but branches other than that can be request via
-subdomains. More information about that resides exists at
+A self-updating server exists, and it posts build statuses on Slack.  It
+defaults to the master branch, but branches other than that can be request via
+subdomains. More information about that resides at
 [`documentation/live-server.md`](documentation/live-server.md).
 
 [![The new Robrt based server](https://img.shields.io/badge/live%20at-new.maxikali.com-brightgreen.svg)](https://new.maxikali.com/)
-[![The stable server](https://img.shields.io/badge/also%20at-maxikali.com-yellowgreen.svg)](https://maxikali.com/)
 [![Our slack](https://img.shields.io/badge/slack-join %20chat-red.svg)](https://tikmu.slack.com)
 
 
