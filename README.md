@@ -24,7 +24,7 @@ Additionally, Mongodb and Tora are required at runtime.
 
 ## Copyright
 
-Copyright 2014-2015, TikMu.  All rigths reserved.
+Copyright 2014-2016, TikMu.  All rigths reserved.
 
 All intellectual property rights in this repository are owned by, or have been
 licensed to, TikMu.  All such rights are reserved.
