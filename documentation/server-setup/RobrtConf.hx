@@ -152,8 +152,8 @@ class RobrtConf {
 		repositories : [
 		{
 			full_name : "jonasmalacofilho/tikmu",
-			hook_secret : "not much of a secret, but will have to make due for now",
-			oauth2_token : "f0fdb07653673e9cad7e8838a3788103a96d1740",
+			hook_secret : Sys.getEnv("TIKMU_HOOK_SECRET"),
+			oauth2_token : Sys.getEnv("TIKMU_OAUTH2_TOKEN"),
 			build_options : {
 				directory : "/var/robrt/builds/jonasmalacofilho/tikmu",
 			},
@@ -167,7 +167,7 @@ class RobrtConf {
 			notification_targets : [
 			{
 				name : "slack", type : Slack, customPayload : slackPayload,
-				url : "https://hooks.slack.com/services/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",
+				url : Sys.getEnv("TIKMU_SLACK_URL")
 			},
 			{
 				name : "github", type : GitHub, customPayload : githubPayload
