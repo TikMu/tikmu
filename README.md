@@ -16,11 +16,8 @@ Additionally, Mongodb and Tora are required at runtime.
 
 ## Copyright
 
-Copyright 2014-2016, TikMu.  All rigths reserved.
-
-All intellectual property rights in this repository are owned by, or have been
-licensed to, TikMu.  All such rights are reserved.
-
 TikMu is a partnership between Arthur Szász, Cauê Waneck, Flávio Fraschetti,
 Gabriel Gorski and Jonas Malaco.
+
+Licensed under the MIT license.  See the contents of `LICENSE.txt` for more information.
 
