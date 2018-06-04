@@ -1,7 +1,11 @@
 TikMu
 =====
 
-This is the central repository for the work-in-progress TikMu app.
+[![O que é o TikMu?](http://img.youtube.com/vi/phbxO5vpB14/0.jpg)](http://www.youtube.com/watch?v=phbxO5vpB14 "Youtube - TikMu: conhecer novos lugares é demais!")
+
+This is the central repository for the development of the TikMu app.
+
+As of 2016, TikMu is no longer being developed.
 
 
 ## Building and running
